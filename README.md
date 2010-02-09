@@ -11,20 +11,24 @@ browser or other CommonJS implementations.
       strict = true, // set to false for html-mode
       parser = sax.parser(strict);
     
-    parser.addListener("text", function (t) {
+    parser.onerror = function (e) {
+      // an error happened. 
+    };
+    parser.ontext = function (t) {
       // got some text.  t is the string of text.
-    });
-    parser.addListener("openTag", function (node) {
+    };
+    parser.onopentag = function (node) {
       // opened a tag.  node has "name" and "attributes"
-    });
-    parser.addListener("attribute", function (attr) {
+    };
+    parser.onattribute = function (attr) {
       // an attribute.  attr has "name" and "value"
-    });
-    parser.addListener("end", function () {
+    };
+    parser.onend = function () {
       // parser stream is done, and ready to have more stuff written to it.
-    });
+    };
     
     parser.write('<xml>Hello, <who name="world">world</who>!</xml>').close();
+
 ## Methods
 
 `write` - Write bytes onto the stream. You don't have to do this all at once. You
@@ -33,11 +37,9 @@ can keep writing as much as you want.
 `close` - Close the stream. Once closed, no more data may be written until it is
 done processing the buffer, which is signaled by the `end` event.
 
-`addListener` - Add a callback to an event type.
-
 ## Events
 
-All events emit with a single argument.
+All events emit with a single argument.  To listen to an event, assign a function to `on<eventname>`.  Functions get executed in the this-context of the parser object.
 
 `error` - Indication that something bad happened. The error will be hanging out on
 `parser.error`, and must be deleted before parsing can continue. By listening to

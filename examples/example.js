@@ -14,13 +14,13 @@ xml.addCallback(function (xml) {
   // strict.write(xml);
   
   ["processingInstruction",
-      "text", "comment","openTag",
-      "closeTag","attribute"].forEach(function (ev) {
-    loose.addListener(ev, inspector(ev));
+      "text", "comment","opentag",
+      "closetag","attribute"].forEach(function (ev) {
+    loose["on"+ev] = inspector(ev);
   });
-  loose.addListener("end", function () {
+  loose.onend = function () {
     sys.error("end");
-  });
+  };
   
   loose.write(xml).close();
 });
