@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RootElement param="value">
+    <FirstElement>
+        Some Text
+    </FirstElement>
+    <?some_pi some_attr="some_value"?>
+    <!-- this is a comment -- but this isn't part of the comment -->
+    <SecondElement param2="something">
+        Pre-Text <Inline>Inlined text</Inline> Post-text.
+    </SecondElement>
+</RootElement>
