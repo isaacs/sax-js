@@ -1,8 +1,9 @@
 
 var posix = require("posix"),
   sys = require("sys"),
-  xml = posix.cat("test.xml"),
-  sax = require("./sax"),
+  path = require("path"),
+  xml = posix.cat(path.join(path.dirname(__filename), "test.xml")),
+  sax = require("../lib/sax"),
   strict = sax.parser(true),
   loose = sax.parser(),
   inspector = function (ev) { return function (data) {
