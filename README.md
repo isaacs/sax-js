@@ -48,14 +48,16 @@ more in strict mode. Argument: instance of `Error`.
 
 `text` - Text node. Argument: string of text.
 
-`processingInstruction` - Stuff like `<?xml foo="blerg" ?>`. Argument: object with
+`doctype` - The `<!DOCTYPE` declaration. Argument: doctype body string.
+
+`processinginstruction` - Stuff like `<?xml foo="blerg" ?>`. Argument: object with
 `name` and `body` members. Attributes are not parsed, as processing instructions
 have implementation dependent semantics.
 
-`openTag` - An opening tag. Argument: object with `name` and `attributes`. In
+`opentag` - An opening tag. Argument: object with `name` and `attributes`. In
 non-strict mode, tag names are uppercased.
 
-`closeTag` - A closing tag. In loose mode, tags are auto-closed if their parent
+`closetag` - A closing tag. In loose mode, tags are auto-closed if their parent
 closes. In strict mode, well-formedness is enforced.  Note that self-closing tags
 will have `closeTag` emitted immediately after `openTag`.  Argument: tag name.
 
