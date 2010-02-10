@@ -5,6 +5,34 @@ A sax-style parser for XML and HTML.
 Designed with [node](http://nodejs.org/) in mind, but should work fine in the
 browser or other CommonJS implementations.
 
+## What This Is
+
+* A very simple tool to parse through an XML string.
+* A stepping stone to a streaming HTML parser.
+* A handy way to deal with RSS and other mostly-ok-but-kinda-broken XML docs.
+
+## What This Is (probably) Not
+
+* An HTML Parser - That's the goal, but this isn't it.  It's just XML for now.
+* A DOM Builder - You can use it to build an object model out of XML, but it doesn't
+  do that out of the box.
+* XSLT - No DOM, no querying.
+* 100% Compliant with (some other SAX implementation) - Most SAX implementations are
+  in Java and do a lot more than this does.
+* An XML Validator - It does a little validation when in strict mode, but not much.
+* A Schema-Aware XSD Thing - Schemas are an exercise in fetishistic masochism.
+* A DTD-aware Thing - Fetching DTDs is a much bigger job.
+
+## Regarding `<!DOCTYPE`s and `<!ENTITY`s
+
+The parser will handle the basic XML entities in text nodes and attribute values:
+`&amp; &lt; &gt; &apos; &quot;`.  It's possible to define additional entities in XML
+by putting them in the DTD.  This parser doesn't do anything with that.  If you want
+to listen to the `ondoctype` event, and then fetch the doctypes, and read the entities
+and add them to `parser.ENTITIES`, then be my guest.
+
+Unknown entities will fail in strict mode, and in loose mode, will pass through unmolested.
+
 ## Usage
 
     var sax = require("./lib/sax"),
@@ -84,7 +112,7 @@ more in strict mode. Argument: instance of `Error`.
 
 `text` - Text node. Argument: string of text.
 
-`doctype` - The `<!DOCTYPE` declaration. Argument: doctype body string.
+`doctype` - The `<!DOCTYPE` declaration. Argument: doctype string.
 
 `processinginstruction` - Stuff like `<?xml foo="blerg" ?>`. Argument: object with
 `name` and `body` members. Attributes are not parsed, as processing instructions
@@ -113,4 +141,7 @@ will have `closeTag` emitted immediately after `openTag`.  Argument: tag name.
 
 ## Todo
 
-Build an HTML parser on top of this.
+Build an HTML parser on top of this, which follows the same parsing rules as web browsers.
+
+Make it fast by replacing the trampoline with a switch, and not buffering so much
+stuff.
