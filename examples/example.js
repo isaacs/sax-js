@@ -5,7 +5,7 @@ var posix = require("posix"),
   xml = posix.cat(path.join(__dirname, "test.xml")),
   sax = require("../lib/sax"),
   strict = sax.parser(true),
-  loose = sax.parser(),
+  loose = sax.parser(false, {trim:true}),
   inspector = function (ev) { return function (data) {
     sys.error("");
     sys.error(ev+": "+sys.inspect(data));
