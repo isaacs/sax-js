@@ -21,7 +21,7 @@ xml.addCallback(function (xml) {
   });
   loose.onend = function () {
     sys.error("end");
-    // sys.error(sys.inspect(loose));
+    sys.error(sys.inspect(loose));
   };
   
   // do this one char at a time to verify that it works.
