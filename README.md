@@ -51,6 +51,10 @@ can keep writing as much as you want.
 `close` - Close the stream. Once closed, no more data may be written until it is
 done processing the buffer, which is signaled by the `end` event.
 
+`resume` - To gracefully handle errors, assign a listener to the `error` event. Then,
+when the error is taken care of, you can call `resume` to continue parsing.  Otherwise,
+the parser will not continue while in an error state.
+
 ## Members
 
 At all times, the parser object will have the following members:
@@ -63,7 +67,7 @@ the parser currently is looking.
 
 `strict` - Boolean indicating whether or not the parser is a jerk.
 
-`opt` - The options you passed into the constructor (or the defaults.)
+`opt` - Any options passed into the constructor.
 
 And a bunch of other stuff that you probably shouldn't touch.
 
