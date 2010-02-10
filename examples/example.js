@@ -24,5 +24,12 @@ xml.addCallback(function (xml) {
     // sys.error(sys.inspect(loose));
   };
   
-  loose.write(xml).close();
+  // do this one char at a time to verify that it works.
+  (function () {
+    if (xml) {
+      loose.write(xml.charAt(0));
+      xml = xml.slice(1);
+      process.nextTick(arguments.callee);
+    } else loose.close();
+  })();
 });
