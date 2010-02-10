@@ -4,8 +4,12 @@
         Some Text
     </FirstElement>
     <?some_pi some_attr="some_value"?>
-    <!-- this is a comment -- but this isn't part of the comment -->
+    <!-- this is a comment -- but this isnt part of the comment -->
+    <!-- this is a comment == and this is a part of the comment -->
+    <!-- this is a comment > and this is also part of the thing -->
+    <!invalid comment>
     <SecondElement param2="something">
-        Pre-Text <Inline>Inlined text</Inline> Post-text.
+        Pre-Text &amp; <Inline>Inlined text</Inline> Post-text.
+        &#xF8FF;
     </SecondElement>
 </RootElement>
