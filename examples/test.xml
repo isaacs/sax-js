@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE RootElement [
+	<!ENTITY e SYSTEM "001.ent">
+]>
 <RootElement param="value">
     <FirstElement>
         Some Text
