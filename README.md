@@ -133,7 +133,9 @@ will have `closeTag` emitted immediately after `openTag`.  Argument: tag name.
 
 `comment` - A comment node.  Argument: the string of the comment.
 
-`cdata` - A `<![CDATA[` block.  Argument: the string of random character data.
+`cdata` - A `<![CDATA[` block.  Since `<![CDATA[` blocks can get quite large, this event
+may fire multiple times for a single block, if it is broken up into multiple `write()`s.
+Argument: the string of random character data.
 
 `end` - Indication that the closed stream has ended.
 
