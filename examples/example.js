@@ -1,9 +1,9 @@
 
-var posix = require("posix"),
+var fs = require("fs"),
   sys = require("sys"),
   path = require("path"),
-  xml = posix.cat(path.join(__dirname, "test.xml")),
-  sax = require("../lib/sax-trampoline"),
+  xml = fs.cat(path.join(__dirname, "test.xml")),
+  sax = require("../lib/sax"),
   strict = sax.parser(true),
   loose = sax.parser(false, {trim:true}),
   inspector = function (ev) { return function (data) {
