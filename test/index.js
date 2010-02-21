@@ -46,7 +46,7 @@ if (module.id === ".") {
     next();
   }}
   
-  fs.readdir(__dirname).addCallback(function (files) { (function T (f) {
+  fs.readdir(__dirname, function (error, files) {(function T (f) {
     var file = files[f];
     if (!file) {
       if (!failures) return sys.puts("ok");
@@ -57,9 +57,9 @@ if (module.id === ".") {
     // run this test.
     function next () { T(f + 1) };
     if (/\.js$/.exec(file)) {
-      require.async(__dirname + "/"+file.replace(/\.js$/, ''))
-        .addCallback(next)
-        .addErrback(fail(file, next));
+      require.async(__dirname + "/"+file.replace(/\.js$/, ''), function (er) {
+        return (er) ? fail(file, next) : next()
+      });
     }
   })(0)});
 }
