@@ -5,6 +5,8 @@ var sys = require("sys"),
   path = require("path"),
   sax = require("../lib/sax");
 
+exports.sax = sax;
+
 // handy way to do simple unit tests
 // if the options contains an xml string, it'll be written and the parser closed.
 // otherwise, it's assumed that the test will write and close.
@@ -24,12 +26,14 @@ exports.test = function test (options) {
         "Didn't get expected event\n"+
         "expect: "+expect[e][0] + " " +sys.inspect(expect[e][1])+"\n"+
         "actual: "+ev+" "+sys.inspect(n)+"\n");
-      assert.deepEqual(n, expect[e][1],
+      if (ev === "error") assert.equal(n.message, expect[e][1]);
+      else assert.deepEqual(n, expect[e][1],
         "expectation #"+e+"\n"+
         "Didn't get expected argument\n"+
         "expect: "+expect[e][0] + " " +sys.inspect(expect[e][1])+"\n"+
         "actual: "+ev+" "+sys.inspect(n)+"\n");
       e++;
+      if (ev === "error") parser.resume();
     };
   });
   if (xml) parser.write(xml).close();
