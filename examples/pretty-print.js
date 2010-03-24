@@ -3,7 +3,7 @@ var printer = require("../lib/sax").parser(false, {lowercasetags:true, trim:true
   fs = require("fs");
 
 function entity (str) {
-  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return str.replace('"', '&quot;');
 }
 
 printer.tabstop = 2;
@@ -27,7 +27,7 @@ printer.onopentag = function (tag) {
 }
 printer.ontext = printer.ondoctype = function (text) {
   this.indent();
-  sys.print(text.replace(/\s+/g, " ").trim());
+  sys.print(text);
 }
 printer.onclosetag = function (tag) {
   this.level --;
@@ -40,7 +40,7 @@ printer.oncdata = function (data) {
 }
 printer.oncomment = function (comment) {
   this.indent();
-  sys.print("<!--"+comment.replace(/\s+/g, " ")+"-->");
+  sys.print("<!--"+comment+"-->");
 }
 printer.onerror = function (error) {
   sys.debug(error);
