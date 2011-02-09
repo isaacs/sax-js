@@ -38,9 +38,9 @@ Unknown entities will fail in strict mode, and in loose mode, will pass through 
     var sax = require("./lib/sax"),
       strict = true, // set to false for html-mode
       parser = sax.parser(strict);
-    
+
     parser.onerror = function (e) {
-      // an error happened. 
+      // an error happened.
     };
     parser.ontext = function (t) {
       // got some text.  t is the string of text.
@@ -54,7 +54,7 @@ Unknown entities will fail in strict mode, and in loose mode, will pass through 
     parser.onend = function () {
       // parser stream is done, and ready to have more stuff written to it.
     };
-    
+
     parser.write('<xml>Hello, <who name="world">world</who>!</xml>').close();
 
 ## Arguments
@@ -90,7 +90,7 @@ At all times, the parser object will have the following members:
 `line`, `column`, `position` - Indications of the position in the XML document where
 the parser currently is looking.
 
-`closed` - Boolean indicating whether or not the parser can be written to.  If it's 
+`closed` - Boolean indicating whether or not the parser can be written to.  If it's
 `true`, then wait for the `ready` event to write again.
 
 `strict` - Boolean indicating whether or not the parser is a jerk.
@@ -133,9 +133,13 @@ will have `closeTag` emitted immediately after `openTag`.  Argument: tag name.
 
 `comment` - A comment node.  Argument: the string of the comment.
 
-`cdata` - A `<![CDATA[` block.  Since `<![CDATA[` blocks can get quite large, this event
+`opencdata` - The opening tag of a `<![CDATA[` block.
+
+`cdata` - The text of a `<![CDATA[` block.  Since `<![CDATA[` blocks can get quite large, this event
 may fire multiple times for a single block, if it is broken up into multiple `write()`s.
 Argument: the string of random character data.
+
+`closecdata` - The closing tag (`]]>`) of a `<![CDATA[` block.
 
 `end` - Indication that the closed stream has ended.
 
