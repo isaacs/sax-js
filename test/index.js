@@ -53,8 +53,9 @@ if (module === require.main) {
   fs.readdir(__dirname, function (error, files) {
     files.forEach(function (file) {
       // run this test.
-      if (/\.js$/.exec(file)) {
+      if (/\.js$/.exec(file) && file !== 'index.js') {
         try {
+          console.log(file)
           require(path.resolve(__dirname, file))
         } catch (er) {
           fail(file, er)
