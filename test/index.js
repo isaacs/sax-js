@@ -49,7 +49,7 @@ if (module.id === ".") {
     failures ++;
     next();
   }}
-  
+
   fs.readdir(__dirname, function (error, files) {(function T (f) {
     var file = files[f];
     if (!file) {
@@ -62,7 +62,7 @@ if (module.id === ".") {
     function next () { T(f + 1) };
     if (/\.js$/.exec(file)) {
       require.async(__dirname + "/"+file.replace(/\.js$/, ''), function (er) {
-        return (er) ? fail(file, next) : next()
+        return (er) ? fail(file, next)(er) : next()
       });
     }
   })(0)});
