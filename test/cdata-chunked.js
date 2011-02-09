@@ -5,7 +5,6 @@ require(__dirname).test({
     ["opencdata", undefined],
     ["cdata", " this is "],
     ["cdata", "character data  "],
-    ["cdata", "xxx"],
     ["closecdata", undefined],
     ["closetag", "R"]
   ]
