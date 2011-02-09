@@ -21,17 +21,18 @@ exports.test = function test (options) {
       assert.ok( e < expect.length,
         "expectation #"+e+" "+sys.inspect(expect[e])+"\n"+
         "Unexpected event: "+ev+" "+(n ? sys.inspect(n) : ""));
+      var inspected = n instanceof Error ? "\n"+ n.message : sys.inspect(n)
       assert.equal(ev, expect[e][0],
         "expectation #"+e+"\n"+
         "Didn't get expected event\n"+
         "expect: "+expect[e][0] + " " +sys.inspect(expect[e][1])+"\n"+
-        "actual: "+ev+" "+sys.inspect(n)+"\n");
+        "actual: "+ev+" "+inspected+"\n");
       if (ev === "error") assert.equal(n.message, expect[e][1]);
       else assert.deepEqual(n, expect[e][1],
         "expectation #"+e+"\n"+
         "Didn't get expected argument\n"+
         "expect: "+expect[e][0] + " " +sys.inspect(expect[e][1])+"\n"+
-        "actual: "+ev+" "+sys.inspect(n)+"\n");
+        "actual: "+ev+" "+inspected+"\n");
       e++;
       if (ev === "error") parser.resume();
     };
@@ -40,30 +41,27 @@ exports.test = function test (options) {
   return parser;
 }
 
-if (module.id === ".") {
+if (module === require.main) {
   var running = true,
     failures = 0;
-  function fail (file, next) { return function (er) {
+  function fail (file, er) {
     sys.error("Failed: "+file);
-    sys.error(er.message);
+    sys.error(er.stack || er.message);
     failures ++;
-    next();
-  }}
+  }
 
-  fs.readdir(__dirname, function (error, files) {(function T (f) {
-    var file = files[f];
-    if (!file) {
-      if (!failures) return sys.puts("ok");
-      else return sys.error(failures + " failure" + (failures > 1 ? "s" : ""));
-    }
-    if (path.basename(file) === path.basename(__filename))
-      return process.nextTick(function () { T(f + 1) });
-    // run this test.
-    function next () { T(f + 1) };
-    if (/\.js$/.exec(file)) {
-      require.async(__dirname + "/"+file.replace(/\.js$/, ''), function (er) {
-        return (er) ? fail(file, next)(er) : next()
-      });
-    }
-  })(0)});
+  fs.readdir(__dirname, function (error, files) {
+    files.forEach(function (file) {
+      // run this test.
+      if (/\.js$/.exec(file)) {
+        try {
+          require(path.resolve(__dirname, file))
+        } catch (er) {
+          fail(file, er)
+        }
+      }
+    })
+    if (!failures) return sys.puts("ok");
+    else return sys.error(failures + " failure" + (failures > 1 ? "s" : ""));
+  });
 }
