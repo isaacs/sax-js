@@ -3,8 +3,7 @@ require(__dirname).test({
   expect : [
     ["opentag", {"name": "R","attributes": {}}],
     ["opencdata", undefined],
-    ["cdata", " this is "],
-    ["cdata", "character data  "],
+    ["cdata", " this is character data  "],
     ["closecdata", undefined],
     ["closetag", "R"]
   ]
