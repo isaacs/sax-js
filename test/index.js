@@ -51,18 +51,23 @@ if (module === require.main) {
   }
 
   fs.readdir(__dirname, function (error, files) {
+    files = files.filter(function (file) {
+      return (/\.js$/.exec(file) && file !== 'index.js')
+    })
+    var n = files.length
+      , i = 0
+    console.log("0.." + n)
     files.forEach(function (file) {
       // run this test.
-      if (/\.js$/.exec(file) && file !== 'index.js') {
-        try {
-          console.log(file)
-          require(path.resolve(__dirname, file))
-        } catch (er) {
-          fail(file, er)
-        }
+      try {
+        require(path.resolve(__dirname, file))
+        console.log("ok " + (++i) + " - " + file)
+      } catch (er) {
+        console.log("not ok "+ (++i) + " - " + file)
+        fail(file, er)
       }
     })
-    if (!failures) return sys.puts("ok");
-    else return sys.error(failures + " failure" + (failures > 1 ? "s" : ""));
+    if (!failures) return console.log("#all pass");
+    else return console.error(failures + " failure" + (failures > 1 ? "s" : ""));
   });
 }
