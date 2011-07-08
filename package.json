@@ -1,6 +1,6 @@
 { "name" : "sax"
 , "author" : "Isaac Z. Schlueter <i@izs.me>"
-, "version" : "0.1.4"
+, "version" : "0.1.5"
 , "main" : "lib/sax"
 , "license" : "MIT"
 , "scripts" : { "test" : "node test/index.js" }
