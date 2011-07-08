@@ -112,6 +112,8 @@ At all times, the parser object will have the following members:
 `line`, `column`, `position` - Indications of the position in the XML document where
 the parser currently is looking.
 
+`startTagPosition` - Indicates the position where the current tag starts.
+
 `closed` - Boolean indicating whether or not the parser can be written to.  If it's
 `true`, then wait for the `ready` event to write again.
 
