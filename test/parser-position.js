@@ -5,7 +5,9 @@ function testPosition(chunks, expectedEvents) {
   var parser = sax.parser();
   expectedEvents.forEach(function(expectation) {
     parser['on' + expectation[0]] = function() {
-      assert.equal(parser.position, expectation[1]);
+      for (var prop in expectation[1]) {
+        assert.equal(parser[prop], expectation[1][prop]);
+      }
     }
   });
   chunks.forEach(function(chunk) {
@@ -14,14 +16,13 @@ function testPosition(chunks, expectedEvents) {
 };
 
 testPosition(['<div>abcdefgh</div>'],
-             [ ['opentag', 5]
-             , ['text', 19]
-             , ['closetag', 19]
+             [ ['opentag',  { position:  5, startTagPosition:  1 }]
+             , ['text',     { position: 19, startTagPosition: 14 }]
+             , ['closetag', { position: 19, startTagPosition: 14 }]
              ]);
 
 testPosition(['<div>abcde','fgh</div>'],
-             [ ['opentag', 5]
-             , ['text', 19]
-             , ['closetag', 19]
+             [ ['opentag',  { position:  5, startTagPosition:  1 }]
+             , ['text',     { position: 19, startTagPosition: 14 }]
+             , ['closetag', { position: 19, startTagPosition: 14 }]
              ]);
-
