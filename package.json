@@ -1,4 +1,5 @@
 { "name" : "sax"
+, "description": "An evented streaming XML parser in JavaScript"
 , "author" : "Isaac Z. Schlueter <i@izs.me>"
 , "version" : "0.2.3"
 , "main" : "lib/sax"
