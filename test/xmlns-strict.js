@@ -18,19 +18,19 @@ require(__dirname).test
 
       , [ "attribute", { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } ]
       , [ "opentag", { name: "plain", prefix: "", local: "plain", uri: "",
-            attributes: { "attr": { name: "attr", value: "normal", uri: "", prefix: "", local: "attr", uri: "" } }, 
+            attributes: { "attr": { name: "attr", value: "normal", uri: "", prefix: "", local: "attr", uri: "" } },
             bindings: [] } ]
       , [ "closetag", "plain" ]
-      
+
       , [ "opennamespace", { prefix: "", uri: "uri:default" } ]
-      
+
       , [ "attribute", { name: "xmlns", value: "uri:default", prefix: "", local: "xmlns", uri: "" } ]
       , [ "opentag", { name: "ns1", prefix: "", local: "ns1", uri: "uri:default",
-            attributes: { "xmlns": { name: "xmlns", value: "uri:default", prefix: "", local: "xmlns", uri: "" } }, 
+            attributes: { "xmlns": { name: "xmlns", value: "uri:default", prefix: "", local: "xmlns", uri: "" } },
             bindings: [ "" ] } ]
 
       , [ "attribute", { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } ]
-      , [ "opentag", { name: "plain", prefix: "", local: "plain", uri: "uri:default", 
+      , [ "opentag", { name: "plain", prefix: "", local: "plain", uri: "uri:default",
             attributes: { "attr": { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } },
             bindings: [] } ]
       , [ "closetag", "plain" ]
@@ -38,22 +38,25 @@ require(__dirname).test
       , [ "closetag", "ns1" ]
 
       , [ "closenamespace", { prefix: "", uri: "uri:default" } ]
-      
+
       , [ "opennamespace", { prefix: "a", uri: "uri:nsa" } ]
-      
-      , [ "attribute", { name: "xmlns:a", value: "uri:nsa", prefix: "xmlns", local: "a", uri: "" } ] // FIXME should probably have uri= xmlns namespace (http://www.w3.org/2000/xmlns/)
-      , [ "opentag", { name: "ns2", prefix: "", local: "ns2", uri: "", 
-            attributes: { "xmlns:a": { name: "xmlns:a", value: "uri:nsa", prefix: "xmlns", local: "a", uri: "" } },  // FIXME should probably have uri= xmlns namespace (http://www.w3.org/2000/xmlns/)
+
+      // FIXME should probably have uri= xmlns namespace (http://www.w3.org/2000/xmlns/)
+      , [ "attribute", { name: "xmlns:a", value: "uri:nsa", prefix: "xmlns", local: "a", uri: "" } ]
+
+      // FIXME should probably have uri= xmlns namespace (http://www.w3.org/2000/xmlns/)
+      , [ "opentag", { name: "ns2", prefix: "", local: "ns2", uri: "",
+            attributes: { "xmlns:a": { name: "xmlns:a", value: "uri:nsa", prefix: "xmlns", local: "a", uri: "" } },
             bindings: [ "a" ] } ]
 
       , [ "attribute", { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } ]
-      , [ "opentag", { name: "plain", prefix: "", local: "plain", uri: "", 
+      , [ "opentag", { name: "plain", prefix: "", local: "plain", uri: "",
             attributes: { "attr": { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } },
             bindings: [] } ]
       , [ "closetag", "plain" ]
-      
+
       , [ "attribute", { name: "a:attr", value: "namespaced", prefix: "a", local: "attr", uri: "uri:nsa" } ]
-      , [ "opentag", { name: "a:ns", prefix: "a", local: "ns", uri: "uri:nsa", 
+      , [ "opentag", { name: "a:ns", prefix: "a", local: "ns", uri: "uri:nsa",
             attributes: { "a:attr": { name: "a:attr", value: "namespaced", prefix: "a", local: "attr", uri: "uri:nsa" } },
             bindings: [] } ]
       , [ "closetag", "a:ns" ]

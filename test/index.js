@@ -1,53 +1,54 @@
 
-var sys = require("sys"),
-  assert = require("assert"),
-  fs = require("fs"),
-  path = require("path"),
-  sax = require("../lib/sax");
+var util = require("util")
+  , assert = require("assert")
+  , fs = require("fs")
+  , path = require("path")
+  , sax = require("../lib/sax")
 
-exports.sax = sax;
+exports.sax = sax
 
 // handy way to do simple unit tests
 // if the options contains an xml string, it'll be written and the parser closed.
 // otherwise, it's assumed that the test will write and close.
 exports.test = function test (options) {
-  var xml = options.xml,
-    parser = sax.parser(options.strict, options.opt),
-    expect = options.expect,
-    e = 0;
+  var xml = options.xml
+    , parser = sax.parser(options.strict, options.opt)
+    , expect = options.expect
+    , e = 0
   sax.EVENTS.forEach(function (ev) {
     parser["on" + ev] = function (n) {
-      if (e >= expect.length && (ev === "end" || ev === "ready")) return;
+      if (e >= expect.length && (ev === "end" || ev === "ready")) return
       assert.ok( e < expect.length,
-        "expectation #"+e+" "+sys.inspect(expect[e])+"\n"+
-        "Unexpected event: "+ev+" "+(n ? sys.inspect(n) : ""));
-      var inspected = n instanceof Error ? "\n"+ n.message : sys.inspect(n)
+        "expectation #"+e+" "+util.inspect(expect[e])+"\n"+
+        "Unexpected event: "+ev+" "+(n ? util.inspect(n) : ""))
+      var inspected = n instanceof Error ? "\n"+ n.message : util.inspect(n)
       assert.equal(ev, expect[e][0],
         "expectation #"+e+"\n"+
         "Didn't get expected event\n"+
-        "expect: "+expect[e][0] + " " +sys.inspect(expect[e][1])+"\n"+
-        "actual: "+ev+" "+inspected+"\n");
-      if (ev === "error") assert.equal(n.message, expect[e][1]);
+        "expect: "+expect[e][0] + " " +util.inspect(expect[e][1])+"\n"+
+        "actual: "+ev+" "+inspected+"\n")
+      if (ev === "error") assert.equal(n.message, expect[e][1])
       else assert.deepEqual(n, expect[e][1],
         "expectation #"+e+"\n"+
         "Didn't get expected argument\n"+
-        "expect: "+expect[e][0] + " " +sys.inspect(expect[e][1])+"\n"+
-        "actual: "+ev+" "+inspected+"\n");
-      e++;
-      if (ev === "error") parser.resume();
-    };
-  });
-  if (xml) parser.write(xml).close();
-  return parser;
+        "expect: "+expect[e][0] + " " +util.inspect(expect[e][1])+"\n"+
+        "actual: "+ev+" "+inspected+"\n")
+      e++
+      if (ev === "error") parser.resume()
+    }
+  })
+  if (xml) parser.write(xml).close()
+  return parser
 }
 
 if (module === require.main) {
-  var running = true,
-    failures = 0;
+  var running = true
+  , failures = 0
+
   function fail (file, er) {
-    sys.error("Failed: "+file);
-    sys.error(er.stack || er.message);
-    failures ++;
+    util.error("Failed: "+file)
+    util.error(er.stack || er.message)
+    failures ++
   }
 
   fs.readdir(__dirname, function (error, files) {
@@ -67,7 +68,7 @@ if (module === require.main) {
         fail(file, er)
       }
     })
-    if (!failures) return console.log("#all pass");
-    else return console.error(failures + " failure" + (failures > 1 ? "s" : ""));
-  });
+    if (!failures) return console.log("#all pass")
+    else return console.error(failures + " failure" + (failures > 1 ? "s" : ""))
+  })
 }
