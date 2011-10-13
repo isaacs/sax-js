@@ -17,6 +17,10 @@ exports.test = function test (options) {
     , e = 0
   sax.EVENTS.forEach(function (ev) {
     parser["on" + ev] = function (n) {
+      if (process.env.DEBUG) {
+        console.error({ expect: expect[e]
+                      , actual: [ev, n] })
+      }
       if (e >= expect.length && (ev === "end" || ev === "ready")) return
       assert.ok( e < expect.length,
         "expectation #"+e+" "+util.inspect(expect[e])+"\n"+
