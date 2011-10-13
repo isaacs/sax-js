@@ -2,7 +2,8 @@ require(__dirname).test(
   { xml : "<xml:root xmlns:xml='ERROR'/>"
   , expect :
     [ ["error"
-      , "Cannot bind the xml prefix to ERROR\n"
+      , "xml: prefix must be bound to http://www.w3.org/XML/1998/namespace\n"
+                        + "Actual: ERROR\n"
       + "Line: 0\nColumn: 27\nChar: '"
       ]
     , [ "attribute"
