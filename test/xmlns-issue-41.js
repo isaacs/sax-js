@@ -1,10 +1,10 @@
 var t = require(__dirname)
 
   , xmls = // should be the same both ways.
-    [ "<parent a:attr='value' xmlns:a='http://ATTRIBUTE' />"
-    , "<parent xmlns:a='http://ATTRIBUTE' a:attr='value' />" ]
+    [ "<parent xmlns:a='http://ATTRIBUTE' a:attr='value' />"
+    , "<parent a:attr='value' xmlns:a='http://ATTRIBUTE' />" ]
 
-  , expected =
+  , ex1 =
     [ [ "opennamespace"
       , { prefix: "a"
         , uri: "http://ATTRIBUTE"
@@ -54,9 +54,13 @@ var t = require(__dirname)
     , ["closenamespace", { prefix: "a", uri: "http://ATTRIBUTE" }]
     ]
 
-xmls.forEach(function (x) {
+  // swap the order of elements 2 and 1
+  , ex2 = [ex1[0], ex1[2], ex1[1]].concat(ex1.slice(3))
+  , expected = [ex1, ex2]
+
+xmls.forEach(function (x, i) {
   t.test({ xml: x
-         , expect: expected
+         , expect: expected[i]
          , strict: true
          , opt: { xmlns: true }
          })
