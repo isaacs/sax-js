@@ -15,7 +15,7 @@ var t = require(__dirname)
         , value: "http://ATTRIBUTE"
         , prefix: "xmlns"
         , local: "a"
-        , uri: ""
+        , uri: "http://www.w3.org/2000/xmlns/"
         }
       ]
     , [ "attribute"
@@ -43,11 +43,11 @@ var t = require(__dirname)
             { name: "xmlns:a"
             , local: "a"
             , prefix: "xmlns"
-            , uri: ""
+            , uri: "http://www.w3.org/2000/xmlns/"
             , value: "http://ATTRIBUTE"
             }
           }
-        , bindings: ["a"]
+        , ns: {"a": "http://ATTRIBUTE"}
         }
       ]
     , ["closetag", "parent"]

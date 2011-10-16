@@ -8,7 +8,7 @@ require(__dirname).test(
         , prefix: "xml"
         , local: "root"
         , attributes: {}
-        , bindings: []
+        , ns: {}
         }
       ]
     , ["closetag", "xml:root"]

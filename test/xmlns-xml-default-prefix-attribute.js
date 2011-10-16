@@ -23,7 +23,7 @@ require(__dirname).test(
             , value: "en"
             }
           }
-        , bindings: []
+        , ns: {}
         }
       ]
     , ["closetag", "root"]

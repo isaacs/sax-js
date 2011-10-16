@@ -10,7 +10,7 @@ require(__dirname).test(
       , { name: "xmlns:xml"
         , local: "xml"
         , prefix: "xmlns"
-        , uri: ""
+        , uri: "http://www.w3.org/2000/xmlns/"
         , value: "ERROR"
         }
       ]
@@ -24,11 +24,11 @@ require(__dirname).test(
             { name: "xmlns:xml"
             , local: "xml"
             , prefix: "xmlns"
-            , uri: ""
+            , uri: "http://www.w3.org/2000/xmlns/"
             , value: "ERROR"
             }
           }
-        , bindings: []
+        , ns: {}
         }
       ]
     , ["closetag", "xml:root"]
