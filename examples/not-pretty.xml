@@ -1,8 +1,8 @@
 <root>
-		something<else>  blerm <slurm 
+ΩΩΩΩΩΩΩΩ		something<else>  blerm <slurm 
 		
-		
+omegas="ΩΩΩΩΩΩΩΩ"		
 	attrib = 
-	"blorg"       ></else><!-- COMMENT!
+  "blorg"       ><ΩΩΩΩΩΩΩΩ utf=true /></else><!-- COMMENT!
 	
 --><![CDATA[processing...]]>  <selfclosing tag="blr>&quot;"/> a bit down here</root>

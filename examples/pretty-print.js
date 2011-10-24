@@ -59,7 +59,7 @@ if (!process.argv[2]) {
     "TODO: read from stdin or take a file")
 }
 var xmlfile = require("path").join(process.cwd(), process.argv[2])
-var fstr = fs.createReadStream(xmlfile, { encoding: "utf8" })
+var fstr = fs.createReadStream(xmlfile)//, { encoding: "utf8" })
 
 function print (c) {
   if (!process.stdout.write(c)) {
