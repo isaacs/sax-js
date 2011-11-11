@@ -199,6 +199,10 @@ signal the end of a namespace binding.
 `ready` - Indication that the stream has reset, and is ready to be written
 to.
 
+`noscript` - In non-strict mode, `<script>` tags trigger a `"script"`
+event, and their contents are not checked for special xml characters.
+If you pass `noscript: true`, then this behavior is suppressed.
+
 ## Reporting Problems
 
 It's best to write a failing test if you find an issue.  I will always
