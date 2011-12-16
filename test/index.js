@@ -1,5 +1,5 @@
-
-var util = require("util")
+var globalsBefore = JSON.stringify(Object.keys(global))
+  , util = require("util")
   , assert = require("assert")
   , fs = require("fs")
   , path = require("path")
@@ -47,7 +47,7 @@ exports.test = function test (options) {
 
 if (module === require.main) {
   var running = true
-  , failures = 0
+    , failures = 0
 
   function fail (file, er) {
     util.error("Failed: "+file)
@@ -66,6 +66,14 @@ if (module === require.main) {
       // run this test.
       try {
         require(path.resolve(__dirname, file))
+        var globalsAfter = JSON.stringify(Object.keys(global))
+        if (globalsAfter !== globalsBefore) {
+          var er = new Error("new globals introduced\n"+
+                             "expected: "+globalsBefore+"\n"+
+                             "actual:   "+globalsAfter)
+          globalsBefore = globalsAfter
+          throw er
+        }
         console.log("ok " + (++i) + " - " + file)
       } catch (er) {
         console.log("not ok "+ (++i) + " - " + file)
