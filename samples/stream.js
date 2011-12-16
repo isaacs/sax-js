@@ -1,5 +1,5 @@
 var fs            = require('fs')
-  , sax           = require('../lib/sax-json.js')
+  , sax           = require('../lib/clarinet.js')
   , parse_stream  = sax.createStream()
   ;
 
