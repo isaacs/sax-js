@@ -1,12 +1,14 @@
 ;(function (clarinet) {
+  // non node-js needs to set clarinet debug on root
+  var env = process && process.env ? process.env : window;
+
   clarinet.parser            = function (opt) { return new CParser(opt);};
   clarinet.CParser           = CParser;
   clarinet.CStream           = CStream;
   clarinet.createStream      = createStream;
   clarinet.MAX_BUFFER_LENGTH = 64 * 1024;
-  clarinet.DEBUG             = (process.env.CLARINET==='debug');
-  clarinet.INFO              = (process.env.CLARINET==='debug' ||
-                                process.env.CLARINET==='info');
+  clarinet.DEBUG             = (env.CDEBUG==='debug');
+  clarinet.INFO              = (env.CDEBUG==='debug' || env.CDEBUG==='info');
   clarinet.EVENTS            =
     [ "value"
     , "string"
@@ -19,7 +21,7 @@
     , "ready"
     ];
 
-  var buffers     = [ "string" ]
+  var buffers     = [ "textNode" ] // matches parser.textNode buffer
     , whitespace  = "\r\n\t "
     , streamWraps = clarinet.EVENTS.filter(function (ev) {
           return ev !== "error" && ev !== "end";
@@ -32,12 +34,12 @@
     { BEGIN                     : S++
     , VALUE                     : S++ // general stuff
     , OPEN_OBJECT               : S++ // {
-    , CLOSE_OPEN_OBJECT         : S++ // :
     , CLOSE_OBJECT              : S++ // }
     , OPEN_ARRAY                : S++ // [
     , CLOSE_ARRAY               : S++ // ]
     , TEXT_ESCAPE               : S++ // \ stuff
-    , STRING                    : S++
+    , STRING                    : S++ // ""
+    , END                       : S++ // No more stack
     };
 
   for (var s_ in clarinet.STATE) clarinet.STATE[clarinet.STATE[s_]] = s_;
@@ -80,7 +82,7 @@
           break;
 
           default:
-            error(parser, "Max buffer length exceeded: "+buffers[i]);
+            error(parser, "Max buffer length exceeded: "+ buffers[i]);
         }
       }
       maxActual = Math.max(maxActual, len);
@@ -110,6 +112,7 @@
     parser.closed = parser.closedRoot = parser.sawRoot = false;
     parser.tag = parser.error = null;
     parser.state = S.BEGIN;
+    parser.stack = [];
     // mostly just for error reporting
     parser.position = parser.column = 0;
     parser.line = 1;
@@ -190,14 +193,14 @@
     return Stream.prototype.on.call(me, ev, handler);
   };
 
-  function emit (parser, event, data) {
+  function emit(parser, event, data) {
     if(clarinet.INFO) console.log('-- emit', event, data);
     if (parser[event]) parser[event](data);
   }
 
-  function emitNode (parser, nodeType, data) {
-    if (parser.valueNode) closeValue(parser);
-    emit(parser, nodeType, data);
+  function emitNode(parser, event, data) {
+    if (parser.textNode) closeValue(parser);
+    emit(parser, event, data);
   }
 
   function closeValue(parser, event) {
@@ -224,7 +227,7 @@
   }
 
   function end(parser) {
-    //if (parser.state !== S.VALUE) error(parser, "Unexpected end");
+    if (parser.state !== S.VALUE) error(parser, "Unexpected end");
     closeValue(parser);
     parser.c = "";
     parser.closed = true;
@@ -241,6 +244,7 @@
     if (chunk === null) return end(parser);
     var i = 0, c = chunk[0], p = "";
     while (c) {
+      p = c;
       parser.c = c = chunk.charAt(i++);
       if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state]);
       parser.position ++;
@@ -252,37 +256,48 @@
 
         case S.BEGIN:
           if (c === "{") parser.state = S.OPEN_OBJECT;
-          else if (c === "[") {
-            emit(parser, 'onopenarray');
-            parser.state = S.VALUE;
-          }
-          else if (not(whitespace,c)) error(parser, "Non-whitespace before {[.");
-        continue;
-
-        case S.CLOSE_OBJECT:
-          emit(parser, 'oncloseobject');
+          else if (c === "[") parser.state = S.OPEN_ARRAY;
+          else if (not(whitespace,c)) 
+            error(parser, "Non-whitespace before {[.");
         continue;
 
         case S.OPEN_OBJECT:
           if (is(whitespace, c)) continue;
+          parser.stack.push(S.CLOSE_OBJECT);
           if(c === '"') {
             parser.state = S.STRING;
           } else
             error(parser, "Malformed object key should start with \"");
         continue;
 
-        case S.CLOSE_OPEN_OBJECT:
+        case S.CLOSE_OBJECT:
           if (is(whitespace, c)) continue;
-          closeValue (parser, 'onopenobject');
-          if(c === '"') {
-            parser.state = S.STRING;
-          } else if (c === '{') {
-            parser.state = S.OPEN_OBJECT;
-          } else if (c === '[') {
-              parser.state = S.OPEN_OBJECT;
-          } else {
+          if(c===':') {
+            parser.stack.unshift(S.CLOSE_OBJECT);
+            closeValue(parser, 'onopenobject');
             parser.state  = S.VALUE;
-          }
+          } else if (c==='}') {
+            emitNode(parser, 'oncloseobject');
+            parser.state = parser.stack.shift() || S.VALUE;
+          } else error(parser, 'Bad object');
+        continue;
+
+        case S.OPEN_ARRAY:
+          emit(parser, 'onopenarray');
+          parser.stack.push(S.CLOSE_ARRAY);
+          parser.state = S.VALUE;
+        continue;
+
+        case S.CLOSE_ARRAY:
+          if (is(whitespace, c)) continue;
+          if(c===',') {
+            parser.stack.unshift(S.CLOSE_ARRAY);
+            closeValue (parser, 'value');
+            parser.state  = S.VALUE;
+          } else if (c===']') {
+            emitNode(parser, 'onclosearray');
+            parser.state = parser.stack.shift() || S.VALUE;
+          } else error(parser, 'Bad array');
         continue;
 
         case S.VALUE:
@@ -294,61 +309,13 @@
           }
         continue;
 
-        case S.CLOSE_ARRAY:
-        continue;
-
         case S.STRING:
-          var starti = i-1;
-          while(c) {
-            if (c === "\n") {
-              parser.line ++;
-              parser.column = 0;
-            } else parser.column ++;
-            if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state]);
-            p = c;
-            parser.c = c = chunk.charAt(i++);
-            if (p !== '\\' && c === '"') {
-              // end of key
-              break;
-            } 
-            if (c) {
-              parser.position ++;
-              if (c === "\n") {
-                parser.line ++;
-                parser.column = 0;
-              } else parser.column ++;
-            }
+          // end of string
+          if (p !== '\\' && c === '"') {
+            parser.state = parser.stack.shift() || S.VALUE;
+          } else {
+            parser.textNode += c;
           }
-          if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state]);
-          if(c === '"') {
-            parser.textNode = chunk.substring(starti, i-1);
-            parser.c = c = chunk.charAt(i++); // ignore this guy
-            while(c && !(c === ":" || c === ',' || c === ']' || c === '}')) {
-              if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state]);
-              if (c === "\n") {
-                parser.line ++;
-                parser.column = 0;
-              } else parser.column ++;
-              c = chunk.charAt(i++);
-            }
-            if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state]);
-            if (c === ':') parser.state = S.CLOSE_OPEN_OBJECT;
-            else {
-              closeValue(parser);
-                   if (c === ',') parser.state = S.VALUE;
-              else if (c === ']') {
-                emit(parser,"onclosearray");
-                parser.state = S.CLOSE_ARRAY;
-              }
-              else if (c === '}') {
-                emit(parser,"oncloseobject");
-                parser.state = S.CLOSE_OBJECT;
-              }
-              else                error(parser, "String not followed by :,]}");
-              if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state]);
-            }
-          } else 
-            error(parser, "Non closed string");
         continue;
 
         default:
