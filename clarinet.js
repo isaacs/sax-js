@@ -271,7 +271,14 @@
         case S.OPEN_OBJECT:
           if (is(whitespace, c)) continue;
           if(parser.state === S.OPEN_KEY) parser.stack.push(S.CLOSE_KEY);
-          else parser.stack.push(S.CLOSE_OBJECT);
+          else {
+            if(c === '}') {
+              emit(parser, 'onopenobject');
+              emit(parser, 'oncloseobject');
+              parser.state = parser.stack.pop() || S.VALUE;
+              continue;
+            } else  parser.stack.push(S.CLOSE_OBJECT);
+          }
           if(c === '"') parser.state = S.STRING;
           else error(parser, "Malformed object key should start with \"");
         continue;
@@ -297,6 +304,27 @@
           } else error(parser, 'Bad object');
         continue;
 
+        case S.OPEN_ARRAY: // after an array there always a value
+        case S.VALUE:
+          if (is(whitespace, c)) continue;
+          if(parser.state===S.OPEN_ARRAY) {
+            emit(parser, 'onopenarray');
+            parser.state = S.VALUE;
+            if(c === ']') {
+              emit(parser, 'onclosearray');
+              continue;
+            } else {
+              parser.stack.push(S.CLOSE_ARRAY);
+            }
+          } else if(c === '['){
+            parser.state = S.OPEN_ARRAY;
+            continue;
+          }
+               if(c === '"') parser.state = S.STRING;
+          else if(c === '{') parser.state = S.OPEN_OBJECT;
+          else               error(parser, "Bad value");
+        continue;
+
         case S.CLOSE_ARRAY:
           if (is(whitespace, c)) continue;
           if(c===',') {
@@ -307,25 +335,6 @@
             emitNode(parser, 'onclosearray');
             parser.state = parser.stack.pop() || S.VALUE;
           } else error(parser, 'Bad array');
-        continue;
-
-        case S.OPEN_ARRAY: // after an array there always a value
-        case S.VALUE:
-          if (is(whitespace, c)) continue;
-          if(parser.state===S.OPEN_ARRAY) {
-            emit(parser, 'onopenarray');
-            parser.stack.push(S.CLOSE_ARRAY);
-            parser.state = S.VALUE;
-          }
-          if(c === '"') { // string
-            parser.state = S.STRING;
-          } else if(c === '{') {
-            parser.state = S.OPEN_OBJECT;
-          } else if(c === '[') {
-            parser.state = S.OPEN_ARRAY;
-          } else {
-            error(parser, "Bad value");
-          }
         continue;
 
         case S.STRING:

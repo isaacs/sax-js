@@ -4,10 +4,28 @@ if (!clarinet) { // node
     ;
 }
 
-var seps   = [undefined, /\t|\n|\r| /, '']
+var seps   = [undefined, /\t|\n|\r/, '']
   , sep
   , docs   =
-    { foobar   :
+    { empty_array :
+      { text      : '[]'
+      , events    :
+        [ ['openarray'  , undefined]
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
+    , empty_object :
+      { text       : '{}'
+      , events     :
+        [ ["openobject"  , undefined]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , foobar   :
       { text   : '{"foo": "bar"}'
       , events :
         [ ["openobject"  , "foo"]
