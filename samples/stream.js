@@ -1,5 +1,5 @@
 var fs            = require('fs')
-  , sax           = require('../lib/clarinet.js')
+  , sax           = require('../clarinet.js')
   , parse_stream  = sax.createStream()
   ;
 
