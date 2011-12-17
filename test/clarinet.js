@@ -40,6 +40,34 @@ var seps   = [undefined, /\t|\n|\r| /, '']
         , ['ready'       , undefined]
         ]
       }
+    , nested_array  :
+      { text        : '{"a":["b", "c"]}'
+      , events      :
+          [ ["openobject"  , "a"]
+          , ['openarray'   , undefined]
+          , ['value'       , 'b']
+          , ['value'       , 'c']
+          , ['closearray'  , undefined]
+          , ["closeobject" , undefined]
+          , ['end'         , undefined]
+          , ['ready'       , undefined]
+          ]
+      }
+    , array_of_objs :
+      { text        : '[{"a":"b"}, {"c":"d"}]'
+      , events      :
+        [ ['openarray'   , undefined]
+        , ["openobject"  , "a"]
+        , ['value'       , 'b']
+        , ["closeobject" , undefined]
+        , ["openobject"  , "c"]
+        , ['value'       , 'd']
+        , ["closeobject" , undefined]
+        , ['closearray'  , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
     };
 
 function generic(key,sep) {

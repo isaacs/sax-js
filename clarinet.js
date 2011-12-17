@@ -1,6 +1,10 @@
 ;(function (clarinet) {
   // non node-js needs to set clarinet debug on root
-  var env = process && process.env ? process.env : window;
+  var env = process && process.env ? process.env : window
+    , fastlist = FastList || 
+                 (typeof require === 'function' && require('fastlist')) ||
+                 Array
+    ;
 
   clarinet.parser            = function (opt) { return new CParser(opt);};
   clarinet.CParser           = CParser;
@@ -105,17 +109,16 @@
 
     var parser = this;
     clearBuffers(parser);
-    parser.q = parser.c = "";
     parser.bufferCheckPosition = clarinet.MAX_BUFFER_LENGTH;
-    parser.opt = opt || {};
-    parser.tags = [];
-    parser.closed = parser.closedRoot = parser.sawRoot = false;
-    parser.tag = parser.error = null;
-    parser.state = S.BEGIN;
-    parser.stack = [];
+    parser.q        = parser.c = "";
+    parser.opt      = opt || {};
+    parser.closed   = parser.closedRoot = parser.sawRoot = false;
+    parser.tag      = parser.error = null;
+    parser.state    = S.BEGIN;
+    parser.stack    = new fastlist();
     // mostly just for error reporting
     parser.position = parser.column = 0;
-    parser.line = 1;
+    parser.line     = 1;
     emit(parser, "onready");
   }
 
