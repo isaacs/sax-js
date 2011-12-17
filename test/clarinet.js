@@ -68,6 +68,7 @@ var seps   = [undefined, /\t|\n|\r| /, '']
         , ['ready'       , undefined]
         ]
       }
+    // two keys
     };
 
 function generic(key,sep) {
@@ -98,7 +99,8 @@ function generic(key,sep) {
 
 describe('clarinet', function(){
   describe('#generic', function() {
-    for (var key in docs) {
+    key = 'nested_array'
+    //for (var key in docs) {
       if (docs.hasOwnProperty(key)) {
         // undefined means no split
         // /\t|\n|\r| / means on whitespace
@@ -109,6 +111,6 @@ describe('clarinet', function(){
             generic(key,sep));
         }
       }
-    }
+    //}
   });
 });

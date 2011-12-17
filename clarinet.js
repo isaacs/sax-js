@@ -1,8 +1,8 @@
 ;(function (clarinet) {
   // non node-js needs to set clarinet debug on root
   var env = process && process.env ? process.env : window
-    , fastlist = FastList || 
-                 (typeof require === 'function' && require('fastlist')) ||
+    , fastlist = //FastList || 
+                 //(typeof require === 'function' && require('fastlist')) ||
                  Array
     ;
 
@@ -276,24 +276,24 @@
         case S.CLOSE_OBJECT:
           if (is(whitespace, c)) continue;
           if(c===':') {
-            parser.stack.unshift(S.CLOSE_OBJECT);
+            parser.stack.push(S.CLOSE_OBJECT);
             closeValue(parser, 'onopenobject');
             parser.state  = S.VALUE;
           } else if (c==='}') {
             emitNode(parser, 'oncloseobject');
-            parser.state = parser.stack.shift() || S.VALUE;
+            parser.state = parser.stack.pop() || S.VALUE;
           } else error(parser, 'Bad object');
         continue;
 
         case S.CLOSE_ARRAY:
           if (is(whitespace, c)) continue;
           if(c===',') {
-            parser.stack.unshift(S.CLOSE_ARRAY);
+            parser.stack.push(S.CLOSE_ARRAY);
             closeValue (parser, 'onvalue');
             parser.state  = S.VALUE;
           } else if (c===']') {
             emitNode(parser, 'onclosearray');
-            parser.state = parser.stack.shift() || S.VALUE;
+            parser.state = parser.stack.pop() || S.VALUE;
           } else error(parser, 'Bad array');
         continue;
 
@@ -309,6 +309,8 @@
             parser.state = S.STRING;
           } else if(c === '{') {
             parser.state = S.OPEN_OBJECT;
+          } else if(c === '[') {
+            parser.state = S.OPEN_ARRAY;
           } else {
             error(parser, "Bad value");
           }
@@ -317,7 +319,7 @@
         case S.STRING:
           // end of string
           if (p !== '\\' && c === '"') {
-            parser.state = parser.stack.shift() || S.VALUE;
+            parser.state = parser.stack.pop() || S.VALUE;
           } else {
             parser.textNode += c;
           }
