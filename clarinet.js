@@ -292,7 +292,7 @@
           if (is(whitespace, c)) continue;
           if(c===',') {
             parser.stack.unshift(S.CLOSE_ARRAY);
-            closeValue (parser, 'value');
+            closeValue (parser, 'onvalue');
             parser.state  = S.VALUE;
           } else if (c===']') {
             emitNode(parser, 'onclosearray');

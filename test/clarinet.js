@@ -4,15 +4,29 @@ if (!clarinet) { // node
     ;
 }
 
-var docs   =
-  { foobar: 
+var seps   = [undefined, /\t|\n|\r| /, '']
+  , sep
+  , docs   =
+  { foobar   :
     { text   : '{"foo": "bar"}'
-    , events : [ ["openobject"  , "foo"]
-               , ["value"       , "bar"]
-               , ["closeobject" , undefined]
-               , ['end'         , undefined]
-               , ['ready'       , undefined]
-               ]
+    , events :
+      [ ["openobject"  , "foo"]
+      , ["value"       , "bar"]
+      , ["closeobject" , undefined]
+      , ['end'         , undefined]
+      , ['ready'       , undefined]
+      ]
+    }
+  , array    :
+    { text   : '["one", "two"]'
+    , events : 
+      [ ['openarray'  , undefined]
+      , ['value'      , 'one']
+      , ['value'      , 'two']
+      , ['closearray' , undefined]
+      , ['end'        , undefined]
+      , ['ready'      , undefined]
+      ]
     }
   };
 
@@ -23,7 +37,8 @@ describe('clarinet', function(){
         // undefined means no split
         // /\t|\n|\r| / means on whitespace
         // '' means on every char
-        _.each([undefined, /\t|\n|\r| /, ''], function(sep) {
+        for(var i in seps) {
+          sep = seps[i];
           it('[' + key + '] should be able to parse -> ' + sep, function () {
             var doc        = docs[key].text
               , events     = docs[key].events
@@ -47,7 +62,7 @@ describe('clarinet', function(){
             _.each(doc_chunks, function(chunk) { parser.write(chunk); });
             parser.end();
           });
-        });
+        }
       }
     }
   });
