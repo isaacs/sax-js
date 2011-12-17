@@ -68,7 +68,18 @@ var seps   = [undefined, /\t|\n|\r| /, '']
         , ['ready'       , undefined]
         ]
       }
-    // two keys
+    , two_keys  :
+      { text    : '{"a": "b", "c": "d"}'
+      , events  :
+        [ ["openobject"  , "a"]
+        , ["value"       , "b"]
+        , ["key"         , "c"]
+        , ["value"       , "d"]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
     };
 
 function generic(key,sep) {
@@ -99,8 +110,7 @@ function generic(key,sep) {
 
 describe('clarinet', function(){
   describe('#generic', function() {
-    key = 'nested_array'
-    //for (var key in docs) {
+    for (var key in docs) {
       if (docs.hasOwnProperty(key)) {
         // undefined means no split
         // /\t|\n|\r| / means on whitespace
@@ -111,6 +121,6 @@ describe('clarinet', function(){
             generic(key,sep));
         }
       }
-    //}
+    }
   });
 });

@@ -16,6 +16,7 @@
   clarinet.EVENTS            =
     [ "value"
     , "string"
+    , "key"
     , "openobject"
     , "closeobject"
     , "openarray"
@@ -44,6 +45,8 @@
     , TEXT_ESCAPE               : S++ // \ stuff
     , STRING                    : S++ // ""
     , END                       : S++ // No more stack
+    , OPEN_KEY                  : S++
+    , CLOSE_KEY                 : S++
     };
 
   for (var s_ in clarinet.STATE) clarinet.STATE[clarinet.STATE[s_]] = s_;
@@ -264,24 +267,33 @@
             error(parser, "Non-whitespace before {[.");
         continue;
 
+        case S.OPEN_KEY:
         case S.OPEN_OBJECT:
           if (is(whitespace, c)) continue;
-          parser.stack.push(S.CLOSE_OBJECT);
-          if(c === '"') {
-            parser.state = S.STRING;
-          } else
-            error(parser, "Malformed object key should start with \"");
+          if(parser.state === S.OPEN_KEY) parser.stack.push(S.CLOSE_KEY);
+          else parser.stack.push(S.CLOSE_OBJECT);
+          if(c === '"') parser.state = S.STRING;
+          else error(parser, "Malformed object key should start with \"");
         continue;
 
+        case S.CLOSE_KEY:
         case S.CLOSE_OBJECT:
           if (is(whitespace, c)) continue;
+          var event = (parser.state === S.CLOSE_KEY) ? 'key' : 'object';
           if(c===':') {
-            parser.stack.push(S.CLOSE_OBJECT);
-            closeValue(parser, 'onopenobject');
+            if(parser.state === S.CLOSE_OBJECT) {
+              parser.stack.push(S.CLOSE_OBJECT);
+              closeValue(parser, 'onopenobject');
+            } else closeValue(parser, 'onkey');
             parser.state  = S.VALUE;
           } else if (c==='}') {
             emitNode(parser, 'oncloseobject');
             parser.state = parser.stack.pop() || S.VALUE;
+          } else if(c===',') {
+            if(parser.state === S.CLOSE_OBJECT)
+              parser.stack.push(S.CLOSE_OBJECT);
+            closeValue(parser);
+            parser.state  = S.OPEN_KEY;
           } else error(parser, 'Bad object');
         continue;
 
