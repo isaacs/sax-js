@@ -282,12 +282,6 @@
           } else error(parser, 'Bad object');
         continue;
 
-        case S.OPEN_ARRAY:
-          emit(parser, 'onopenarray');
-          parser.stack.push(S.CLOSE_ARRAY);
-          parser.state = S.VALUE;
-        continue;
-
         case S.CLOSE_ARRAY:
           if (is(whitespace, c)) continue;
           if(c===',') {
@@ -300,8 +294,14 @@
           } else error(parser, 'Bad array');
         continue;
 
+        case S.OPEN_ARRAY: // after an array there always a value
         case S.VALUE:
           if (is(whitespace, c)) continue;
+          if(parser.state===S.OPEN_ARRAY) {
+            emit(parser, 'onopenarray');
+            parser.stack.push(S.CLOSE_ARRAY);
+            parser.state = S.VALUE;
+          }
           if(c === '"') { // string
             parser.state = S.STRING;
           } else {
