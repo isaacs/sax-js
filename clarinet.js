@@ -229,7 +229,7 @@
   function end(parser) {
     if (parser.state !== S.VALUE) error(parser, "Unexpected end");
     closeValue(parser);
-    parser.c = "";
+    parser.c      = "";
     parser.closed = true;
     emit(parser, "onend");
     CParser.call(parser, parser.opt);
@@ -304,6 +304,8 @@
           }
           if(c === '"') { // string
             parser.state = S.STRING;
+          } else if(c === '{') {
+            parser.state = S.OPEN_OBJECT;
           } else {
             error(parser, "Bad value");
           }

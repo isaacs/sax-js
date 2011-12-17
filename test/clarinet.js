@@ -7,28 +7,40 @@ if (!clarinet) { // node
 var seps   = [undefined, /\t|\n|\r| /, '']
   , sep
   , docs   =
-  { foobar   :
-    { text   : '{"foo": "bar"}'
-    , events :
-      [ ["openobject"  , "foo"]
-      , ["value"       , "bar"]
-      , ["closeobject" , undefined]
-      , ['end'         , undefined]
-      , ['ready'       , undefined]
-      ]
-    }
-  , array    :
-    { text   : '["one", "two"]'
-    , events : 
-      [ ['openarray'  , undefined]
-      , ['value'      , 'one']
-      , ['value'      , 'two']
-      , ['closearray' , undefined]
-      , ['end'        , undefined]
-      , ['ready'      , undefined]
-      ]
-    }
-  };
+    { foobar   :
+      { text   : '{"foo": "bar"}'
+      , events :
+        [ ["openobject"  , "foo"]
+        , ["value"       , "bar"]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , array    :
+      { text   : '["one", "two"]'
+      , events : 
+        [ ['openarray'  , undefined]
+        , ['value'      , 'one']
+        , ['value'      , 'two']
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
+    , nested   :
+      { text   : '{"a":{"b":"c"}}'
+      , events :
+        [ ["openobject"  , "a"]
+        , ["openobject"  , "b"]
+        , ["value"       , "c"]
+        , ["closeobject" , undefined]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    };
 
 function generic(key,sep) {
   return function () {
