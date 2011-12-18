@@ -166,6 +166,33 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'       , undefined]
         ]
       } 
+    , string_invalid_escape:
+      { text             : 
+          '["and you can\'t escape thi\s"]'
+       , events          :
+         [ ["openarray"   , undefined]
+         , ["value"       , 'and you can\'t escape this']
+         , ["closearray"  , undefined]
+         , ['end'         , undefined]
+         , ['ready'       , undefined]
+         ]
+       }
+    , nuts_and_bolts :
+      { text         : '{"boolean, true": true' +
+                       ', "boolean, false": false' +
+                       ', "null": null }'
+       , events          :
+         [ ["openobject"   , "boolean, true"]
+         , ["value"        , true]
+         , ["key"          , "boolean, false"]
+         , ["value"        , false]
+         , ["key"          , "null"]
+         , ["value"        , null]
+         , ["closeobject"  , undefined]
+         , ['end'          , undefined]
+         , ['ready'        , undefined]
+         ]
+       } 
     , string_invalid_hex :
       { text             : 
           '["foo foo, blah blah \u0123 \u4567 \u89ab \uc/ef \uABCD \uEFFE' +
@@ -219,7 +246,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'      , undefined]
         ]
       }
-    // overflow numbers
+    // fixme: missing overflow numbers
     , numbers_game :
       { text       : '[1,0,-1,-0.3,0.3,1343.32,3345,3.1e124,'+
                      ' 9223372036854775807,-9223372036854775807,0.1e2, ' +
