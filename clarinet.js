@@ -270,11 +270,16 @@ if(typeof FastList === 'function') {
     if (parser.closed) return error(parser,
       "Cannot write after close. Assign an onready handler.");
     if (chunk === null) return end(parser);
-    var i = 0, c = chunk[0], p = "";
+    var i = 0, c = chunk[0], p = parser.p;
     while (c) {
-      p = parser.p;
-      parser.p = c;
+      p = c;
       parser.c = c = chunk.charAt(i++);
+      // if chunk doesnt have next, like streaming char by char
+      // this way we need to check if previous is really previous
+      // if not we need to reset to what the parser says is the previous
+      // from buffer
+      if(p !== c) parser.p = p;
+      else p = parser.p;
       if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state],p);
       parser.position ++;
       if (c === "\n") {
@@ -359,11 +364,11 @@ if(typeof FastList === 'function') {
         continue;
 
         case S.CLOSE_ARRAY:
-          if(c===',' || p ===',') {
+          if(c===',' ) {
             parser.stack.push(S.CLOSE_ARRAY);
             closeValue(parser, 'onvalue');
             parser.state  = S.VALUE;
-          } else if (c===']' || p===']') {
+          } else if (c===']') {
             emitNode(parser, 'onclosearray');
             parser.state = parser.stack.pop() || S.VALUE;
           } else if (is(whitespace, c)) continue;
@@ -469,6 +474,7 @@ if(typeof FastList === 'function') {
            parser.numberNode += c;
          } else {
            closeNumber(parser);
+           i--; // go back one
            parser.state = parser.stack.pop() || S.VALUE;
          }
        continue;

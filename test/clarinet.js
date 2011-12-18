@@ -46,6 +46,16 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'      , undefined]
         ]
       }
+    , simple_exp    :
+      { text   : '[10e-01]'
+      , events : 
+        [ ['openarray'  , undefined]
+        , ['value'      , 10e-01]
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
     , nested   :
       { text   : '{"a":{"b":"c"}}'
       , events :
