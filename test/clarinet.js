@@ -122,6 +122,18 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'       , undefined]
         ]
       }
+    , obj_strange_strings  :
+      { text    : '{"foo": "bar and all\\"", "bar": "its \\"nice\\""}'
+      , events  :
+        [ ["openobject"  , "foo"]
+        , ["value"       , 'bar and all"']
+        , ["key"         , "bar"]
+        , ["value"       , 'its "nice"']
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
     , array_of_arrays    :
       { text   : '[[[["foo"]]]]'
       , events : 

@@ -271,6 +271,7 @@ if(typeof FastList === 'function') {
       "Cannot write after close. Assign an onready handler.");
     if (chunk === null) return end(parser);
     var i = 0, c = chunk[0], p = parser.p;
+    if (clarinet.DEBUG) console.log('write -> [' + chunk + ']');
     while (c) {
       p = c;
       parser.c = c = chunk.charAt(i++);
@@ -278,8 +279,11 @@ if(typeof FastList === 'function') {
       // this way we need to check if previous is really previous
       // if not we need to reset to what the parser says is the previous
       // from buffer
-      if(p !== c) parser.p = p;
+      if(p !== c ) parser.p = p;
       else p = parser.p;
+
+      if(!c) break;
+
       if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state],p);
       parser.position ++;
       if (c === "\n") {
@@ -376,12 +380,12 @@ if(typeof FastList === 'function') {
         continue;
 
         case S.STRING:
-          // end of string
-          if (p !== '\\' && c === '"') {
-            parser.state = parser.stack.pop() || S.VALUE;
-          } else {
+          if (p === '\\') {
             parser.textNode += c;
+            parser.p = c;
           }
+          else if (c === '"') parser.state = parser.stack.pop() || S.VALUE;
+          else if (c!='\\') parser.textNode += c;
         continue;
 
        case S.TRUE:
