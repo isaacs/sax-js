@@ -4,7 +4,7 @@ if (!clarinet) { // node
     ;
 }
 
-var seps   = [undefined, /\t|\n|\r/, '']
+var seps   = [undefined]//[undefined, /\t|\n|\r/, '']
   , sep
   , docs   =
     { empty_array :
@@ -62,6 +62,18 @@ var seps   = [undefined, /\t|\n|\r/, '']
       , events :
         [ ["openobject"  , "foo"]
         , ["value"       , "bar"]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , as_is    :
+      { text   : "{\"foo\": \"its \\\"as is\\\", \\\"yeah\", \"bar\": false}"
+      , events :
+        [ ["openobject"  , "foo"]
+        , ["value"       , 'its "as is", "yeah']
+        , ["key"         , "bar"]
+        , ["value"       , false]
         , ["closeobject" , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
@@ -207,22 +219,22 @@ var seps   = [undefined, /\t|\n|\r/, '']
          ]
        }
     , frekin_string:
-      { text    : "[\"\\\"\"a\"\"]"
+      { text    : '["\\\\\\"\\"a\\""]'
       , events  :
         [ ["openarray"   , undefined]
-        , ["value"       , '\\""a"']
+        , ["value"       , '\\\"\"a\"']
         , ["closearray"  , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
         ]
       }
     , array_of_string_insanity  :
-      { text    : '[" foo \/ bar \f\\\uffffa\b\"\\",' +
-                  '"\"and this string has an escape at the beginning",' +
+      { text    : '[" foo / bar \\\f\c\\\b\\\"\\\\d",' +
+                  '"\\\"and this string has an escape at the beginning",' +
                   '"and this string has no escapes"]'
       , events  :
         [ ["openarray"   , undefined]
-        , ["value"       , " foo \/ bar \f\\\uffffa\b\"\\"]
+        , ["value"       , ' foo / bar \\\f\c\\\b\"\\d']
         , ["value"       , "\"and this string has an escape at the beginning"]
         , ["value"       , "and this string has no escapes"]
         , ["closearray"  , undefined]
