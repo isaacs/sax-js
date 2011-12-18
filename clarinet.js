@@ -48,6 +48,7 @@ if(typeof FastList === 'function') {
     , CLOSE_ARRAY                       : S++ // ]
     , TEXT_ESCAPE                       : S++ // \ stuff
     , STRING                            : S++ // ""
+    , CLOSE_STRING                      : S++
     , END                               : S++ // No more stack
     , OPEN_KEY                          : S++ // , "a"
     , CLOSE_KEY                         : S++ // :
@@ -227,6 +228,7 @@ if(typeof FastList === 'function') {
 
   function closeValue(parser, event) {
     parser.textNode = textopts(parser.opt, parser.textNode);
+    parser.textNode = parser.textNode.slice(0,-1); // we are always too late
     if (parser.textNode) emit(parser, (event ? event : "onvalue"), parser.textNode);
     parser.textNode = "";
   }
@@ -368,7 +370,7 @@ if(typeof FastList === 'function') {
         continue;
 
         case S.CLOSE_ARRAY:
-          if(c===',' ) {
+          if(c===',') {
             parser.stack.push(S.CLOSE_ARRAY);
             closeValue(parser, 'onvalue');
             parser.state  = S.VALUE;
@@ -380,12 +382,42 @@ if(typeof FastList === 'function') {
         continue;
 
         case S.STRING:
-          if (p === '\\') {
-            parser.textNode += c;
-            parser.p = c;
-          }
-          else if (c === '"') parser.state = parser.stack.pop() || S.VALUE;
-          else if (c!='\\') parser.textNode += c;
+          parser.textNode += c;
+          if (c === '"') parser.state = S.CLOSE_STRING;
+        continue;
+
+        case S.CLOSE_STRING:
+          if (is(whitespace, c)) continue;
+          if(c==='"') { parser.textNode += c; continue; }
+          var next_state = parser.stack.pop(); //|| S.VALUE;
+          if(next_state === S.CLOSE_KEY) {
+            if(c===':') {
+              parser.state = S.CLOSE_KEY;
+              i--;
+            } else {
+              parser.textNode += c;
+              parser.stack.push(S.CLOSE_KEY);
+              parser.state = S.STRING;
+            }
+          } else if(next_state === S.CLOSE_OBJECT) {
+            if(c==='}' || c===',' || c===':') {
+              parser.state = S.CLOSE_OBJECT;
+              i--;
+            } else {
+              parser.textNode += c;
+              parser.stack.push(S.CLOSE_OBJECT);
+              parser.state = S.STRING;
+            }
+          } else if(next_state === S.CLOSE_ARRAY) {
+            if(c===']' || c===',') {
+              parser.state = S.CLOSE_ARRAY;
+              i--;
+            } else {
+              parser.textNode += c;
+              parser.stack.push(S.CLOSE_ARRAY);
+              parser.state = S.STRING;
+            }
+          } else {parser.textNode += c; parser.state = S.STRING;}
         continue;
 
        case S.TRUE:
