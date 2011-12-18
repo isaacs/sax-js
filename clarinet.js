@@ -420,100 +420,100 @@ if(typeof FastList === 'function') {
           } else {parser.textNode += c; parser.state = S.STRING;}
         continue;
 
-       case S.TRUE:
-         if (c==='')  continue; // strange buffers
-         if (c==='r') parser.state = S.TRUE2;
-         else error(parser, 'Invalid true started with t'+ c);
-       continue;
+        case S.TRUE:
+          if (c==='')  continue; // strange buffers
+          if (c==='r') parser.state = S.TRUE2;
+          else error(parser, 'Invalid true started with t'+ c);
+        continue;
 
-       case S.TRUE2:
-         if (c==='')  continue;
-         if (c==='u') parser.state = S.TRUE3;
-         else error(parser, 'Invalid true started with tr'+ c);
-       continue;
+        case S.TRUE2:
+          if (c==='')  continue;
+          if (c==='u') parser.state = S.TRUE3;
+          else error(parser, 'Invalid true started with tr'+ c);
+        continue;
 
-       case S.TRUE3:
-         if (c==='') continue;
-         if(c==='e') {
-           emit(parser, "onvalue", true);
-           parser.state = parser.stack.pop() || S.VALUE;
-         } else error(parser, 'Invalid true started with tru'+ c);
-       continue;
+        case S.TRUE3:
+          if (c==='') continue;
+          if(c==='e') {
+            emit(parser, "onvalue", true);
+            parser.state = parser.stack.pop() || S.VALUE;
+          } else error(parser, 'Invalid true started with tru'+ c);
+        continue;
 
-       case S.FALSE:
-         if (c==='')  continue;
-         if (c==='a') parser.state = S.FALSE2;
-         else error(parser, 'Invalid false started with f'+ c);
-       continue;
+        case S.FALSE:
+          if (c==='')  continue;
+          if (c==='a') parser.state = S.FALSE2;
+          else error(parser, 'Invalid false started with f'+ c);
+        continue;
 
-       case S.FALSE2:
-         if (c==='')  continue;
-         if (c==='l') parser.state = S.FALSE3;
-         else error(parser, 'Invalid false started with fa'+ c);
-       continue;
+        case S.FALSE2:
+          if (c==='')  continue;
+          if (c==='l') parser.state = S.FALSE3;
+          else error(parser, 'Invalid false started with fa'+ c);
+        continue;
 
-       case S.FALSE3:
-         if (c==='')  continue;
-         if (c==='s') parser.state = S.FALSE4;
-         else error(parser, 'Invalid false started with fal'+ c);
-       continue;
+        case S.FALSE3:
+          if (c==='')  continue;
+          if (c==='s') parser.state = S.FALSE4;
+          else error(parser, 'Invalid false started with fal'+ c);
+        continue;
 
-       case S.FALSE4:
-         if (c==='')  continue;
-         if (c==='e') {
-           emit(parser, "onvalue", false);
-           parser.state = parser.stack.pop() || S.VALUE;
-         } else error(parser, 'Invalid false started with fals'+ c);
-       continue;
+        case S.FALSE4:
+          if (c==='')  continue;
+          if (c==='e') {
+            emit(parser, "onvalue", false);
+            parser.state = parser.stack.pop() || S.VALUE;
+          } else error(parser, 'Invalid false started with fals'+ c);
+        continue;
 
-       case S.NULL:
-         if (c==='')  continue;
-         if (c==='u') parser.state = S.NULL2;
-         else error(parser, 'Invalid null started with n'+ c);
-       continue;
+        case S.NULL:
+          if (c==='')  continue;
+          if (c==='u') parser.state = S.NULL2;
+          else error(parser, 'Invalid null started with n'+ c);
+        continue;
 
-       case S.NULL2:
-         if (c==='')  continue;
-         if (c==='l') parser.state = S.NULL3;
-         else error(parser, 'Invalid null started with nu'+ c);
-       continue;
+        case S.NULL2:
+          if (c==='')  continue;
+          if (c==='l') parser.state = S.NULL3;
+          else error(parser, 'Invalid null started with nu'+ c);
+        continue;
 
-       case S.NULL3:
-         if (c==='') continue;
-         if(c==='l') {
-           emit(parser, "onvalue", null);
-           parser.state = parser.stack.pop() || S.VALUE;
-         } else error(parser, 'Invalid null started with nul'+ c);
-       continue;
+        case S.NULL3:
+          if (c==='') continue;
+          if(c==='l') {
+            emit(parser, "onvalue", null);
+            parser.state = parser.stack.pop() || S.VALUE;
+          } else error(parser, 'Invalid null started with nul'+ c);
+        continue;
 
-       case S.NUMBER_DECIMAL_POINT:
-         if(c==='.') {
-           parser.numberNode += c;
-           parser.state       = S.NUMBER_DIGIT;
-         } else error(parser, 'Leading zero not followed by .');
-       continue;
+        case S.NUMBER_DECIMAL_POINT:
+          if(c==='.') {
+            parser.numberNode += c;
+            parser.state       = S.NUMBER_DIGIT;
+          } else error(parser, 'Leading zero not followed by .');
+        continue;
 
-       case S.NUMBER_DIGIT:
-         if('0123456789'.indexOf(c) !== -1) parser.numberNode += c;
-         else if (c==='.') {
-           if(parser.numberNode.indexOf('.')!==-1)
-             error(parser, 'Invalid number has two dots');
-           parser.numberNode += c;
-         } else if (c==='e' || c==='E') {
-           if(parser.numberNode.indexOf('e')!==-1 || 
-              parser.numberNode.indexOf('E')!==-1 )
-              error(parser, 'Invalid number has two exponential');
-           parser.numberNode += c;
-         } else if (c==="+" || c==="-") {
-           if(!(p==='e' || p==='E'))
-             error(parser, 'Invalid symbol in number');
-           parser.numberNode += c;
-         } else {
-           closeNumber(parser);
-           i--; // go back one
-           parser.state = parser.stack.pop() || S.VALUE;
-         }
-       continue;
+        case S.NUMBER_DIGIT:
+          if('0123456789'.indexOf(c) !== -1) parser.numberNode += c;
+          else if (c==='.') {
+            if(parser.numberNode.indexOf('.')!==-1)
+              error(parser, 'Invalid number has two dots');
+            parser.numberNode += c;
+          } else if (c==='e' || c==='E') {
+            if(parser.numberNode.indexOf('e')!==-1 || 
+               parser.numberNode.indexOf('E')!==-1 )
+               error(parser, 'Invalid number has two exponential');
+            parser.numberNode += c;
+          } else if (c==="+" || c==="-") {
+            if(!(p==='e' || p==='E'))
+              error(parser, 'Invalid symbol in number');
+            parser.numberNode += c;
+          } else {
+            closeNumber(parser);
+            i--; // go back one
+            parser.state = parser.stack.pop() || S.VALUE;
+          }
+        continue;
 
         default:
           error(parser, "Unknown state: " + parser.state);
