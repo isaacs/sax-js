@@ -1,8 +1,8 @@
 ;(function (clarinet) {
   // non node-js needs to set clarinet debug on root
   var env = process && process.env ? process.env : window
-    , fastlist = //FastList || 
-                 //(typeof require === 'function' && require('fastlist')) ||
+    , fastlist = FastList || 
+                 (typeof require === 'function' && require('fastlist')) ||
                  Array
     ;
 
@@ -45,8 +45,19 @@
     , TEXT_ESCAPE               : S++ // \ stuff
     , STRING                    : S++ // ""
     , END                       : S++ // No more stack
-    , OPEN_KEY                  : S++
-    , CLOSE_KEY                 : S++
+    , OPEN_KEY                  : S++ // , "a"
+    , CLOSE_KEY                 : S++ // :
+    , TRUE                      : S++ // r
+    , TRUE2                     : S++ // u
+    , TRUE3                     : S++ // e
+    , FALSE                     : S++ // a
+    , FALSE2                    : S++ // l
+    , FALSE3                    : S++ // s
+    , FALSE4                    : S++ // e
+    , NULL                      : S++ // u
+    , NULL2                     : S++ // l
+    , NULL3                     : S++ // l
+    , NUMBER                    : S++
     };
 
   for (var s_ in clarinet.STATE) clarinet.STATE[clarinet.STATE[s_]] = s_;
@@ -322,6 +333,9 @@
           }
                if(c === '"') parser.state = S.STRING;
           else if(c === '{') parser.state = S.OPEN_OBJECT;
+          else if(c === 't') parser.state = S.TRUE;
+          else if(c === 'f') parser.state = S.FALSE;
+          else if(c === 'n') parser.state = S.NULL;
           else               error(parser, "Bad value");
         continue;
 
@@ -346,8 +360,74 @@
           }
         continue;
 
+       case S.TRUE:
+         if (c==='')  continue; // strange buffers
+         if (c==='r') parser.state = S.TRUE2;
+         else error(parser, 'Invalid true started with t'+ c);
+       continue;
+
+       case S.TRUE2:
+         if (c==='')  continue;
+         if (c==='u') parser.state = S.TRUE3;
+         else error(parser, 'Invalid true started with tr'+ c);
+       continue;
+
+       case S.TRUE3:
+         if (c==='') continue;
+         if(c==='e') {
+           emit(parser, "onvalue", true);
+           parser.state = parser.stack.pop() || S.VALUE;
+         } else error(parser, 'Invalid true started with tru'+ c);
+       continue;
+
+       case S.FALSE:
+         if (c==='')  continue;
+         if (c==='a') parser.state = S.FALSE2;
+         else error(parser, 'Invalid false started with f'+ c);
+       continue;
+
+       case S.FALSE2:
+         if (c==='')  continue;
+         if (c==='l') parser.state = S.FALSE3;
+         else error(parser, 'Invalid false started with fa'+ c);
+       continue;
+
+       case S.FALSE3:
+         if (c==='')  continue;
+         if (c==='s') parser.state = S.FALSE4;
+         else error(parser, 'Invalid false started with fal'+ c);
+       continue;
+
+       case S.FALSE4:
+         if (c==='')  continue;
+         if (c==='e') {
+           emit(parser, "onvalue", false);
+           parser.state = parser.stack.pop() || S.VALUE;
+         } else error(parser, 'Invalid false started with fals'+ c);
+       continue;
+
+       case S.NULL:
+         if (c==='')  continue;
+         if (c==='u') parser.state = S.NULL2;
+         else error(parser, 'Invalid null started with n'+ c);
+       continue;
+
+       case S.NULL2:
+         if (c==='')  continue;
+         if (c==='l') parser.state = S.NULL3;
+         else error(parser, 'Invalid null started with nu'+ c);
+       continue;
+
+       case S.NULL3:
+         if (c==='') continue;
+         if(c==='l') {
+           emit(parser, "onvalue", null);
+           parser.state = parser.stack.pop() || S.VALUE;
+         } else error(parser, 'Invalid null started with nul'+ c);
+       continue;
+
         default:
-          throw new Error(parser, "Unknown state: " + parser.state);
+          error(parser, "Unknown state: " + parser.state);
       }
     }
     if (parser.position >= parser.bufferCheckPosition)
