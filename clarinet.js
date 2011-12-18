@@ -1,10 +1,14 @@
 ;(function (clarinet) {
   // non node-js needs to set clarinet debug on root
   var env = process && process.env ? process.env : window
-    , fastlist = FastList || 
-                 (typeof require === 'function' && require('fastlist')) ||
-                 Array
+    , fastlist
     ;
+
+if(typeof FastList === 'function') {
+  fastlist = FastList;
+} else if (typeof require === 'function') {
+  try { fastlist = require('fastlist'); } catch (exc) { fastlist = Array; }
+} else fastlist = Array;
 
   clarinet.parser            = function (opt) { return new CParser(opt);};
   clarinet.CParser           = CParser;
@@ -26,7 +30,7 @@
     , "ready"
     ];
 
-  var buffers     = [ "textNode" ] // matches parser.textNode buffer
+  var buffers     = [ "textNode", "numberNode" ]
     , whitespace  = "\r\n\t "
     , streamWraps = clarinet.EVENTS.filter(function (ev) {
           return ev !== "error" && ev !== "end";
@@ -36,28 +40,29 @@
     ;
 
   clarinet.STATE =
-    { BEGIN                     : S++
-    , VALUE                     : S++ // general stuff
-    , OPEN_OBJECT               : S++ // {
-    , CLOSE_OBJECT              : S++ // }
-    , OPEN_ARRAY                : S++ // [
-    , CLOSE_ARRAY               : S++ // ]
-    , TEXT_ESCAPE               : S++ // \ stuff
-    , STRING                    : S++ // ""
-    , END                       : S++ // No more stack
-    , OPEN_KEY                  : S++ // , "a"
-    , CLOSE_KEY                 : S++ // :
-    , TRUE                      : S++ // r
-    , TRUE2                     : S++ // u
-    , TRUE3                     : S++ // e
-    , FALSE                     : S++ // a
-    , FALSE2                    : S++ // l
-    , FALSE3                    : S++ // s
-    , FALSE4                    : S++ // e
-    , NULL                      : S++ // u
-    , NULL2                     : S++ // l
-    , NULL3                     : S++ // l
-    , NUMBER                    : S++
+    { BEGIN                             : S++
+    , VALUE                             : S++ // general stuff
+    , OPEN_OBJECT                       : S++ // {
+    , CLOSE_OBJECT                      : S++ // }
+    , OPEN_ARRAY                        : S++ // [
+    , CLOSE_ARRAY                       : S++ // ]
+    , TEXT_ESCAPE                       : S++ // \ stuff
+    , STRING                            : S++ // ""
+    , END                               : S++ // No more stack
+    , OPEN_KEY                          : S++ // , "a"
+    , CLOSE_KEY                         : S++ // :
+    , TRUE                              : S++ // r
+    , TRUE2                             : S++ // u
+    , TRUE3                             : S++ // e
+    , FALSE                             : S++ // a
+    , FALSE2                            : S++ // l
+    , FALSE3                            : S++ // s
+    , FALSE4                            : S++ // e
+    , NULL                              : S++ // u
+    , NULL2                             : S++ // l
+    , NULL3                             : S++ // l
+    , NUMBER_DECIMAL_POINT              : S++ // .
+    , NUMBER_DIGIT                      : S++ // [0-9]    
     };
 
   for (var s_ in clarinet.STATE) clarinet.STATE[clarinet.STATE[s_]] = s_;
@@ -226,6 +231,12 @@
     parser.textNode = "";
   }
 
+  function closeNumber(parser) {
+    if (parser.numberNode) 
+      emit(parser, "onvalue", parseFloat(parser.numberNode));
+    parser.numberNode = "";
+  }
+
   function textopts (opt, text) {
     if (opt.trim) text = text.trim();
     if (opt.normalize) text = text.replace(/\s+/g, " ");
@@ -323,20 +334,27 @@
             parser.state = S.VALUE;
             if(c === ']') {
               emit(parser, 'onclosearray');
+              parser.state = parser.stack.pop() || S.VALUE;
               continue;
             } else {
               parser.stack.push(S.CLOSE_ARRAY);
             }
-          } else if(c === '['){
-            parser.state = S.OPEN_ARRAY;
-            continue;
           }
                if(c === '"') parser.state = S.STRING;
           else if(c === '{') parser.state = S.OPEN_OBJECT;
+          else if(c === '[') parser.state = S.OPEN_ARRAY;
           else if(c === 't') parser.state = S.TRUE;
           else if(c === 'f') parser.state = S.FALSE;
           else if(c === 'n') parser.state = S.NULL;
-          else               error(parser, "Bad value");
+          else if(c === '-') { // keep and continue
+            parser.numberNode += c;
+          } else if(c==='0') {
+            parser.numberNode += c;
+            parser.state = S.NUMBER_DECIMAL_POINT;
+          } else if('123456789'.indexOf(c) !== -1) {
+            parser.numberNode += c;
+            parser.state = S.NUMBER_DIGIT;
+          } else               error(parser, "Bad value");
         continue;
 
         case S.CLOSE_ARRAY:
@@ -424,6 +442,32 @@
            emit(parser, "onvalue", null);
            parser.state = parser.stack.pop() || S.VALUE;
          } else error(parser, 'Invalid null started with nul'+ c);
+       continue;
+
+       case S.NUMBER_DECIMAL_POINT:
+         if(c==='.') {
+           parser.numberNode += c;
+           parser.state       = S.NUMBER_DIGIT;
+         } else error(parser, 'Leading zero not followed by .');
+       continue;
+
+       case S.NUMBER_DIGIT:
+         parser.numberNode += c;
+         if('0123456789'.indexOf(c) !== -1) {}
+         else if (c==='.') {
+           if(parser.numberNode.indexOf('.')!==-1)
+             error(parser, 'Invalid number has two dots');
+         } else if (c==='e' || c==='E') {
+           if(parser.numberNode.indexOf('e')!==-1 || 
+              parser.numberNode.indexOf('E')!==-1 )
+              error(parser, 'Invalid number has two exponential');
+         } else if (c==="+" || c==="-") {
+           if(!(p==='e' || p==='E'))
+             error(parser, 'Invalid symbol in number');
+         } else {
+           closeNumber(parser);
+           parser.state = parser.stack.pop() || S.VALUE;
+         }
        continue;
 
         default:

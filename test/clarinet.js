@@ -112,14 +112,53 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'       , undefined]
         ]
       }
+    , array_of_arrays    :
+      { text   : '[[[["foo"]]]]'
+      , events : 
+        [ ['openarray'  , undefined]
+        , ['openarray'  , undefined]
+        , ['openarray'  , undefined]
+        , ['openarray'  , undefined]
+        , ["value"      , "foo"]
+        , ['closearray' , undefined]
+        , ['closearray' , undefined]
+        , ['closearray' , undefined]
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
+    //, numbers_game :
+    //  { text       : '[1,0,-1,-0.3,0.3,1343.32,3345,3.1e124,'+
+    //                 ' 9223372036854775807,-9223372036854775807]'
+    //  , events     :
+    //    [
+    //    ]
+    //  }
     , array_null :
-      { text    : '[null,false,true]'
-      , events  :
+      { text     : '[null,false,true]'
+      , events   :
         [ ["openarray"   , undefined]
         , ["value"       , null]
         , ["value"       , false]
         , ["value"       , true]
         , ["closearray"  , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , empty_array_comma :
+      { text    : '{"a":[],"c": {}, "b": true}'
+      , events  :
+        [ ["openobject"  , "a"]
+        , ["openarray"   , undefined]
+        , ["closearray"  , undefined]
+        , ["key"         , "c"]
+        , ["openobject"  , undefined]
+        , ["closeobject" , undefined]
+        , ["key"         , "b"]
+        , ["value"       , true]
+        , ["closeobject" , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
         ]
@@ -195,7 +234,7 @@ function generic(key,sep) {
   return function () {
     var doc        = docs[key].text
       , events     = docs[key].events
-      , l          = new FastList()
+      , l          = typeof FastList === 'function' ? new FastList() : []
       , doc_chunks = doc.split(sep)
       , parser     = clarinet.parser()
       , i          = 0
