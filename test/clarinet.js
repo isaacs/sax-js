@@ -16,6 +16,38 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'      , undefined]
         ]
       }
+    , zero_byte    :
+      { text       : '{"foo": "\u0000"}'
+      , events     :
+        [ ["openobject"  , "foo"]
+        , ["value"       , "\u0000"]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , three_byte_utf8 :
+      { text          : '{"matzue": "松江", "asakusa": "浅草"}'
+      , events        :
+        [ ["openobject"  , "matzue"]
+        , ["value"       , "松江"]
+        , ["key"         , "asakusa"]
+        , ["value"       , "浅草"]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , bulgarian    :
+      { text       : '["Да Му Еба Майката"]'
+      , events     :
+        [ ["openarray"   , undefined]
+        , ["value"       , "Да Му Еба Майката"]
+        , ["closearray"  , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
     , empty_object :
       { text       : '{}'
       , events     :
@@ -123,13 +155,37 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , obj_strange_strings  :
-      { text    : '{"foo": "bar and all\\"", "bar": "its \\"nice\\""}'
+      { text    : '{"foo": "bar and all\"", "bar": "its \"nice\""}'
       , events  :
         [ ["openobject"  , "foo"]
         , ["value"       , 'bar and all"']
         , ["key"         , "bar"]
         , ["value"       , 'its "nice"']
         , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      } 
+    , frekin_string:
+      { text    : "[\"\\\"\"a\"\"]"
+      , events  :
+        [ ["openarray"   , undefined]
+        , ["value"       , '\\""a"']
+        , ["closearray"  , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , array_of_string_insanity  :
+      { text    : '[" foo \/ bar \f\\\uffffa\b\"\\",' +
+                  '"\"and this string has an escape at the beginning",' +
+                  '"and this string has no escapes"]'
+      , events  :
+        [ ["openarray"   , undefined]
+        , ["value"       , " foo \/ bar \f\\\uffffa\b\"\\"]
+        , ["value"       , "\"and this string has an escape at the beginning"]
+        , ["value"       , "and this string has no escapes"]
+        , ["closearray"  , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
         ]
@@ -302,9 +358,9 @@ function generic(key,sep) {
         current = l.shift();
         ++i;
         assert(current[0] === event, 
-          '[ln' + i + '] expected: ' + current[0] + ' got: ' + event);
+          '[ln' + i + '] expected: <' + current[0] + '> got: <' + event +'>');
         assert(current[1] === value, 
-          '[ln' + i + '] expected: ' + current[1] + ' got: ' + value);
+          '[ln' + i + '] expected: <' + current[1] + '> got: <' + value +'>');
       };
     });
     _.each(doc_chunks, function(chunk) { parser.write(chunk); });
