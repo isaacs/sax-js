@@ -129,7 +129,7 @@ if(typeof FastList === 'function') {
     var parser = this;
     clearBuffers(parser);
     parser.bufferCheckPosition = clarinet.MAX_BUFFER_LENGTH;
-    parser.q        = parser.c = "";
+    parser.q        = parser.c = parser.p = "";
     parser.opt      = opt || {};
     parser.closed   = parser.closedRoot = parser.sawRoot = false;
     parser.tag      = parser.error = null;
@@ -272,9 +272,10 @@ if(typeof FastList === 'function') {
     if (chunk === null) return end(parser);
     var i = 0, c = chunk[0], p = "";
     while (c) {
-      p = c;
+      p = parser.p;
+      parser.p = c;
       parser.c = c = chunk.charAt(i++);
-      if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state]);
+      if (clarinet.DEBUG) console.log(i,c,clarinet.STATE[parser.state],p);
       parser.position ++;
       if (c === "\n") {
         parser.line ++;
@@ -350,7 +351,7 @@ if(typeof FastList === 'function') {
             parser.numberNode += c;
           } else if(c==='0') {
             parser.numberNode += c;
-            parser.state = S.NUMBER_DECIMAL_POINT;
+            parser.state = S.NUMBER_DIGIT;
           } else if('123456789'.indexOf(c) !== -1) {
             parser.numberNode += c;
             parser.state = S.NUMBER_DIGIT;
@@ -358,15 +359,15 @@ if(typeof FastList === 'function') {
         continue;
 
         case S.CLOSE_ARRAY:
-          if (is(whitespace, c)) continue;
-          if(c===',') {
+          if(c===',' || p ===',') {
             parser.stack.push(S.CLOSE_ARRAY);
-            closeValue (parser, 'onvalue');
+            closeValue(parser, 'onvalue');
             parser.state  = S.VALUE;
-          } else if (c===']') {
+          } else if (c===']' || p===']') {
             emitNode(parser, 'onclosearray');
             parser.state = parser.stack.pop() || S.VALUE;
-          } else error(parser, 'Bad array');
+          } else if (is(whitespace, c)) continue;
+          else error(parser, 'Bad array');
         continue;
 
         case S.STRING:
@@ -452,18 +453,20 @@ if(typeof FastList === 'function') {
        continue;
 
        case S.NUMBER_DIGIT:
-         parser.numberNode += c;
-         if('0123456789'.indexOf(c) !== -1) {}
+         if('0123456789'.indexOf(c) !== -1) parser.numberNode += c;
          else if (c==='.') {
            if(parser.numberNode.indexOf('.')!==-1)
              error(parser, 'Invalid number has two dots');
+           parser.numberNode += c;
          } else if (c==='e' || c==='E') {
            if(parser.numberNode.indexOf('e')!==-1 || 
               parser.numberNode.indexOf('E')!==-1 )
               error(parser, 'Invalid number has two exponential');
+           parser.numberNode += c;
          } else if (c==="+" || c==="-") {
            if(!(p==='e' || p==='E'))
              error(parser, 'Invalid symbol in number');
+           parser.numberNode += c;
          } else {
            closeNumber(parser);
            parser.state = parser.stack.pop() || S.VALUE;
