@@ -4,7 +4,7 @@ if (!clarinet) { // node
     ;
 }
 
-var seps   = [undefined]//[undefined, /\t|\n|\r/, '']
+var seps   = [undefined, /\t|\n|\r/, '']
   , sep
   , docs   =
     { empty_array :
@@ -33,6 +33,16 @@ var seps   = [undefined]//[undefined, /\t|\n|\r/, '']
         , ["value"       , "ÊùæÊ±ü"]
         , ["key"         , "asakusa"]
         , ["value"       , "ÊµÖËçâ"]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , four_byte_utf8 :
+      { text          : '{ "U+10ABCD": "ÌØ™Ìøç" }'
+      , events        :
+        [ ["openobject"  , "U+10ABCD"]
+        , ["value"       , "ÌØ™Ìøç"]
         , ["closeobject" , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
@@ -125,6 +135,24 @@ var seps   = [undefined]//[undefined, /\t|\n|\r/, '']
           , ['ready'       , undefined]
           ]
       }
+    , bogus_char    :
+      { text        : '["this","is","what","should","be", "a happy bit of' +
+                      ' json","but someone, misspelled \\"true\\"", ture,' +
+                      '"who says JSON is easy for humans to generate?"]'
+      , events      :
+        [ ['openarray'   , undefined]
+        , ['value'       , "this"]
+        , ['value'       , "is"]
+        , ['value'       , "what"]
+        , ['value'       , "should"]
+        , ['value'       , "be"]
+        , ['value'       , "a happy bit of json"]
+        , ['value'       , "but someone, misspelled \"true\""]
+        , ['error'       , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
     , array_of_objs :
       { text        : '[{"a":"b"}, {"c":"d"}]'
       , events      :
@@ -167,17 +195,30 @@ var seps   = [undefined]//[undefined, /\t|\n|\r/, '']
         ]
       }
     , obj_strange_strings  :
-      { text    : '{"foo": "bar and all\"", "bar": "its \"nice\""}'
-      , events  :
-        [ ["openobject"  , "foo"]
-        , ["value"       , 'bar and all"']
-        , ["key"         , "bar"]
-        , ["value"       , 'its "nice"']
-        , ["closeobject" , undefined]
-        , ['end'         , undefined]
-        , ['ready'       , undefined]
+      { text               : 
+        '{"foo": "bar and all\\\"", "bar": "its \\\"nice\\\""}'
+      , events             :
+        [ ["openobject"    , "foo"]
+        , ["value"         , 'bar and all"']
+        , ["key"           , "bar"]
+        , ["value"         , 'its "nice"']
+        , ["closeobject"   , undefined]
+        , ['end'           , undefined]
+        , ['ready'         , undefined]
         ]
       } 
+    , bad_foo_bar         :
+      { text              : 
+          '["foo", "bar"'
+       , events           :
+         [ ["openarray"   , undefined]
+         , ["value"       , 'foo']
+         , ["value"       , 'bar']
+         , ['error'       , undefined]
+         , ['end'         , undefined]
+         , ['ready'       , undefined]
+         ]
+       }
     , string_invalid_escape:
       { text             : 
           '["and you can\'t escape thi\s"]'
@@ -242,6 +283,166 @@ var seps   = [undefined]//[undefined, /\t|\n|\r/, '']
         , ['ready'       , undefined]
         ]
       }
+    , non_utf8           :
+      { text   : 
+        '{"CoreletAPIVersion":2,"CoreletType":"standalone",' +
+        '"documentation":"A corelet that provides the capability to upload' +
+        ' a folder‚Äôs contents into a user‚Äôs locker.","functions":[' + 
+        '{"documentation":"Displays a dialog box that allows user to ' +
+        'select a folder on the local system.","name":' +
+        '"ShowBrowseDialog","parameters":[{"documentation":"The ' +
+        'callback function for results.","name":"callback","required":' +
+        'true,"type":"callback"}]},{"documentation":"Uploads all mp3 files' +
+        ' in the folder provided.","name":"UploadFolder","parameters":' +
+        '[{"documentation":"The path to upload mp3 files from."' +
+        ',"name":"path","required":true,"type":"string"},{"documentation":' +
+        ' "The callback function for progress.","name":"callback",' +
+        '"required":true,"type":"callback"}]},{"documentation":"Returns' +
+        ' the server name to the current locker service.",' +
+        '"name":"GetLockerService","parameters":[]},{"documentation":' +
+        '"Changes the name of the locker service.","name":"SetLockerSer' +
+        'vice","parameters":[{"documentation":"The value of the locker' +
+        ' service to set active.","name":"LockerService","required":true' +
+        ',"type":"string"}]},{"documentation":"Downloads locker files to' +
+        ' the suggested folder.","name":"DownloadFile","parameters":[{"' +
+        'documentation":"The origin path of the locker file.",' +
+        '"name":"path","required":true,"type":"string"},{"documentation"' +
+        ':"The Window destination path of the locker file.",' +
+        '"name":"destination","required":true,"type":"integer"},{"docum' +
+        'entation":"The callback function for progress.","name":' +
+        '"callback","required":true,"type":"callback"}]}],' +
+        '"name":"LockerUploader","version":{"major":0,' +
+        '"micro":1,"minor":0},"versionString":"0.0.1"}'
+      , events : 
+        [ [ "openobject"  , "CoreletAPIVersion"]
+        , [ "value"       , 2 ]
+        , [ "key"         , "CoreletType"]
+        , [ "value"       , "standalone" ]
+        , [ "key"         , "documentation"]
+        , [ "value"       , "A corelet that provides the capability to upload a folder‚Äôs contents into a user‚Äôs locker."]
+        , ["key"          , "functions"]
+        , [ "openarray"   , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "Displays a dialog box that allows user to select a folder on the local system."]
+        , [ "key"         , "name"]
+        , [ "value"       , "ShowBrowseDialog"]
+        , [ "key"         , "parameters"]
+        , [ "openarray"   , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "The callback function for results."]
+        , [ "key"         , "name"]
+        , [ "value"       , "callback"]
+        , [ "key"         , "required"]
+        , [ "value"       , true]
+        , [ "key"         , "type"]
+        , [ "value"       , "callback"]
+        , [ "closeobject" , undefined]
+        , [ "closearray"  , undefined]
+        , [ "closeobject" , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "Uploads all mp3 files in the folder provided."]
+        , [ "key"         , "name"]
+        , [ "value"       , "UploadFolder"]
+        , [ "key"         , "parameters"]
+        , [ "openarray"   , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "The path to upload mp3 files from."]
+        , [ "key"         , "name"]
+        , [ "value"       , "path"]
+        , [ "key"         , "required"]
+        , [ "value"       , true]
+        , [ "key"         , "type"]
+        , [ "value"       , "string"]
+        , [ "closeobject" , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "The callback function for progress."]
+        , [ "key"         , "name"]
+        , [ "value"       , "callback"]
+        , [ "key"         , "required"]
+        , [ "value"       , true ]
+        , [ "key"         , "type"]
+        , [ "value"       , "callback"]
+        , [ "closeobject" , undefined]
+        , [ "closearray"  , undefined]
+        , [ "closeobject" , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "Returns the server name to the current locker service."]
+        , [ "key"         , "name"]
+        , [ "value"       , "GetLockerService"]
+        , [ "key"         , "parameters"]
+        , [ "openarray"   , undefined]
+        , [ "closearray"  , undefined]
+        , [ "closeobject" , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "Changes the name of the locker service."]
+        , [ "key"         , "name"]
+        , [ "value"       , "SetLockerService"]
+        , [ "key"         , "parameters"]
+        , [ "openarray"   , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "The value of the locker service to set active."]
+        , [ "key"         , "name"]
+        , [ "value"       , "LockerService" ]
+        , [ "key"         , "required" ]
+        , [ "value"       , true]
+        , [ "key"         , "type"]
+        , [ "value"       , "string"]
+        , [ "closeobject" , undefined]
+        , [ "closearray"  , undefined]
+        , [ "closeobject" , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "Downloads locker files to the suggested folder."]
+        , [ "key"         , "name"]
+        , [ "value"       , "DownloadFile"]
+        , [ "key"         , "parameters"]
+        , [ "openarray"   , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "The origin path of the locker file."]
+        , [ "key"         , "name"]
+        , [ "value"       , "path"]
+        , [ "key"         , "required"]
+        , [ "value"       , true]
+        , [ "key"         , "type"]
+        , [ "value"       , "string"]
+        , [ "closeobject" , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "The Window destination path of the locker file."]
+        , [ "key"         , "name"]
+        , [ "value"       , "destination"]
+        , [ "key"         , "required"]
+        , [ "value"       , true]
+        , [ "key"         , "type"]
+        , [ "value"       , "integer"]
+        , [ "closeobject" , undefined]
+        , [ "openobject"  , "documentation"]
+        , [ "value"       , "The callback function for progress."]
+        , [ "key"         , "name"]
+        , [ "value"       , "callback"]
+        , [ "key"         , "required"]
+        , [ "value"       , true]
+        , [ "key"         , "type"]
+        , [ "value"       , "callback"]
+        , [ "closeobject" , undefined]
+        , [ "closearray"  , undefined]
+        , [ "closeobject" , undefined]
+        , [ "closearray"  , undefined]
+        , [ "key"         , "name"]
+        , [ "value"       , "LockerUploader"]
+        , [ "key"         , "version"]
+        , [ "openobject"  , "major"]
+        , [ "value"       , 0]
+        , [ "key"         , "micro"]
+        , [ "value"       , 1]
+        , [ "key"         , "minor"]
+        , [ "value"       , 0]
+        , [ "closeobject" , undefined]
+        , [ "key"         , "versionString"]
+        , [ "value"       , "0.0.1"]
+        , [ "closeobject" , undefined]
+        , [ "end"         , undefined]
+        , [ "ready"       , undefined]
+        ]
+      }
     , array_of_arrays    :
       { text   : '[[[["foo"]]]]'
       , events : 
@@ -258,7 +459,26 @@ var seps   = [undefined]//[undefined, /\t|\n|\r/, '']
         , ['ready'      , undefined]
         ]
       }
-    // fixme: missing overflow numbers
+    , low_overflow :
+      { text       : '[-9223372036854775808]'
+      , events     : 
+        [ ['openarray'  , undefined]
+        , ["value"      , -9223372036854775808]
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
+    , high_overflow :
+      { text       : '[9223372036854775808]'
+      , events     : 
+        [ ['openarray'  , undefined]
+        , ["value"      , 9223372036854775808]
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
     , numbers_game :
       { text       : '[1,0,-1,-0.3,0.3,1343.32,3345,3.1e124,'+
                      ' 9223372036854775807,-9223372036854775807,0.1e2, ' +
@@ -403,20 +623,33 @@ function generic(key,sep) {
       , parser     = clarinet.parser()
       , i          = 0
       , current
+      , env = process && process.env ? process.env : window
+      , record     = []
       ;
+
     _.each(events, function(event_pair) { l.push(event_pair); });
     _.each(clarinet.EVENTS, function(event) {
       parser["on"+event] = function (value) {
-        current = l.shift();
-        ++i;
-        assert(current[0] === event, 
-          '[ln' + i + '] expected: <' + current[0] + '> got: <' + event +'>');
-        assert(current[1] === value, 
-          '[ln' + i + '] expected: <' + current[1] + '> got: <' + value +'>');
+        if(env.CRECORD) { // for really big json we dont want to type all
+          record.push([event,value]);
+          if(event === 'end') console.log(JSON.stringify(record, null, 2));
+        } else {
+          current = l.shift();
+          ++i;
+          assert(current[0] === event, 
+            '[ln' + i + '] event: [' + current[0] + '] got: [' + event +']');
+          if(event!== 'error')
+            assert(current[1] === value, 
+              '[ln' + i + '] value: [' + current[1] + '] got: [' + value +']');
+        }
       };
     });
-    _.each(doc_chunks, function(chunk) { parser.write(chunk); });
-    parser.end();
+    var failed = false;
+    _.each(doc_chunks, function(chunk) { 
+      try { if(!failed) parser.write(chunk); } 
+      catch(ex) { failed = true; } 
+    });
+    if(!failed) parser.end();
   };
 }
 

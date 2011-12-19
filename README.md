@@ -1,3 +1,6 @@
+check phylosophy from 
+not a validator, if your json is invalid look somewhere else
+
 # sax js
 
 A sax-style parser for XML and HTML.

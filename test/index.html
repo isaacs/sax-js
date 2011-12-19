@@ -9,9 +9,21 @@
     <script src="lib/fast-list.js"></script>
     <script>mocha.setup('bdd')</script>
     <script>
+      // warning uncommenting this makes things slower, pick your tests
+
+      // uncommented for
+      // turn on console.log. debug for everychar, info for every emit
       //window.CDEBUG = 'debug';
+
+      // uncomment for
+      // turn off testing and record instead, excepted results
+      // are console logged on end
+      //window.CRECORD  = true;
+
       function assert(expr, msg) {
-        if (!expr) throw new Error(msg || 'failed');
+        if (!expr) {
+          throw new Error(msg || 'failed');
+        }
       }
     </script>
     <script src="../clarinet.js"></script>
