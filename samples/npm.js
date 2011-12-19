@@ -7,8 +7,6 @@ var fs             = require('fs')
   , FastList
   ;
 
-try { FastList = require('fast-list'); } catch (ex) { FastList = Array; }
-
 parse_stream.on('openobject', function(name) {
   if(name==='author') author=true;
 });
