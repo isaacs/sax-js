@@ -1,3 +1,8 @@
+// get a bunch of twitter streams
+var stuff_to_search_for = 
+  [ 'nodejs', 'nodejitsu', 'hadoop', 'couchdb', 'nosql', 'birds', 'dinosaurs'
+  , 'fun', 'dscape', 'clown', 'joyent', 'nyc', 'usa', 'portugal'];
+
 // npm install request fast-list clarinet
 var request        = require('request');
 var fs             = require('fs');
@@ -13,9 +18,6 @@ var found_results  = false;
 var notfirst       = false;
 var stop_searching = false;
 var previous       = '';
-var stuff_to_search_for = 
-  [ 'nodejs', 'nodejitsu', 'hadoop', 'couchdb', 'nosql', 'birds', 'dinosaurs'
-  , 'fun', 'dscape', 'clown', 'joyent', 'nyc', 'usa', 'portugal'];
 var i            = 0;
 var on_array     = false;
 var array_vals   = [];
