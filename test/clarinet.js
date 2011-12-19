@@ -1,6 +1,7 @@
 if (!clarinet) { // node 
   var clarinet  = require('../clarinet.js')
     , assert    = require('assert')
+    , _         = require('underscore')
     ;
 }
 

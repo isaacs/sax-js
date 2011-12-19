@@ -13,10 +13,11 @@
 , "keywords"    : 
   ["sax", "json", "parser", "stream", "streaming", "event"
   , "events", "emitter", "async", "streamer"]
-, "devDependencies" : { "mocha": "0.3.6", "should": "0.3.2" }
-, scripts       :
+, "devDependencies" : 
+  { "mocha": "0.3.6", "should": "0.3.2", "underscore": "1.2.3" }
+, "scripts"     :
   { "test"      :
-    "./node_modules/mocha/bin/mocha -r should test/spell.js"
+    "./node_modules/mocha/bin/mocha -r should test/clarinet.js"
   }
 , "engines"         : { "node": ">=0.3.6" }
 }
