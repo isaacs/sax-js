@@ -10,7 +10,7 @@ describe('clarinet', function(){
     it('should be able to parse npm', function (done){
       npm_stream.on("error", function (err) { done(err); });
       npm_stream.on("end", function () {
-        assert(true, "parsing worked");
+        assert.ok(true, "npm worked");
         done();
       });
       fs.createReadStream(__dirname + '/../samples/npm.json')
@@ -19,7 +19,7 @@ describe('clarinet', function(){
     it('should be able to parse twitter', function (done){
       twitter_stream.on("error", function (err) { done(err); });
       twitter_stream.on("end", function () {
-        assert(true, "parsing worked");
+        assert.ok(true, "twit worked");
         done();
       });
       fs.createReadStream(__dirname + '/../samples/twitter.json')
