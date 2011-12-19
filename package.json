@@ -13,4 +13,10 @@
 , "keywords"    : 
   ["sax", "json", "parser", "stream", "streaming", "event"
   , "events", "emitter", "async", "streamer"]
+, "devDependencies" : { "mocha": "0.3.6", "should": "0.3.2" }
+, scripts       :
+  { "test"      :
+    "./node_modules/mocha/bin/mocha -r should test/spell.js"
+  }
+, "engines"         : { "node": ">=0.3.6" }
 }
