@@ -389,7 +389,9 @@ if(typeof FastList === 'function') {
         case S.BACKSLASH:
           if (c==='\\' || c === '"') parser.textNode += c;
           else {
-            if(p==='\\') parser.textNode += '\\';
+            if(p==='\\') {
+              parser.textNode += '\\';
+            }
             parser.textNode += c;
           }
           parser.state = S.STRING;

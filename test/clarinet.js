@@ -16,6 +16,16 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'      , undefined]
         ]
       }
+    , just_slash :
+      { text      : '["\\\\"]'
+      , events    :
+        [ ['openarray'  , undefined]
+        , ["value"      , "\\"]
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
     , zero_byte    :
       { text       : '{"foo": "\u0000"}'
       , events     :
@@ -53,6 +63,16 @@ var seps   = [undefined, /\t|\n|\r/, '']
       , events     :
         [ ["openarray"   , undefined]
         , ["value"       , "Да Му Еба Майката"]
+        , ["closearray"  , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
+    , codepoints_from_unicodes  :
+      { text       : '["\u004d\u0430\u4e8c\ud800\udf02"]'
+      , events     :
+        [ ["openarray"   , undefined]
+        , ["value"       , "\u004d\u0430\u4e8c\ud800\udf02"]
         , ["closearray"  , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
@@ -98,6 +118,33 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['closearray' , undefined]
         , ['end'        , undefined]
         , ['ready'      , undefined]
+        ]
+      }
+    , array_fu :
+      { text   : '["foo", "bar", "baz",true,false,null,{"key":"value"},' +
+                 '[null,null,null,[]]," \\ "]'
+      , events : 
+        [ ['openarray'   , undefined]
+        , ['value'       , 'foo']
+        , ['value'       , 'bar']
+        , ['value'       , 'baz']
+        , ['value'       , true]
+        , ['value'       , false]
+        , ['value'       , null]
+        , ['openobject'  , 'key']
+        , ['value'       , "value"]
+        , ["closeobject" , undefined]
+        , ['openarray'   , undefined]
+        , ['value'       , null]
+        , ['value'       , null]
+        , ['value'       , null]
+        , ['openarray'   , undefined]
+        , ['closearray'  , undefined]
+        , ['closearray'  , undefined]
+        , ['value'       , " \\ "]
+        , ['closearray'  , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
         ]
       }
     , simple_exp    :
@@ -474,6 +521,18 @@ var seps   = [undefined, /\t|\n|\r/, '']
       , events     : 
         [ ['openarray'  , undefined]
         , ["value"      , 9223372036854775808]
+        , ['closearray' , undefined]
+        , ['end'        , undefined]
+        , ['ready'      , undefined]
+        ]
+      }
+    , floats       :
+      { text       : '[0.1e2, 1e1, 3.141569, 10000000000000e-10]'
+      , events     :
+        [ ['openarray'  , undefined]
+        , ["value"      , 0.1e2]
+        , ["value"      , 1e1]
+        , ["value"      , 10000000000000e-10]
         , ['closearray' , undefined]
         , ['end'        , undefined]
         , ['ready'      , undefined]

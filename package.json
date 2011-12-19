@@ -1,11 +1,16 @@
-{ "name" : "clarinet"
-, "description": "SAX-Like Evented streaming JSON parser in JavaScript"
-, "author" : "Nuno Job <nunojobpinto@gmail.com> (http://nunojob.com/)"
-, "version" : "0.3.5"
-, "main" : "./clarinet.js"
-, "homepage": "https://github.com/dscape/clarinet"
-, "repository": "git://github.com/dscape/clarinet.git"
-, "keywords"        : 
-  [ "sax", "json", "parser", "stream", "streaming", "event", "events"
-  , "emitter", "async", "streamer" ]
+{ "name"        : "clarinet"
+, "description" : 
+  "SAX-Like evented streaming JSON parser in JavaScript browser and node"
+, "author"      : "Nuno Job <nunojobpinto@gmail.com> (http://nunojob.com/)"
+, "version"     : "0.4.0"
+, "main"        : "./clarinet.js"
+, "homepage"    : "https://github.com/dscape/clarinet"
+, "repository"  : 
+  { "type"      : "git"
+  , "url"       : "http://github.com/dscape/clarinet.git"
+  }
+, "bugs"        : "http://github.com/dscape/clarinet/issues"
+, "keywords"    : 
+  ["sax", "json", "parser", "stream", "streaming", "event"
+  , "events", "emitter", "async", "streamer"]
 }
