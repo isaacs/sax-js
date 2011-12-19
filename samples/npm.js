@@ -4,8 +4,8 @@ var fs             = require('fs')
   , parse_stream   = clarinet.createStream()
   , author         = false
   , authors        = {}
-  , FastList
   ;
+
 
 parse_stream.on('openobject', function(name) {
   if(name==='author') author=true;
