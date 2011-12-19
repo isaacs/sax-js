@@ -1,7 +1,7 @@
 var fs            = require('fs')
   , clarinet      = require('../clarinet.js')
   , parse_stream  = clarinet.createStream()
-  , assert    = require('assert')
+  , assert        = require('assert')
   ;
 
 describe('clarinet', function(){

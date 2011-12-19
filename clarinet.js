@@ -7,7 +7,7 @@
 if(typeof FastList === 'function') {
   fastlist = FastList;
 } else if (typeof require === 'function') {
-  try { fastlist = require('fastlist'); } catch (exc) { fastlist = Array; }
+  try { fastlist = require('fast-list'); } catch (exc) { fastlist = Array; }
 } else fastlist = Array;
 
   clarinet.parser            = function (opt) { return new CParser(opt);};
