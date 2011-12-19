@@ -1,16 +1,4 @@
-check phylosophy from 
-not a validator, if your json is invalid look somewhere else
-log post with performance, 3 docs, 4 libs
-write blog post example on how to count you has the most libs in npm
-write about testing and how others can help
-100+ tests to start with
-works in the browser and in node
-document this shit
-add npm as test to node
-differences to other apis, and why
-inspired and forked from sax-js
-help people to build on the code
-slow? make it faster, im sure we can make it much faster than this
+
 
 
 # sax js
