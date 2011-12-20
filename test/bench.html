@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>clarinet.js profiler</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="css/mocha.css" />
+    <script src="../clarinet.js"></script>
+    <script src="twitter.js"></script>
+    <script src="basic.js"></script>
+    <script>
+      onload = function(){
+        var string     = JSON.stringify(BASIC)
+          , p          = clarinet.parser()
+          , max        = 1000
+          , iters      = 5
+          ;
+
+        while (iters--) {
+          start = Date.now();
+          for (var i = 0; i < max; i++) p.write(string);
+          console.log("clp: %s", Date.now()-start);
+        }
+
+      };
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
