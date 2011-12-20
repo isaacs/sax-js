@@ -1,8 +1,11 @@
 ;(function (clarinet) {
   // non node-js needs to set clarinet debug on root
-  var env = process && process.env ? process.env : window
+  var env
     , fastlist
     ;
+
+if(typeof process === 'object' && process.env) env = process.env;
+else env = window;
 
 if(typeof FastList === 'function') {
   fastlist = FastList;
@@ -31,7 +34,6 @@ if(typeof FastList === 'function') {
     ];
 
   var buffers     = [ "textNode", "numberNode" ]
-    , whitespace  = "\r\n\t "
     , streamWraps = clarinet.EVENTS.filter(function (ev) {
           return ev !== "error" && ev !== "end";
         })
@@ -121,16 +123,13 @@ if(typeof FastList === 'function') {
     }
   }
 
-  function is (charclass, c)  { return charclass.indexOf(c) !== -1; }
-  function not (charclass, c) { return !is(charclass, c); }
-
   function CParser (opt) {
     if (!(this instanceof CParser)) return new CParser (opt);
 
     var parser = this;
     clearBuffers(parser);
     parser.bufferCheckPosition = clarinet.MAX_BUFFER_LENGTH;
-    parser.q        = parser.c = parser.p = "";
+    parser.q        = parser.c = "";
     parser.opt      = opt || {};
     parser.closed   = parser.closedRoot = parser.sawRoot = false;
     parser.tag      = parser.error = null;
@@ -271,17 +270,10 @@ if(typeof FastList === 'function') {
     if (parser.closed) return error(parser,
       "Cannot write after close. Assign an onready handler.");
     if (chunk === null) return end(parser);
-    var i = 0, c = chunk[0], p = parser.p;
+    var i = 0, c = chunk[0];
     if (clarinet.DEBUG) console.log('write -> [' + chunk + ']');
     while (c) {
-      p = c;
       parser.c = c = chunk.charAt(i++);
-      // if chunk doesnt have next, like streaming char by char
-      // this way we need to check if previous is really previous
-      // if not we need to reset to what the parser says is the previous
-      // from buffer
-      if(p !== c ) parser.p = p;
-      else p = parser.p;
 
       if(!c) break;
 
@@ -296,13 +288,13 @@ if(typeof FastList === 'function') {
         case S.BEGIN:
           if (c === "{") parser.state = S.OPEN_OBJECT;
           else if (c === "[") parser.state = S.OPEN_ARRAY;
-          else if (not(whitespace,c)) 
+          else if (c !== '\r' && c !== '\n' && c !== ' ' && c !== '\t') 
             error(parser, "Non-whitespace before {[.");
         continue;
 
         case S.OPEN_KEY:
         case S.OPEN_OBJECT:
-          if (is(whitespace, c)) continue;
+          if (c === '\r' || c === '\n' || c === ' ' || c === '\t') continue;
           if(parser.state === S.OPEN_KEY) parser.stack.push(S.CLOSE_KEY);
           else {
             if(c === '}') {
@@ -318,7 +310,7 @@ if(typeof FastList === 'function') {
 
         case S.CLOSE_KEY:
         case S.CLOSE_OBJECT:
-          if (is(whitespace, c)) continue;
+          if (c === '\r' || c === '\n' || c === ' ' || c === '\t') continue;
           var event = (parser.state === S.CLOSE_KEY) ? 'key' : 'object';
           if(c===':') {
             if(parser.state === S.CLOSE_OBJECT) {
@@ -339,7 +331,7 @@ if(typeof FastList === 'function') {
 
         case S.OPEN_ARRAY: // after an array there always a value
         case S.VALUE:
-          if (is(whitespace, c)) continue;
+          if (c === '\r' || c === '\n' || c === ' ' || c === '\t') continue;
           if(parser.state===S.OPEN_ARRAY) {
             emit(parser, 'onopenarray');
             parser.state = S.VALUE;
@@ -376,25 +368,36 @@ if(typeof FastList === 'function') {
           } else if (c===']') {
             emitNode(parser, 'onclosearray');
             parser.state = parser.stack.pop() || S.VALUE;
-          } else if (is(whitespace, c)) continue;
+          } else if (c === '\r' || c === '\n' || c === ' ' || c === '\t')
+              continue;
           else error(parser, 'Bad array');
         continue;
 
         case S.STRING:
-               if (c === '"')  parser.state = parser.stack.pop() || S.VALUE;
-          else if (c === '\\') parser.state = S.BACKSLASH; 
-          else                 parser.textNode += c;
-        continue;
-
-        case S.BACKSLASH:
-          if (c==='\\' || c === '"') parser.textNode += c;
-          else {
-            if(p==='\\') {
-              parser.textNode += '\\';
+          // thanks thejh, this is an about 50% performance improvment.
+          var starti              = i
+            , consecutive_slashes = 0
+            ;
+          while (c) {
+            // if it seems like end of string
+            // and we found slashes before
+            // and those slashes an even number
+            // -> this is not an escape its the end of the string
+            if (c === '"' && 
+               (consecutive_slashes === 0 || consecutive_slashes%2 ===0)) {
+              parser.state = parser.stack.pop() || S.VALUE;
+              break;
             }
-            parser.textNode += c;
+            if (c === '\\') consecutive_slashes++;
+            else            consecutive_slashes = 0;
+            parser.position ++;
+            if (c === "\n") {
+              parser.line ++;
+              parser.column = 0;
+            } else parser.column ++;
+            c = chunk.charAt(i++);
           }
-          parser.state = S.STRING;
+          parser.textNode += chunk.substring(starti, i-1);
         continue;
 
         case S.TRUE:

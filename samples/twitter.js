@@ -6,8 +6,7 @@ var stuff_to_search_for =
 // npm install request fast-list clarinet
 var request        = require('request');
 var fs             = require('fs');
-var FastList       = require('fast-list');
-var clarinet       = require('clarinet');
+var clarinet       = require('../clarinet');
 var p              = 1;
 var buffer         = [];
 var tweets         = ['['];
