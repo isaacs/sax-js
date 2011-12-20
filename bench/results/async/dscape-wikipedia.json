@@ -1,0 +1,22 @@
+=N("node bench/a sync.js samples/wikipedia.json 100000 9")
+=N("clp (clarinet parser), cls (clarinet event emitter)")
+cls, 4412
+clp, 5038
+cls, 5087
+clp, 5168
+cls, 5447
+clp, 5183
+cls, 5667
+clp, 5218
+cls, 5597
+clp, 4591
+cls, 5345
+clp, 5515
+cls, 5115
+clp, 5514
+cls, 5283
+clp, 5218
+cls, 5431
+clp, 5331
+cls, 5585
+clp, 5368

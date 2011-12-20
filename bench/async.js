@@ -10,12 +10,14 @@ var fs         = require('fs')
   , p
   , s
   , start
-  , n         = process.argv[3] || 9
+  , max        = process.argv[3] || 1
+  , n          = process.argv[4] || 9
   ;
 
-console.log('=N("node bench/async.js ' + process.argv[2] + ' ' + n + '")');
+console.log('=N("node bench/a sync.js ' + process.argv[2] + ' ' +
+     max + ' ' + n + '")');
 console.log('=N("clp (clarinet parser), cls (clarinet event emitter)")');
-console.log('=N("jpp (creationix/jsonparse)")');
+//console.log('=N("jpp (creationix/jsonparse)")');
 
 function stream_bench(cb) {
   s          = clarinet.createStream();
@@ -23,10 +25,13 @@ function stream_bench(cb) {
     console.log('cls, %s', Date.now()-start);
     cb();
   });
-  start = Date.now();
   var fs_read = fs.createReadStream(process.argv[2]);
   fs_read.setEncoding('utf-8');
-  fs_read.pipe(s);
+  fs_read.on('data', function(chunk) { 
+    for (var i = 0; i < max; i++) s.write(chunk); 
+  });
+  fs_read.on('end', function () { s.end(); });
+  start = Date.now();
 }
 
 function parser_bench(cb) {
@@ -37,40 +42,48 @@ function parser_bench(cb) {
   };
   var fs_read = fs.createReadStream(process.argv[2]);
   fs_read.setEncoding('utf-8');
-  fs_read.on('data', function(chunk) { p.write(chunk); });
-  fs_read.on('end', function () { p.end(); });
-  start = Date.now();
-}
-
-function jsonparse_bench(cb) {
-  jsonparser = new Parser();
-  var fs_read = fs.createReadStream(process.argv[2]);
-  var buffer  = [];
-  var bodyLen = 0;
   fs_read.on('data', function(chunk) { 
-    buffer.push(chunk);
-    bodyLen += chunk.length;
+    for (var i = 0; i < max; i++) p.write(chunk); 
   });
   fs_read.on('end', function () { 
-    var body = new Buffer(bodyLen);
-    var i = 0;
-    buffer.forEach(function (chunk) {
-      chunk.copy(body, i, 0, chunk.length);
-      i += chunk.length;
-    });
-    start = Date.now();
-    jsonparser.write(body);
-    console.log('jpp, %s', Date.now()-start);
+    p.end(); 
     if(n===0) process.exit();
     n--;
     setTimeout(repeat,0);
   });
+  start = Date.now();
 }
+// doesnt make sense to compare to sync
+// pretending its async is not being async
+//
+//function jsonparse_bench(cb) {
+//  jsonparser = new Parser();
+//  var fs_read = fs.createReadStream(process.argv[2]);
+//  var buffer  = [];
+//  var bodyLen = 0;
+//  fs_read.on('data', function(chunk) { 
+//    buffer.push(chunk);
+//    bodyLen += chunk.length;
+//  });
+//  fs_read.on('end', function () { 
+//    var body = new Buffer(bodyLen);
+//    var i = 0;
+//    buffer.forEach(function (chunk) {
+//      chunk.copy(body, i, 0, chunk.length);
+//      i += chunk.length;
+//    });
+//    start = Date.now();
+//    for (var i = 0; i < max; i++)  jsonparser.write(body);
+//    console.log('jpp, %s', Date.now()-start);
+//    if(n===0) process.exit();
+//    n--;
+//    setTimeout(repeat,0);
+//  });
+//}
 
 function repeat() {
   stream_bench(function () {
-    return parser_bench(function () { return jsonparse_bench(function(){
-  }); }); });
+    return parser_bench(function(){ }); });
 }
 
 repeat();

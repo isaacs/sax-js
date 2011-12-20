@@ -1,0 +1,22 @@
+=N("node bench/a sync.js samples/creationix.json 2000 9")
+=N("clp (clarinet parser), cls (clarinet event emitter)")
+cls, 1622
+clp, 1838
+cls, 1759
+clp, 1880
+cls, 1819
+clp, 1872
+cls, 1762
+clp, 1891
+cls, 1761
+clp, 1898
+cls, 1854
+clp, 1884
+cls, 1763
+clp, 1915
+cls, 1790
+clp, 1963
+cls, 1814
+clp, 2155
+cls, 1953
+clp, 1952
