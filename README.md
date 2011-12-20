@@ -27,7 +27,7 @@ the reason behind this work was to create better full text support in node. crea
 
 1. install [npm]
 2. `npm install clarinet`
-3. `var spell = require('clarinet');`
+3. `var clarinet = require('clarinet');`
 
 ## browser
 
@@ -177,7 +177,7 @@ check [issues]
 everyone is welcome to contribute. patches, bug-fixes, new features
 
 1. create an [issue][issues] so the community can comment on your idea
-2. fork `spell`
+2. fork `clarinet`
 3. create a new branch `git checkout -b my_branch`
 4. create tests for the changes you made
 5. make sure you pass both existing and newly inserted tests
