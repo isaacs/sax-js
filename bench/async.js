@@ -3,10 +3,6 @@
 
 // node bench/async.js samples/npm.json
 //                    jsonfile         
-console.log('=N("node bench/async.js ' + process.argv[2] + '")');
-console.log('=N("clp (clarinet parser), cls (clarinet event emitter)")');
-console.log('=N("jpp (creationix/jsonparse)")');
-
 var fs         = require('fs')
   , clarinet   = require('../clarinet')
   , Parser     = require('jsonparse')
@@ -14,10 +10,15 @@ var fs         = require('fs')
   , p
   , s
   , start
+  , n         = process.argv[3] || 9
   ;
 
+console.log('=N("node bench/async.js ' + process.argv[2] + ' ' + n + '")');
+console.log('=N("clp (clarinet parser), cls (clarinet event emitter)")');
+console.log('=N("jpp (creationix/jsonparse)")');
+
 function stream_bench(cb) {
-  s          = clarinet.createStream()
+  s          = clarinet.createStream();
   s.on('end', function () {
     console.log('cls, %s', Date.now()-start);
     cb();
@@ -29,7 +30,7 @@ function stream_bench(cb) {
 }
 
 function parser_bench(cb) {
-  p          = clarinet.parser()
+  p          = clarinet.parser();
   p.onend = function () { 
     console.log('clp, %s', Date.now()-start);
     cb();
@@ -42,7 +43,7 @@ function parser_bench(cb) {
 }
 
 function jsonparse_bench(cb) {
-  jsonparser = new Parser()
+  jsonparser = new Parser();
   var fs_read = fs.createReadStream(process.argv[2]);
   var buffer  = [];
   var bodyLen = 0;
@@ -60,21 +61,16 @@ function jsonparse_bench(cb) {
     start = Date.now();
     jsonparser.write(body);
     console.log('jpp, %s', Date.now()-start);
+    if(n===0) process.exit();
+    n--;
     setTimeout(repeat,0);
   });
 }
 
 function repeat() {
   stream_bench(function () {
-    return parser_bench(function () { return jsonparse_bench(function(){})})
-  });
+    return parser_bench(function () { return jsonparse_bench(function(){
+  }); }); });
 }
 
 repeat();
-//async.whilst(
-//    function () { return true; },
-//    function (callback) {
-//      var fs = [ stream_bench, parser_bench, jsonparse_bench];
-//      async.series(fs, function() { c(); });
-//    }
-//);

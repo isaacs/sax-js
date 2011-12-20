@@ -13,11 +13,12 @@ var fs         = require('fs')
   , string     = file.toString()
   , p          = clarinet.parser()
   , s          = clarinet.createStream()
-  , max        = process.argv[3]
+  , max        = process.argv[3] || 1
+  , n          = process.argv[4] || 9
   ;
 
 console.log('=N("node bench/sync.js ' + process.argv[2] + ' ' +
-   process.argv[3] + '")');
+   max + ' ' + n + '")');
 console.log('=N("clp (clarinet parser), cls (clarinet event emitter)")');
 console.log('=N("jpp (creationix/jsonparse), v8s (JSON.parse string)")');
 console.log('=N("v8b (JSON.parse buffer)")');
@@ -29,6 +30,7 @@ while (true) {
     console.log("clp, %s", Date.now()-start);
   } catch (ex1) { }
 
+  // slower
   try {
     start = Date.now();
     for (var i = 0; i < max; i++) s.write(string);
@@ -47,10 +49,13 @@ while (true) {
     console.log("v8s, %s", Date.now()-start);
   } catch (ex3) { }
 
+  // slower
   try {
     start = Date.now();
     for (var i = 0; i < max; i++) JSON.parse(file);
-    console.log("v8b: %s", Date.now()-start);
+    console.log("v8b, %s", Date.now()-start);
   } catch (ex4) { }
 
+  if(n===0) return;
+  n--;
 }
