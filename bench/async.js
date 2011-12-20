@@ -1,5 +1,7 @@
 // forked from github.com/creationix/jsonparse
-// npm install jsonparse async
+
+// brew install yajl
+// npm install jsonparse yajl
 
 // node bench/async.js samples/npm.json
 //                    jsonfile         

@@ -1,6 +1,7 @@
 // forked from github.com/creationix/jsonparse
 
-// npm install jsonparse
+// brew install yajl
+// npm install jsonparse yajl
 
 // node bench/sync.js samples/npm.json 5
 //                    jsonfile         number of cycles
