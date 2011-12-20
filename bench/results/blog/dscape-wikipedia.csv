@@ -1,0 +1,34 @@
+=N("node bench/sync.js samples/wikipedia.json 100000 9")
+=N("clp (clarinet parser), cls (clarinet event emitter)")
+=N("jpp (creationix/jsonparse), v8s (JSON.parse string)")
+=N("v8b (JSON.parse buffer)")
+clp, 4656
+jpp, 2701
+v8s, 390
+clp, 4648
+jpp, 2552
+v8s, 385
+clp, 4485
+jpp, 2474
+v8s, 386
+clp, 4464
+jpp, 2561
+v8s, 383
+clp, 4468
+jpp, 2557
+v8s, 392
+clp, 4538
+jpp, 2581
+v8s, 390
+clp, 4648
+jpp, 2470
+v8s, 388
+clp, 4466
+jpp, 2470
+v8s, 384
+clp, 4456
+jpp, 2482
+v8s, 386
+clp, 4465
+jpp, 2469
+v8s, 385
