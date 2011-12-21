@@ -58,6 +58,10 @@ function parser_bench(cb) {
 // doesnt make sense to compare to sync
 // pretending its async is not being async
 //
+// if anyone wants to implement it in async this is how (creationix
+// as fixed the module and provided a example:
+// https://gist.github.com/1506454
+//
 //function jsonparse_bench(cb) {
 //  jsonparser = new Parser();
 //  var fs_read = fs.createReadStream(process.argv[2]);
