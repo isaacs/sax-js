@@ -374,13 +374,15 @@ if(typeof FastList === 'function') {
         continue;
 
         case S.STRING:
-          // thanks thejh, this is an about 50% performance improvment.
-          var starti              = i
+          // thanks thejh, this is an about 50% performance improvement.
+          var starti              = i-1
             , consecutive_slashes = 0
+            , gaps                = new fastlist()
             ;
           while (c) {
             if (clarinet.DEBUG)
-              console.log(i,c,clarinet.STATE[parser.state]);
+              console.log(i,c,clarinet.STATE[parser.state]
+                         ,consecutive_slashes);
             // if it seems like end of string
             // and we found slashes before
             // and those slashes an even number
@@ -390,7 +392,11 @@ if(typeof FastList === 'function') {
               parser.state = parser.stack.pop() || S.VALUE;
               break;
             }
-            if (c === '\\') consecutive_slashes++;
+            if (c === '\\') { 
+              consecutive_slashes++;
+              if(consecutive_slashes !== 0 && consecutive_slashes%2 !==0)
+                gaps.push(i-1);
+            }
             else            consecutive_slashes = 0;
             parser.position ++;
             if (c === "\n") {
@@ -399,7 +405,15 @@ if(typeof FastList === 'function') {
             } else parser.column ++;
             c = chunk.charAt(i++);
           }
-          parser.textNode += chunk.substring(starti, i-1);
+          var e    = gaps.shift()
+            , s    = starti
+            ;
+          while(e) {
+            parser.textNode += chunk.substring(s, e);
+            s                = e+1;
+            e                = gaps.shift();
+          }
+          parser.textNode += chunk.substring(s, i-1);
         continue;
 
         case S.TRUE:
@@ -487,6 +501,7 @@ if(typeof FastList === 'function') {
                error(parser, 'Invalid number has two exponential');
             parser.numberNode += c;
           } else if (c==="+" || c==="-") {
+            var p = i-2 > 0 ? chunk.charAt(i-2) : '';
             if(!(p==='e' || p==='E'))
               error(parser, 'Invalid symbol in number');
             parser.numberNode += c;
