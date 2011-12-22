@@ -1,8 +1,13 @@
 if (!clarinet) { // node 
   var clarinet  = require('../clarinet.js')
-    , assert    = require('assert')
     , _         = require('underscore')
     ;
+}
+
+function assert(expr, msg) {
+  if (!expr) {
+    throw new Error(msg || 'failed');
+  }
 }
 
 var seps   = [undefined, /\t|\n|\r/]
