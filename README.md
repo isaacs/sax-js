@@ -1,6 +1,6 @@
 # clarinet
 
-`clarinet` is a sax-like streaming parser for JSON (pun intended). works in the browser and node.js. `clarinet` is inspired (and forked) from [sax-js][saxjs]. just like you shouldn't use `sax` when you need `dom` you shouldn't use `clarinet` when you need `JSON.parse`.
+`clarinet` is a sax-like streaming parser for JSON. works in the browser and node.js. `clarinet` is inspired (and forked) from [sax-js][saxjs]. just like you shouldn't use `sax` when you need `dom` you shouldn't use `clarinet` when you need `JSON.parse`. for a more detailed introduction and a performance study please refer to this [article][blog].
 
 # design goals
 
@@ -125,10 +125,10 @@ at all times, the parser object will have the following members:
 `line`, `column`, `position` - indications of the position in the json
 document where the parser currently is looking.
 
-`closed` - Boolean indicating whether or not the parser can be written to.
-If it's `true`, then wait for the `ready` event to write again.
+`closed` - boolean indicating whether or not the parser can be written to.
+if it's `true`, then wait for the `ready` event to write again.
 
-`opt` - Any options passed into the constructor.
+`opt` - any options passed into the constructor.
 
 and a bunch of other stuff that you probably shouldn't touch.
 
@@ -166,7 +166,7 @@ to.
 
 ## samples
 
-added some [samples] to help you get started. one that creates a list of top npm contributors, and another that gets a bunch of data from twitter and generates valid json. first sample is a good use for `clarinet`, second not so much. i just needed data and this was a good way to battle test it. but the `twitter` sample is a good example of when not to use `clarinet`. http requests take forever and you had more than enough time to `JSON.parse`. so what i did is stupid.
+some [samples] are available to help you get started. one that creates a list of top npm contributors, and another that gets a bunch of data from twitter and generates valid json.
 
 # roadmap
 
@@ -194,17 +194,6 @@ check `index.html`. there's two env vars you can set, `CRECORD` and `CDEBUG`.
 
 in `test/clarinet.js` there's two lines you might want to change. `#8` where you define `seps`, if you are isolating a test you probably just want to run one sep, so change this array to `[undefined]`. `#718` which says `for (var key in docs) {` is where you can change the docs you want to run. e.g. to run `foobar` i would do something like `for (var key in {foobar:''}) {`.
 
-this is not ideal so if you improve it send a pull request.
-
-# differences to yajl
-
-* `yajl` is written in c, probably won't work in the browser
-* `clarinet` does not do validations.
-* `openobject` emits the name of the first key, while in `yajl` the first key emit is separated
-* `clarinet` emits `value` for any value. `yajl` emits `string` for string, `null` for null, and so on.
-
-if these differences bother you feel free to send in a pull request.
-
 # meta
 
 * code: `git clone git://github.com/dscape/clarinet.git`
@@ -220,3 +209,4 @@ if these differences bother you feel free to send in a pull request.
 [saxjs]: http://github.com/isaacs/sax-js
 [yajl]: https://github.com/lloyd/yajl
 [samples]: https://github.com/dscape/clarinet/tree/master/samples
+[blog]: http://writings.nunojob.com/2011/12/clarinet-sax-based-evented-streaming-json-parser-in-javascript-for-the-browser-and-nodejs.html
