@@ -129,7 +129,7 @@ if(typeof FastList === 'function') {
     var parser = this;
     clearBuffers(parser);
     parser.bufferCheckPosition = clarinet.MAX_BUFFER_LENGTH;
-    parser.q        = parser.c = "";
+    parser.q        = parser.c = parser.p = "";
     parser.opt      = opt || {};
     parser.closed   = parser.closedRoot = parser.sawRoot = false;
     parser.tag      = parser.error = null;
@@ -270,10 +270,17 @@ if(typeof FastList === 'function') {
     if (parser.closed) return error(parser,
       "Cannot write after close. Assign an onready handler.");
     if (chunk === null) return end(parser);
-    var i = 0, c = chunk[0];
+    var i = 0, c = chunk[0], p = parser.p;
     if (clarinet.DEBUG) console.log('write -> [' + chunk + ']');
     while (c) {
+      p = c;
       parser.c = c = chunk.charAt(i++);
+      // if chunk doesnt have next, like streaming char by char
+      // this way we need to check if previous is really previous
+      // if not we need to reset to what the parser says is the previous
+      // from buffer
+      if(p !== c ) parser.p = p;
+      else p = parser.p;
 
       if(!c) break;
 
@@ -376,7 +383,7 @@ if(typeof FastList === 'function') {
         case S.STRING:
           // thanks thejh, this is an about 50% performance improvement.
           var starti              = i-1
-            , consecutive_slashes = 0
+            , consecutive_slashes = parser.consecutive_slashes || 0
             , gaps                = new fastlist()
             ;
           while (c) {
@@ -397,7 +404,10 @@ if(typeof FastList === 'function') {
               if(consecutive_slashes !== 0 && consecutive_slashes%2 !==0)
                 gaps.push(i-1);
             }
-            else            consecutive_slashes = 0;
+            else {
+              consecutive_slashes = 0;
+            }
+            parser.consecutive_slashes = consecutive_slashes;
             parser.position ++;
             if (c === "\n") {
               parser.line ++;
@@ -408,8 +418,8 @@ if(typeof FastList === 'function') {
           var e    = gaps.shift()
             , s    = starti
             ;
-          while(e) {
-            parser.textNode += chunk.substring(s, e);
+          while(typeof e === 'number') {
+            parser.textNode += chunk.slice(s, e);
             s                = e+1;
             e                = gaps.shift();
           }
@@ -501,7 +511,6 @@ if(typeof FastList === 'function') {
                error(parser, 'Invalid number has two exponential');
             parser.numberNode += c;
           } else if (c==="+" || c==="-") {
-            var p = i-2 > 0 ? chunk.charAt(i-2) : '';
             if(!(p==='e' || p==='E'))
               error(parser, 'Invalid symbol in number');
             parser.numberNode += c;

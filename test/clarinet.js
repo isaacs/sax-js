@@ -10,7 +10,7 @@ function assert(expr, msg) {
   }
 }
 
-var seps   = [undefined, /\t|\n|\r/]
+var seps   = [undefined, /\t|\n|\r/, '']
   , sep
   , docs   =
     { empty_array :
