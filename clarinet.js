@@ -122,6 +122,8 @@ if(typeof FastList === 'function') {
       parser[buffers[i]] = "";
     }
   }
+  
+  var stringTokenPattern = /[\\"\n]/g
 
   function CParser (opt) {
     if (!(this instanceof CParser)) return new CParser (opt);
@@ -413,7 +415,16 @@ if(typeof FastList === 'function') {
               parser.line ++;
               parser.column = 0;
             } else parser.column ++;
-            c = chunk.charAt(i++);
+            
+            stringTokenPattern.lastIndex = i
+            var reResult = stringTokenPattern.exec(chunk)
+            if (reResult == null) {
+              i = chunk.length+1
+              break
+            }
+            if (reResult.index > i) consecutive_slashes = 0;
+            i = reResult.index+1;
+            c = chunk.charAt(reResult.index);
           }
           var e    = gaps.shift()
             , s    = starti
