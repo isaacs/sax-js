@@ -140,6 +140,9 @@ if(typeof FastList === 'function') {
     // mostly just for error reporting
     parser.position = parser.column = 0;
     parser.line     = 1;
+    parser.slashed  = false;
+    parser.unicodeI = 0;
+    parser.unicodeS = null;
     emit(parser, "onready");
   }
 
@@ -385,56 +388,73 @@ if(typeof FastList === 'function') {
         case S.STRING:
           // thanks thejh, this is an about 50% performance improvement.
           var starti              = i-1
-            , consecutive_slashes = parser.consecutive_slashes || 0
-            , gaps                = new fastlist()
+            , slashed = parser.slashed
+            , unicodeI = parser.unicodeI
             ;
-          while (c) {
+          STRING_BIGLOOP: while (true) {
             if (clarinet.DEBUG)
               console.log(i,c,clarinet.STATE[parser.state]
-                         ,consecutive_slashes);
-            // if it seems like end of string
-            // and we found slashes before
-            // and those slashes an even number
-            // -> this is not an escape its the end of the string
-            if (c === '"' && 
-               (consecutive_slashes === 0 || consecutive_slashes%2 ===0)) {
+                         ,slashed);
+            // zero means "no unicode active". 1-4 mean "parse some more". end after 4.
+            while (unicodeI > 0) {
+              parser.unicodeS += c;
+              c = chunk.charAt(i++);
+              if (unicodeI === 4) {
+                // TODO this might be slow? well, probably not used too often anyway
+                parser.textNode += String.fromCharCode(parseInt(parser.unicodeS, 16));
+                unicodeI = 0;
+                starti = i-1;
+              } else {
+                unicodeI++;
+              }
+              // we can just break here: no stuff we skipped that still has to be sliced out or so
+              if (!c) break STRING_BIGLOOP;
+            }
+            if (c === '"' && !slashed) {
               parser.state = parser.stack.pop() || S.VALUE;
+              parser.textNode += chunk.substring(starti, i-1);
               break;
             }
-            if (c === '\\') { 
-              consecutive_slashes++;
-              if(consecutive_slashes !== 0 && consecutive_slashes%2 !==0)
-                gaps.push(i-1);
+            if (c === '\\' && !slashed) { 
+              slashed = true;
+              parser.textNode += chunk.substring(starti, i-1);
+              c = chunk.charAt(i++);
+              if (!c) break;
             }
-            else {
-              consecutive_slashes = 0;
+            if (slashed) {
+              slashed = false;
+                   if (c === 'n') parser.textNode += '\n'
+              else if (c === 'r') parser.textNode += '\r'
+              else if (c === 't') parser.textNode += '\t'
+              else if (c === 'f') parser.textNode += '\f'
+              else if (c === 'b') parser.textNode += '\b'
+              else if (c === 'u') {
+                // \uxxxx. meh!
+                unicodeI = 1;
+                parser.unicodeS = '';
+              } else parser.textNode += c
+              c = chunk.charAt(i++);
+              starti = i-1;
+              if (!c) break;
+              else continue;
             }
-            parser.consecutive_slashes = consecutive_slashes;
-            parser.position ++;
-            if (c === "\n") {
-              parser.line ++;
-              parser.column = 0;
-            } else parser.column ++;
             
             stringTokenPattern.lastIndex = i
-            var reResult = stringTokenPattern.exec(chunk)
+            var reResult = stringTokenPattern.exec(chunk);
             if (reResult == null) {
-              i = chunk.length+1
-              break
+              i = chunk.length+1;
+              parser.textNode += chunk.substring(starti, i-1);
+              break;
             }
-            if (reResult.index > i) consecutive_slashes = 0;
             i = reResult.index+1;
             c = chunk.charAt(reResult.index);
+            if (!c) {
+              parser.textNode += chunk.substring(starti, i-1);
+              break;
+            }
           }
-          var e    = gaps.shift()
-            , s    = starti
-            ;
-          while(typeof e === 'number') {
-            parser.textNode += chunk.slice(s, e);
-            s                = e+1;
-            e                = gaps.shift();
-          }
-          parser.textNode += chunk.substring(s, i-1);
+          parser.slashed = slashed;
+          parser.unicodeI = unicodeI;
         continue;
 
         case S.TRUE:
