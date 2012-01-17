@@ -33,7 +33,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , zero_byte    :
-      { text       : '{"foo": "\u0000"}'
+      { text       : '{"foo": "\\u0000"}'
       , events     :
         [ ["openobject"  , "foo"]
         , ["value"       , "\u0000"]
@@ -75,7 +75,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , codepoints_from_unicodes  :
-      { text       : '["\u004d\u0430\u4e8c\ud800\udf02"]'
+      { text       : '["\\u004d\\u0430\\u4e8c\\ud800\\udf02"]'
       , events     :
         [ ["openarray"   , undefined]
         , ["value"       , "\u004d\u0430\u4e8c\ud800\udf02"]
