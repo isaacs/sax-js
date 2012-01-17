@@ -14,9 +14,18 @@ var fs         = require('fs')
   , start
   , max        = process.argv[3] || 1
   , n          = process.argv[4] || 9
+  , averages   = {}
   ;
 
-console.log('=N("node bench/a sync.js ' + process.argv[2] + ' ' +
+function update_averages(what, time) {
+  if(averages[what]) {
+    averages[what].n++;
+    averages[what].time = averages[what].time + time;
+  }
+  else averages[what] = {n: 1, time: time};
+}
+
+console.log('=N("node bench/async.js ' + process.argv[2] + ' ' +
      max + ' ' + n + '")');
 console.log('=N("clp (clarinet parser), cls (clarinet event emitter)")');
 //console.log('=N("jpp (creationix/jsonparse)")');
@@ -24,7 +33,9 @@ console.log('=N("clp (clarinet parser), cls (clarinet event emitter)")');
 function stream_bench(cb) {
   s          = clarinet.createStream();
   s.on('end', function () {
-    console.log('cls, %s', Date.now()-start);
+    var exectime = Date.now()-start;
+    console.log('cls, %s', exectime);
+    update_averages('cls', exectime);
     cb();
   });
   var fs_read = fs.createReadStream(process.argv[2]);
@@ -39,8 +50,9 @@ function stream_bench(cb) {
 function parser_bench(cb) {
   p          = clarinet.parser();
   p.onend = function () { 
-    console.log('clp, %s', Date.now()-start);
-    cb();
+    var exectime = Date.now()-start;
+    console.log('clp, %s', exectime);
+    update_averages('clp', exectime);    cb();
   };
   var fs_read = fs.createReadStream(process.argv[2]);
   fs_read.setEncoding('utf-8');
@@ -55,41 +67,21 @@ function parser_bench(cb) {
   });
   start = Date.now();
 }
-// doesnt make sense to compare to sync
-// pretending its async is not being async
-//
-// if anyone wants to implement it in async this is how (creationix
-// as fixed the module and provided a example:
-// https://gist.github.com/1506454
-//
-//function jsonparse_bench(cb) {
-//  jsonparser = new Parser();
-//  var fs_read = fs.createReadStream(process.argv[2]);
-//  var buffer  = [];
-//  var bodyLen = 0;
-//  fs_read.on('data', function(chunk) { 
-//    buffer.push(chunk);
-//    bodyLen += chunk.length;
-//  });
-//  fs_read.on('end', function () { 
-//    var body = new Buffer(bodyLen);
-//    var i = 0;
-//    buffer.forEach(function (chunk) {
-//      chunk.copy(body, i, 0, chunk.length);
-//      i += chunk.length;
-//    });
-//    start = Date.now();
-//    for (var i = 0; i < max; i++)  jsonparser.write(body);
-//    console.log('jpp, %s', Date.now()-start);
-//    if(n===0) process.exit();
-//    n--;
-//    setTimeout(repeat,0);
-//  });
-//}
 
 function repeat() {
   stream_bench(function () {
     return parser_bench(function(){ }); });
 }
+
+process.on('SIGINT', function () {
+  console.log('=N("# Version")');
+  console.log('=N("' + JSON.stringify(process.versions).replace(/"/g, "'") + '")');
+  console.log('=N("# Summary")');
+  for(var k in averages) {
+    console.log('=N("* %s [%s]: %s ms")', k, averages[k].n, 
+      averages[k].time/averages[k].n);
+  }
+  process.exit(1);
+});
 
 repeat();
