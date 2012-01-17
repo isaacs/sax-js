@@ -73,7 +73,7 @@ function repeat() {
     return parser_bench(function(){ }); });
 }
 
-process.on('SIGINT', function () {
+function output_avg() {
   console.log('=N("# Version")');
   console.log('=N("' + JSON.stringify(process.versions).replace(/"/g, "'") + '")');
   console.log('=N("# Summary")');
@@ -81,7 +81,13 @@ process.on('SIGINT', function () {
     console.log('=N("* %s [%s]: %s ms")', k, averages[k].n, 
       averages[k].time/averages[k].n);
   }
+}
+
+process.on('SIGINT', function () {
+  output_avg();
   process.exit(1);
 });
+
+process.on('exit', output_avg);
 
 repeat();
