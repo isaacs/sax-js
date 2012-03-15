@@ -100,6 +100,8 @@ Settings supported:
   space.
 * `lowercasetags` - Boolean. If true, then lowercase tags in loose mode, 
   rather than uppercasing them.
+* `lowercaseattribname` - Boolean. If true, then lowercase attributes names
+  in loose mode.
 * `xmlns` - Boolean. If true, then namespaces are supported.
 
 ## Methods
