@@ -98,8 +98,8 @@ Settings supported:
 * `trim` - Boolean. Whether or not to trim text and comment nodes.
 * `normalize` - Boolean. If true, then turn any whitespace into a single
   space.
-* `lowercasetags` - Boolean. If true, then lowercase tags in loose mode, 
-  rather than uppercasing them.
+* `lowercase` - Boolean. If true, then lowercase tag names and attribute names
+  in loose mode, rather than uppercasing them.
 * `xmlns` - Boolean. If true, then namespaces are supported.
 
 ## Methods
@@ -164,7 +164,7 @@ might go away at some point. SAX isn't intended to be used to parse SGML,
 after all.
 
 `opentag` - An opening tag. Argument: object with `name` and `attributes`.
-In non-strict mode, tag names are uppercased, unless the `lowercasetags`
+In non-strict mode, tag names are uppercased, unless the `lowercase`
 option is set.  If the `xmlns` option is set, then it will contain
 namespace binding information on the `ns` member, and will have a
 `local`, `prefix`, and `uri` member.
@@ -174,8 +174,10 @@ parent closes. In strict mode, well-formedness is enforced. Note that
 self-closing tags will have `closeTag` emitted immediately after `openTag`.
 Argument: tag name.
 
-`attribute` - An attribute node.  Argument: object with `name` and `value`,
-and also namespace information if the `xmlns` option flag is set.
+`attribute` - An attribute node.  Argument: object with `name` and `value`.
+In non-strict mode, attribute names are uppercased, unless the `lowercase`
+option is set.  If the `xmlns` option is set, it will also contains namespace
+information.
 
 `comment` - A comment node.  Argument: the string of the comment.
 
