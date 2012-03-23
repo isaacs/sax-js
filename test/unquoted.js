@@ -4,10 +4,10 @@ require(__dirname).test
   ( { xml :
       "<span class=test hello=world></span>"
     , expect :
-      [ [ "attribute", { name: "class", value: "test" } ]
-      , [ "attribute", { name: "hello", value: "world" } ]
+      [ [ "attribute", { name: "CLASS", value: "test" } ]
+      , [ "attribute", { name: "HELLO", value: "world" } ]
       , [ "opentag", { name: "SPAN",
-                       attributes: { class: "test", hello: "world" } } ]
+                       attributes: { CLASS: "test", HELLO: "world" } } ]
       , [ "closetag", "SPAN" ]
       ]
     , strict : false
