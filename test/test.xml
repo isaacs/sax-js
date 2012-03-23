@@ -1,0 +1,136 @@
+<VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:noNamespaceSchemaLocation="vast.xsd">
+<Ad id="223626102">
+<InLine>
+<AdSystem version="2.0">DART_DFA</AdSystem>
+<AdTitle>In-Stream Video</AdTitle>
+<Description>A test creative with a description.</Description>
+<Survey/>
+<Impression id="DART">
+<![CDATA[
+http://ad.doubleclick.net/imp;v7;x;223626102;0-0;0;47414672;0/0;30477563/30495440/1;;~aopt=0/0/ff/0;~cs=j%3fhttp://s0.2mdn.net/dot.gif
+]]>
+</Impression>
+<Impression id="ThirdParty">
+<![CDATA[
+http://ad.doubleclick.net/ad/N270.Process_Other/B3473145;sz=1x1;ord=7753381?
+]]>
+</Impression>
+<Creatives>
+<Creative sequence="1" AdID="">
+<Linear>
+<Duration>00:00:58</Duration>
+<TrackingEvents>
+<Tracking event="start">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=11;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="midpoint">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=18;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="midpoint">
+<![CDATA[
+http://ad.doubleclick.net/ad/N270.Process_Other/B3473145.3;sz=1x1;ord=7753381?
+]]>
+</Tracking>
+<Tracking event="firstQuartile">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=26;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="firstQuartile">
+<![CDATA[
+http://ad.doubleclick.net/ad/N270.Process_Other/B3473145.2;sz=1x1;ord=7753381?
+]]>
+</Tracking>
+<Tracking event="thirdQuartile">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=27;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="thirdQuartile">
+<![CDATA[
+http://ad.doubleclick.net/ad/N270.Process_Other/B3473145.4;sz=1x1;ord=7753381?
+]]>
+</Tracking>
+<Tracking event="complete">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=13;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="complete">
+<![CDATA[
+http://ad.doubleclick.net/ad/N270.Process_Other/B3473145.5;sz=1x1;ord=7753381?
+]]>
+</Tracking>
+<Tracking event="mute">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=16;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="pause">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=15;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="fullscreen">
+<![CDATA[
+http://ad.doubleclick.net/activity;src=2215309;met=1;v=1;pid=47414672;aid=223626102;ko=0;cid=30477563;rid=30495440;rv=1;timestamp=7753381;eid1=19;ecn1=1;etm1=0;
+]]>
+</Tracking>
+<Tracking event="fullscreen">
+<![CDATA[
+http://ad.doubleclick.net/ad/N270.Process_Other/B3473145.6;sz=1x1;ord=7753381?
+]]>
+</Tracking>
+</TrackingEvents>
+<AdParameters/>
+<VideoClicks>
+<ClickThrough>
+<![CDATA[ http://www.google.com/support/richmedia ]]>
+</ClickThrough>
+<ClickTracking id="DART">
+<![CDATA[
+http://ad.doubleclick.net/click%3Bh%3Dv8/3c41/3/0/%2a/z%3B223626102%3B0-0%3B0%3B47414672%3B255-0/0%3B30477563/30495440/1%3B%3B%7Eaopt%3D0/0/ff/0%3B%7Esscs%3D%3fhttp://s0.2mdn.net/dot.gif
+]]>
+</ClickTracking>
+<ClickTracking id="ThirdParty">
+<![CDATA[
+http://ad.doubleclick.net/clk;212442087;33815766;i?http://www.google.com/support/richmedia
+]]>
+</ClickTracking>
+</VideoClicks>
+<MediaFiles>
+<MediaFile id="1" delivery="progressive" type="video/x-flv" bitrate="457" width="300" height="225">
+<![CDATA[
+http://rmcdn.2mdn.net/MotifFiles/html/2215309/PID_914438_1235753019000_dcrmvideo.flv
+]]>
+</MediaFile>
+<MediaFile id="2" delivery="streaming" type="video/x-flv" bitrate="457" width="300" height="225">
+<![CDATA[
+rtmp://rmcdn.f.2mdn.net/ondemand/MotifFiles/html/2215309/PID_914438_1235753019000_dcrmvideo.flv
+]]>
+</MediaFile>
+</MediaFiles>
+</Linear>
+</Creative>
+<Creative sequence="1" AdID="">
+<CompanionAds></CompanionAds>
+</Creative>
+</Creatives>
+<Extensions>
+<Extension type="DART">
+<AdServingData>
+<DeliveryData>
+<GeoData>
+<![CDATA[ ct=PT&st=&ac=21&zp=&bw=2&dma=1&city=11349 ]]>
+</GeoData>
+</DeliveryData>
+</AdServingData>
+</Extension>
+</Extensions>
+</InLine>
+</Ad>
+</VAST>
