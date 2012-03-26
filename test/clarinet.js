@@ -565,6 +565,46 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'      , undefined]
         ]
       }
+    , johnsmith  :
+      { text     : '{ "firstName": "John", "lastName" : "Smith", "age" : ' +
+                   '25, "address" : { "streetAddress": "21 2nd Street", ' + 
+                   '"city" : "New York", "state" : "NY", "postalCode" : ' +
+                   ' "10021" }, "phoneNumber": [ { "type" : "home", ' + 
+                   '"number": "212 555-1234" }, { "type" : "fax", ' + 
+                   '"number": "646 555-4567" } ] }'
+      , events   :
+        [ ["openobject"   , "firstName"]
+        , ["value"        , "John"]
+        , ["key"          , "lastName"]
+        , ["value"        , "Smith"]
+        , ["key"          , "age"]
+        , ["value"        , 25]
+        , ["key"          , "address"]
+        , ["openobject"   , "streetAddress"]
+        , ["value"        , "21 2nd Street"]
+        , ["key"          , "city"]
+        , ["value"        , "New York"]
+        , ["key"          , "state"]
+        , ["value"        , "NY"]
+        , ["key"          , "postalCode"]
+        , ["value"        , "10021"]
+        , ["closeobject"  , undefined]
+        , ["key"          , "phoneNumber"]
+        , ["openarray"    , undefined]
+        , ["openobject"   , "type"]
+        , ["value"        , "home"]
+        , ["key"          , "number"]
+        , ["value"        , "212 555-1234"]
+        , ["closeobject"  , undefined]
+        , ["openobject"   , "type"]
+        , ["value"        , "fax"]
+        , ["key"          , "number"]
+        , ["value"        , "646 555-4567"]
+        , ["closeobject"  , undefined]
+        , ["closearray"   , undefined]
+        , ["closeobject"  , undefined]
+        ]
+      }
     , array_null :
       { text     : '[null,false,true]'
       , events   :
@@ -673,7 +713,9 @@ function generic(key,sep) {
       , record     = []
       ;
 
-    _.each(events, function(event_pair) { l.push(event_pair); });
+    _.each(events, function(event_pair) { 
+      l.push(event_pair); 
+    });
     _.each(clarinet.EVENTS, function(event) {
       parser["on"+event] = function (value) {
         if(env.CRECORD) { // for really big json we dont want to type all
@@ -682,6 +724,7 @@ function generic(key,sep) {
         } else {
           current = l.shift();
           ++i;
+          if(!(current && current[0])) { return; }
           assert(current[0] === event, 
             '[ln' + i + '] event: [' + current[0] + '] got: [' + event +']');
           if(event!== 'error')
