@@ -359,8 +359,7 @@ var expected = [ [ 'attribute',
   [ 'text', [ '\n' ] ],
   [ 'closetag', [ 'AD' ] ],
   [ 'text', [ '\n' ] ],
-  [ 'closetag', [ 'VAST' ] ],
-  [ 'end', [ undefined ] ] ]
+  [ 'closetag', [ 'VAST' ] ]]
 
 
 sax.EVENTS.forEach(function(ev) {
@@ -394,7 +393,7 @@ function resume() {
   }
 }
 
-parser.onready = function() {
+parser.onend = function() {
   assert.deepEqual(events, expected, 'events do not match')
 }
 
