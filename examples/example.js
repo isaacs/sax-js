@@ -2,7 +2,6 @@
 var fs = require("fs"),
   util = require("util"),
   path = require("path"),
-  xml = fs.cat(path.join(__dirname, "test.xml")),
   sax = require("../lib/sax"),
   strict = sax.parser(true),
   loose = sax.parser(false, {trim:true}),
@@ -13,7 +12,8 @@ var fs = require("fs"),
     // util.error(this.line+":"+this.column);
   }};
 
-xml.addCallback(function (xml) {
+fs.readFile(path.join(__dirname, "test.xml"), function (err, xml) {
+  if (err) throw err;
   // strict.write(xml);
   
   sax.EVENTS.forEach(function (ev) {
