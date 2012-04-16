@@ -10,7 +10,7 @@ var xml = require("posix").cat("test.xml").wait(),
   parser = sax.parser(false, {trim:true}),
   parserT = saxT.parser(false, {trim:true}),
   
-  sys = require("sys");
+  util = require("util");
 
 
 var count = exports.stepsPerLap = 500,
@@ -19,7 +19,7 @@ var count = exports.stepsPerLap = 500,
 exports.countPerLap = 1000;
 exports.compare = {
   "switch" : function () {
-    // sys.debug("switch runs: "+runs++);
+    // util.debug("switch runs: "+runs++);
     // for (var x = 0; x < l; x += 1000) {
     //   parser.write(xml.substr(x, 1000))
     // }
@@ -30,7 +30,7 @@ exports.compare = {
     // done();
   },
   trampoline : function () {
-    // sys.debug("trampoline runs: "+runs++);
+    // util.debug("trampoline runs: "+runs++);
     // for (var x = 0; x < l; x += 1000) {
     //   parserT.write(xml.substr(x, 1000))
     // }
@@ -42,4 +42,4 @@ exports.compare = {
   },
 };
 
-sys.debug("rock and roll...");
+util.debug("rock and roll...");
