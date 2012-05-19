@@ -2,9 +2,7 @@ var
     sax = require("../lib/sax"),
     xml = '<?xml version="1.0" encoding="utf-8"?>' +
     '<xml xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://morpher.ru/">' +
-    '<Р>узкой юбки</Р>' +
-    '<Д>узкой юбке</Д>' +
-    '<В>узкую юбку</В>' +
+    '<Р>тест</Р>' +
     '</xml>';
 
 require(__dirname).test(
@@ -21,7 +19,10 @@ require(__dirname).test(
                     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
                     'xmlns': 'http://morpher.ru/' 
                 } }],
-            [ "opentag", { name: 'Р' }]
+            [ "opentag", { name: 'Р', attributes: {} }],
+            [ "text", "тест" ],
+            [ "closetag", 'Р' ],
+            [ "closetag", 'xml' ]
         ],
         strict : true,
         opt : {}
