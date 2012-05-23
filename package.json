@@ -18,7 +18,7 @@
   ["sax", "json", "parser", "stream", "streaming", "event"
   , "events", "emitter", "async", "streamer", "browser"]
 , "devDependencies" : 
-  { "mocha": "0.3.6", "should": "0.3.2", "underscore": "1.2.3" }
+  { "mocha": "1.0.x", "should": "0.3.2", "underscore": "1.2.3" }
 , "scripts"     :
   { "test"      :
     "./node_modules/mocha/bin/mocha -r should -t 10000 -s 2000  test/clarinet.js test/npm.js"
