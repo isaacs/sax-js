@@ -42,6 +42,16 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'       , undefined]
         ]
       }
+    , empty_value  :
+      { text       : '{"foo": ""}'
+      , events     :
+        [ ["openobject"  , "foo"]
+        , ["value"       , ""]
+        , ["closeobject" , undefined]
+        , ['end'         , undefined]
+        , ['ready'       , undefined]
+        ]
+      }
     , three_byte_utf8 :
       { text          : '{"matzue": "松江", "asakusa": "浅草"}'
       , events        :

@@ -123,7 +123,7 @@ if(typeof FastList === 'function') {
     }
   }
   
-  var stringTokenPattern = /[\\"\n]/g
+  var stringTokenPattern = /[\\"\n]/g;
 
   function CParser (opt) {
     if (!(this instanceof CParser)) return new CParser (opt);
@@ -226,13 +226,15 @@ if(typeof FastList === 'function') {
   }
 
   function emitNode(parser, event, data) {
-    if (parser.textNode) closeValue(parser);
+    closeValue(parser);
     emit(parser, event, data);
   }
 
   function closeValue(parser, event) {
     parser.textNode = textopts(parser.opt, parser.textNode);
-    if (parser.textNode) emit(parser, (event ? event : "onvalue"), parser.textNode);
+    if (parser.textNode) {
+      emit(parser, (event ? event : "onvalue"), parser.textNode);
+    }
     parser.textNode = "";
   }
 
@@ -413,6 +415,9 @@ if(typeof FastList === 'function') {
             if (c === '"' && !slashed) {
               parser.state = parser.stack.pop() || S.VALUE;
               parser.textNode += chunk.substring(starti, i-1);
+              if(!parser.textNode) {
+                 emit(parser, "onvalue", "");
+              }
               break;
             }
             if (c === '\\' && !slashed) { 
@@ -423,25 +428,27 @@ if(typeof FastList === 'function') {
             }
             if (slashed) {
               slashed = false;
-                   if (c === 'n') parser.textNode += '\n'
-              else if (c === 'r') parser.textNode += '\r'
-              else if (c === 't') parser.textNode += '\t'
-              else if (c === 'f') parser.textNode += '\f'
-              else if (c === 'b') parser.textNode += '\b'
+                   if (c === 'n') { parser.textNode += '\n'; }
+              else if (c === 'r') { parser.textNode += '\r'; }
+              else if (c === 't') { parser.textNode += '\t'; }
+              else if (c === 'f') { parser.textNode += '\f'; }
+              else if (c === 'b') { parser.textNode += '\b'; }
               else if (c === 'u') {
                 // \uxxxx. meh!
                 unicodeI = 1;
                 parser.unicodeS = '';
-              } else parser.textNode += c
+              } else {
+                parser.textNode += c;
+              }
               c = chunk.charAt(i++);
               starti = i-1;
               if (!c) break;
               else continue;
             }
             
-            stringTokenPattern.lastIndex = i
+            stringTokenPattern.lastIndex = i;
             var reResult = stringTokenPattern.exec(chunk);
-            if (reResult == null) {
+            if (reResult === null) {
               i = chunk.length+1;
               parser.textNode += chunk.substring(starti, i-1);
               break;
