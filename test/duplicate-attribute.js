@@ -1,4 +1,3 @@
-// default to uppercase
 require(__dirname).test
   ( { xml :
       "<span id=\"hello\" id=\"there\"></span>"
