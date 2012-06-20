@@ -101,6 +101,7 @@ Settings supported:
 * `lowercase` - Boolean. If true, then lowercase tag names and attribute names
   in loose mode, rather than uppercasing them.
 * `xmlns` - Boolean. If true, then namespaces are supported.
+* `position` - Boolean. If false, then don't track line/col/position.
 
 ## Methods
 
