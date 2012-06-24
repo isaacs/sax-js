@@ -1,16 +1,16 @@
 
 var fs = require("fs"),
-  sys = require("sys"),
+  util = require('util'),
   path = require("path"),
   xml = fs.cat(path.join(__dirname, "test.xml")),
   sax = require("../lib/sax"),
   strict = sax.parser(true),
   loose = sax.parser(false, {trim:true}),
   inspector = function (ev) { return function (data) {
-    // sys.error("");
-    // sys.error(ev+": "+sys.inspect(data));
-    // for (var i in data) sys.error(i+ " "+sys.inspect(data[i]));
-    // sys.error(this.line+":"+this.column);
+    // util.error("");
+    // util.error(ev+": "+util.inspect(data));
+    // for (var i in data) util.error(i+ " "+util.inspect(data[i]));
+    // util.error(this.line+":"+this.column);
   }};
 
 xml.addCallback(function (xml) {
@@ -20,8 +20,8 @@ xml.addCallback(function (xml) {
     loose["on"+ev] = inspector(ev);
   });
   loose.onend = function () {
-    // sys.error("end");
-    // sys.error(sys.inspect(loose));
+    // util.error("end");
+    // util.error(util.inspect(loose));
   };
   
   // do this one char at a time to verify that it works.
