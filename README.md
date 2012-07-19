@@ -81,7 +81,7 @@ through unmolested.
     // same chunks coming in also go out.
     fs.createReadStream("file.xml")
       .pipe(saxStream)
-      .pipe(fs.createReadStream("file-copy.xml"))
+      .pipe(fs.createWriteStream("file-copy.xml"))
 
 
 
