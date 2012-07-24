@@ -220,6 +220,10 @@ if(typeof FastList === 'function') {
     return Stream.prototype.on.call(me, ev, handler);
   };
 
+  CStream.prototype.destroy = function () {
+    clearBuffers(this._parser);
+  };
+
   function emit(parser, event, data) {
     if(clarinet.INFO) console.log('-- emit', event, data);
     if (parser[event]) parser[event](data);
