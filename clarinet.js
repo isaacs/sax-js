@@ -222,6 +222,7 @@ if(typeof FastList === 'function') {
 
   CStream.prototype.destroy = function () {
     clearBuffers(this._parser);
+    this.emit("close");
   };
 
   function emit(parser, event, data) {
