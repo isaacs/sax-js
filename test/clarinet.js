@@ -291,19 +291,6 @@ var seps   = [undefined, /\t|\n|\r/, '']
          , ['ready'        , undefined]
          ]
       }
-    , string_invalid_hex :
-      { text             : 
-        '["foo foo, blah blah \u0123 \u4567 \u89ab \uc/ef \uABCD \uEFFE' +
-        ' bar baz bing"]'
-      , events              :
-        [ ["openarray"    , undefined]
-       , ["value"         , 'foo foo, blah blah \u0123 \u4567 \u89ab \uc/ef'+
-                             ' \uABCD \uEFFE bar baz bing']
-       , ["closearray"    , undefined]
-       , ['end'           , undefined]
-       , ['ready'         , undefined]
-       ]
-      }
     , frekin_string:
       { text    : '["\\\\\\"\\"a\\""]'
       , events  :
