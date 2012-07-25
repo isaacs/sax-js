@@ -29,9 +29,9 @@ require(__dirname).test
             attributes: { "xmlns": { name: "xmlns", value: "uri:default", prefix: "xmlns", local: "", uri: "http://www.w3.org/2000/xmlns/" } },
             ns: { "": "uri:default" } } ]
 
-      , [ "attribute", { name: "attr", value: "normal", prefix: "", local: "attr", uri: "uri:default" } ]
+      , [ "attribute", { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } ]
       , [ "opentag", { name: "plain", prefix: "", local: "plain", uri: "uri:default", ns: { '': 'uri:default' },
-            attributes: { "attr": { name: "attr", value: "normal", prefix: "", local: "attr", uri: "uri:default" } } } ]
+            attributes: { "attr": { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } } } ]
       , [ "closetag", "plain" ]
 
       , [ "closetag", "ns1" ]
