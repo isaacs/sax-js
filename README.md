@@ -47,7 +47,7 @@ parser.onerror = function (e) {
   // an error happened. e is the error.
 };
 parser.onvalue = function (v) {
-  // got some value.  v is the value. cant be string, int, bool, and null.
+  // got some value.  v is the value. can be string, double, bool, or null.
 };
 parser.onopenobject = function (key) {
   // opened an object. key is the first key.
