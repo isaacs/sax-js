@@ -161,13 +161,12 @@ if(typeof FastList === 'function') {
   function CStream (opt) {
     if (!(this instanceof CStream)) return new CStream(opt);
 
-    Stream.apply(me);
-
     this._parser = new CParser(opt);
     this.writable = true;
     this.readable = true;
 
     var me = this;
+    Stream.apply(me);
 
     this._parser.onend = function () { me.emit("end"); };
     this._parser.onerror = function (er) {
