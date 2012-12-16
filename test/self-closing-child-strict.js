@@ -12,21 +12,25 @@ require(__dirname).test({
   expect : [
     ["opentag", {
      "name": "root",
-     "attributes": {}
+     "attributes": {},
+     "isSelfClosing": false
     }],
     ["opentag", {
      "name": "child",
-     "attributes": {}
+     "attributes": {}, 
+     "isSelfClosing": false
     }],
     ["opentag", {
      "name": "haha",
-     "attributes": {}
+     "attributes": {},
+     "isSelfClosing": true
     }],
     ["closetag", "haha"],
     ["closetag", "child"],
     ["opentag", {
      "name": "monkey",
-     "attributes": {}
+     "attributes": {},
+     "isSelfClosing": false
     }],
     ["text", "=(|)"],
     ["closetag", "monkey"],

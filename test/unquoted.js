@@ -7,7 +7,8 @@ require(__dirname).test
       [ [ "attribute", { name: "CLASS", value: "test" } ]
       , [ "attribute", { name: "HELLO", value: "world" } ]
       , [ "opentag", { name: "SPAN",
-                       attributes: { CLASS: "test", HELLO: "world" } } ]
+                       attributes: { CLASS: "test", HELLO: "world" },
+                       isSelfClosing: false } ]
       , [ "closetag", "SPAN" ]
       ]
     , strict : false

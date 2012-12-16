@@ -6,7 +6,8 @@ require(__dirname).test
       [ [ "attribute", { name: "CLASS", value: "test" } ]
       , [ "attribute", { name: "HELLO", value: "world" } ]
       , [ "opentag", { name: "SPAN",
-                       attributes: { CLASS: "test", HELLO: "world" } } ]
+                       attributes: { CLASS: "test", HELLO: "world" },
+                       isSelfClosing: false } ]
       , [ "closetag", "SPAN" ]
       ]
     , strict : false
@@ -22,7 +23,8 @@ require(__dirname).test
       [ [ "attribute", { name: "class", value: "test" } ]
       , [ "attribute", { name: "hello", value: "world" } ]
       , [ "opentag", { name: "span",
-                       attributes: { class: "test", hello: "world" } } ]
+                       attributes: { class: "test", hello: "world" },
+                       isSelfClosing: false } ]
       , [ "closetag", "span" ]
       ]
     , strict : false
@@ -38,7 +40,8 @@ require(__dirname).test
       [ [ "attribute", { name: "class", value: "test" } ]
       , [ "attribute", { name: "hello", value: "world" } ]
       , [ "opentag", { name: "span",
-                       attributes: { class: "test", hello: "world" } } ]
+                       attributes: { class: "test", hello: "world" },
+                       isSelfClosing: false } ]
       , [ "closetag", "span" ]
       ]
     , strict : false

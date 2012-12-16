@@ -8,7 +8,7 @@ require(__dirname).test(
     , [ "attribute", { name: "unbound:attr", value: "value", uri: "unbound", prefix: "unbound", local: "attr" } ]
     , [ "opentag", { name: "root", uri: "", prefix: "", local: "root",
           attributes: { "unbound:attr": { name: "unbound:attr", value: "value", uri: "unbound", prefix: "unbound", local: "attr" } },
-          ns: {} } ]
+          ns: {}, isSelfClosing: true } ]
     , [ "closetag", "root" ]
     ]
   }

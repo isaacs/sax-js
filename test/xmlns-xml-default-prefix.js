@@ -9,6 +9,7 @@ require(__dirname).test(
         , local: "root"
         , attributes: {}
         , ns: {}
+        , isSelfClosing: true
         }
       ]
     , ["closetag", "xml:root"]
