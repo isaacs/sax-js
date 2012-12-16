@@ -10,7 +10,8 @@ require(__dirname).test({
     ["error", "Max buffer length exceeded: tagName\nLine: 0\nColumn: 45\nChar: "],
     ["opentag", {
      "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
-     "attributes": {}
+     "attributes": {},
+     "isSelfClosing": false
     }],
     ["text", "yo"],
     ["closetag", "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"]

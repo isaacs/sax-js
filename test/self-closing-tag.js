@@ -9,14 +9,14 @@ require(__dirname).test({
     "</monkey>"+
   "</root>  ",
   expect : [
-    ["opentag", {name:"ROOT", attributes:{}}],
-    ["opentag", {name:"HAHA", attributes:{}}],
+    ["opentag", {name:"ROOT", attributes:{}, isSelfClosing: false}],
+    ["opentag", {name:"HAHA", attributes:{}, isSelfClosing: true}],
     ["closetag", "HAHA"],
-    ["opentag", {name:"HAHA", attributes:{}}],
+    ["opentag", {name:"HAHA", attributes:{}, isSelfClosing: true}],
     ["closetag", "HAHA"],
     // ["opentag", {name:"HAHA", attributes:{}}],
     // ["closetag", "HAHA"],
-    ["opentag", {name:"MONKEY", attributes:{}}],
+    ["opentag", {name:"MONKEY", attributes:{}, isSelfClosing: false}],
     ["text", "=(|)"],
     ["closetag", "MONKEY"],
     ["closetag", "ROOT"]

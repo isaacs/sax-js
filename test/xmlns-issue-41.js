@@ -48,6 +48,7 @@ var t = require(__dirname)
             }
           }
         , ns: {"a": "http://ATTRIBUTE"}
+        , isSelfClosing: true
         }
       ]
     , ["closetag", "parent"]

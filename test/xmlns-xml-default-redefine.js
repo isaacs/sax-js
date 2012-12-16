@@ -29,6 +29,7 @@ require(__dirname).test(
             }
           }
         , ns: {}
+        , isSelfClosing: true
         }
       ]
     , ["closetag", "xml:root"]
