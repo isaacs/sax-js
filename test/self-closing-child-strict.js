@@ -17,7 +17,7 @@ require(__dirname).test({
     }],
     ["opentag", {
      "name": "child",
-     "attributes": {}, 
+     "attributes": {},
      "isSelfClosing": false
     }],
     ["opentag", {

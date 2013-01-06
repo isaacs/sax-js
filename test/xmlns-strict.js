@@ -31,7 +31,7 @@ require(__dirname).test
 
       , [ "attribute", { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } ]
       , [ "opentag", { name: "plain", prefix: "", local: "plain", uri: "uri:default", ns: { '': 'uri:default' },
-            attributes: { "attr": { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } }, 
+            attributes: { "attr": { name: "attr", value: "normal", prefix: "", local: "attr", uri: "" } },
             isSelfClosing: true } ]
       , [ "closetag", "plain" ]
 
