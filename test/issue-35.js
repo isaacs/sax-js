@@ -4,7 +4,7 @@ require(__dirname).test
             "</xml>"
 
     , expect :
-      [ [ "opentag", { name: "xml", attributes: {} } ]
+      [ [ "opentag", { name: "xml", attributes: {}, isSelfClosing: false } ]
       , [ "text", "\r\r\n" ]
       , [ "closetag", "xml" ]
       ]

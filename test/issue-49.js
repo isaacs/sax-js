@@ -2,8 +2,8 @@
 require(__dirname).test
   ( { xml : "<xml><script>hello world</script></xml>"
     , expect :
-      [ [ "opentag", { name: "xml", attributes: {} } ]
-      , [ "opentag", { name: "script", attributes: {} } ]
+      [ [ "opentag", { name: "xml", attributes: {}, isSelfClosing: false } ]
+      , [ "opentag", { name: "script", attributes: {}, isSelfClosing: false } ]
       , [ "text", "hello world" ]
       , [ "closetag", "script" ]
       , [ "closetag", "xml" ]
@@ -16,8 +16,8 @@ require(__dirname).test
 require(__dirname).test
   ( { xml : "<xml><script><![CDATA[hello world]]></script></xml>"
     , expect :
-      [ [ "opentag", { name: "xml", attributes: {} } ]
-      , [ "opentag", { name: "script", attributes: {} } ]
+      [ [ "opentag", { name: "xml", attributes: {}, isSelfClosing: false } ]
+      , [ "opentag", { name: "script", attributes: {}, isSelfClosing: false } ]
       , [ "opencdata", undefined ]
       , [ "cdata", "hello world" ]
       , [ "closecdata", undefined ]

@@ -20,7 +20,8 @@ require(__dirname).test
       , [ "attribute", attr_attr ]
       , [ "opentag", { name: "elm", prefix: "", local: "elm", uri : "http://foo",
                        ns : { "" : "http://foo" },
-                       attributes: { xmlns: xmlns_attr, attr: attr_attr } } ]
+                       attributes: { xmlns: xmlns_attr, attr: attr_attr },
+                       isSelfClosing: true } ]
       , [ "closetag", "elm" ]
       , [ "closenamespace", { prefix: "", uri: "http://foo"} ]
       ]
