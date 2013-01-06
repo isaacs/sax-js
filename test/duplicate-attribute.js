@@ -4,7 +4,7 @@ require(__dirname).test
     , expect :
       [ [ "attribute", { name: "ID", value: "hello" } ]
       , [ "opentag", { name: "SPAN",
-                       attributes: { ID: "hello" } } ]
+                       attributes: { ID: "hello" }, isSelfClosing: false } ]
       , [ "closetag", "SPAN" ]
       ]
     , strict : false

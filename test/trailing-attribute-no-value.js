@@ -4,7 +4,7 @@ require(__dirname).test({
   "<root attrib>",
   expect : [
     ["attribute", {name:"ATTRIB", value:"attrib"}],
-    ["opentag", {name:"ROOT", attributes:{"ATTRIB":"attrib"}}]
+    ["opentag", {name:"ROOT", attributes:{"ATTRIB":"attrib"}, isSelfClosing: false}]
   ],
   opt : { trim : true }
 });
