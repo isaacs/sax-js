@@ -4,10 +4,7 @@
   "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
   "version": "0.5.1",
   "main": "lib/sax.js",
-  "license": {
-    "type": "MIT",
-    "url": "https://raw.github.com/isaacs/sax-js/master/LICENSE"
-  },
+  "license": "BSD",
   "scripts": {
     "test": "node test/index.js"
   },
