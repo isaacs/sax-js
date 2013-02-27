@@ -1,4 +1,4 @@
-#!/usr/local/bin/node-bench
+#!/usr/bin/env node-bench
 
 var Promise = require("events").Promise;
 
