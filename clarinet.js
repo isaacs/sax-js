@@ -203,7 +203,7 @@ if(typeof FastList === 'function') {
   CStream.prototype.write = function (data) {
     var data = new Buffer(data);
     for (var i = 0; i < data.length; i++) {
-      n = data[i];
+      var n = data[i];
       // check for carry over of a multi byte char split between data chunks
       // & fill temp buffer it with start of this data chunk up to the boundary limit set in the last iteration
       if (this.bytes_remaining > 0) {
