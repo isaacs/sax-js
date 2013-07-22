@@ -116,6 +116,9 @@ event. Then, when the error is taken care of, you can call `resume` to
 continue parsing. Otherwise, the parser will not continue while in an error
 state.
 
+`pause` - To pause the parser. No events will be emitted before the next
+call to `resume()`.
+
 ## Members
 
 At all times, the parser object will have the following members:
