@@ -4,7 +4,7 @@ var saxStream = require('../lib/sax').createStream()
 var b = new Buffer('误')
 
 saxStream.on('text', function(text) {
-    assert.equal(text, b.toString())
+  assert.equal(text, b.toString())
 })
 
 saxStream.write(new Buffer('<test><a>'))
@@ -22,7 +22,7 @@ saxStream.end(Buffer.concat([b.slice(1), new Buffer('</d></test>')]))
 var saxStream2 = require('../lib/sax').createStream()
 
 saxStream2.on('text', function(text) {
-    assert.equal(text, '�')
+  assert.equal(text, '�')
 });
 
 saxStream2.write(new Buffer('<e>'));
