@@ -7,12 +7,6 @@
 if(typeof process === 'object' && process.env) env = process.env;
 else env = window;
 
-if(typeof FastList === 'function') {
-  fastlist = FastList;
-} else if (typeof require === 'function') {
-  try { fastlist = require('fast-list'); } catch (exc) { fastlist = Array; }
-} else fastlist = Array;
-
   clarinet.parser            = function (opt) { return new CParser(opt);};
   clarinet.CParser           = CParser;
   clarinet.CStream           = CStream;
@@ -136,7 +130,7 @@ if(typeof FastList === 'function') {
     parser.closed   = parser.closedRoot = parser.sawRoot = false;
     parser.tag      = parser.error = null;
     parser.state    = S.BEGIN;
-    parser.stack    = new fastlist();
+    parser.stack    = new Array();
     // mostly just for error reporting
     parser.position = parser.column = 0;
     parser.line     = 1;
