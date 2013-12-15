@@ -1,32 +1,32 @@
 { "name"        : "clarinet"
-, "description" : 
+, "description" :
   "SAX based evented streaming JSON parser in JavaScript (browser and node)"
 , "author"      : "Nuno Job <nunojobpinto@gmail.com> (http://nunojob.com/)"
-, "contributors": 
+, "contributors":
   [ "Jann Horn (https://github.com/thejh)"
   , "Justin Makeig <jmpublic+github@makeig.com> (http://www.audiblepop.com)"
   , "Roly Fentanes (http://about.me/roly)"
   , "John Lancaster (http://jlank.com)"
   ]
-, "version"     : "0.7.2"
+, "version"     : "0.7.3"
 , "main"        : "./clarinet.js"
 , "homepage"    : "https://github.com/dscape/clarinet"
-, "repository"  : 
+, "repository"  :
   { "type"      : "git"
   , "url"       : "http://github.com/dscape/clarinet.git"
   }
 , "bugs"        : "http://github.com/dscape/clarinet/issues"
-, "keywords"    : 
+, "keywords"    :
   ["sax", "json", "parser", "stream", "streaming", "event"
   , "events", "emitter", "async", "streamer", "browser"]
-, "devDependencies" : 
+, "devDependencies" :
   { "mocha": "1.3.x", "should": "1.0.x", "underscore": "1.2.3" }
 , "scripts"     :
   { "test"      :
     "./node_modules/mocha/bin/mocha -r should -t 10000 -s 2000  test/clarinet.js test/npm.js"
   }
-, "engines"         : 
-  { "node"      : ">=0.3.6" 
+, "engines"         :
+  { "node"      : ">=0.3.6"
   , "firefox"   : ">=0.8.0"
   , "chrome"    : ">=16.0.912"
   }
