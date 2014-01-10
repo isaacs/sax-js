@@ -143,6 +143,7 @@ if(typeof FastList === 'function') {
     parser.slashed  = false;
     parser.unicodeI = 0;
     parser.unicodeS = null;
+    parser.depth    = 0;
     emit(parser, "onready");
   }
 
@@ -310,6 +311,8 @@ if(typeof FastList === 'function') {
 
   function end(parser) {
     if (parser.state !== S.VALUE) error(parser, "Unexpected end");
+    if (parser.depth !== 0) error(parser, "Incomplete JSON");
+     
     closeValue(parser);
     parser.c      = "";
     parser.closed = true;
@@ -360,7 +363,9 @@ if(typeof FastList === 'function') {
           else {
             if(c === '}') {
               emit(parser, 'onopenobject');
+              this.depth++;               
               emit(parser, 'oncloseobject');
+              this.depth--;               
               parser.state = parser.stack.pop() || S.VALUE;
               continue;
             } else  parser.stack.push(S.CLOSE_OBJECT);
@@ -377,10 +382,12 @@ if(typeof FastList === 'function') {
             if(parser.state === S.CLOSE_OBJECT) {
               parser.stack.push(S.CLOSE_OBJECT);
               closeValue(parser, 'onopenobject');
+               this.depth++;
             } else closeValue(parser, 'onkey');
             parser.state  = S.VALUE;
           } else if (c==='}') {
-            emitNode(parser, 'oncloseobject');
+            emitNode(parser, 'oncloseobject');             
+            this.depth--; 
             parser.state = parser.stack.pop() || S.VALUE;
           } else if(c===',') {
             if(parser.state === S.CLOSE_OBJECT)
@@ -395,9 +402,11 @@ if(typeof FastList === 'function') {
           if (c === '\r' || c === '\n' || c === ' ' || c === '\t') continue;
           if(parser.state===S.OPEN_ARRAY) {
             emit(parser, 'onopenarray');
+            this.depth++;
             parser.state = S.VALUE;
             if(c === ']') {
               emit(parser, 'onclosearray');
+              this.depth--;               
               parser.state = parser.stack.pop() || S.VALUE;
               continue;
             } else {
@@ -428,6 +437,7 @@ if(typeof FastList === 'function') {
             parser.state  = S.VALUE;
           } else if (c===']') {
             emitNode(parser, 'onclosearray');
+            this.depth--;             
             parser.state = parser.stack.pop() || S.VALUE;
           } else if (c === '\r' || c === '\n' || c === ' ' || c === '\t')
               continue;
