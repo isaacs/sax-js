@@ -260,8 +260,6 @@ var seps   = [undefined, /\t|\n|\r/, '']
          , ["value"       , 'foo']
          , ["value"       , 'bar']
          , ['error'       , undefined]
-         , ['end'         , undefined]
-         , ['ready'       , undefined]
          ]
        }
     , string_invalid_escape:
