@@ -310,8 +310,8 @@ if(typeof FastList === 'function') {
   }
 
   function end(parser) {
-    if (parser.state !== S.VALUE) error(parser, "Unexpected end");
-    if (parser.depth !== 0) error(parser, "Incomplete JSON");
+    if (parser.state !== S.VALUE || parser.depth !== 0)
+      error(parser, "Unexpected end");
      
     closeValue(parser);
     parser.c      = "";
