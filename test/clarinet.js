@@ -630,6 +630,32 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'       , undefined]
         ]
       }
+    , incomplete_json_terminates_ending_in_number :
+      { text    : '[[1,2,3],[4,5'
+      , events  :
+        [ ["openarray"   , undefined]
+        , ["openarray"   , undefined]
+        , ["value"       , 1]
+        , ["value"       , 2]
+        , ["value"       , 3]
+        , ["closearray"  , undefined]
+        , ["openarray"   , undefined]
+        , ["value"       , 4]    
+        , ["error"       , undefined]    
+        ]
+      }
+    , incomplete_json_terminates_ending_in_comma :
+      { text    : '[[1,2,3],'
+      , events  :
+        [ ["openarray"   , undefined]
+        , ["openarray"   , undefined]
+        , ["value"       , 1]
+        , ["value"       , 2]
+        , ["value"       , 3]
+        , ["closearray"  , undefined]
+        , ["error"       , undefined]
+        ]
+      }
     , json_org  :
       { text    : 
           ('{\r\n' +
