@@ -1,5 +1,7 @@
 # clarinet
 
+![NPM Downloads](http://img.shields.io/npm/dm/clarinet.svg?style=flat) ![NPM Version](http://img.shields.io/npm/v/clarinet.svg?style=flat)
+
 `clarinet` is a sax-like streaming parser for JSON. works in the browser and node.js. `clarinet` is inspired (and forked) from [sax-js][saxjs]. just like you shouldn't use `sax` when you need `dom` you shouldn't use `clarinet` when you need `JSON.parse`. for a more detailed introduction and a performance study please refer to this [article][blog]. 
 
 # design goals
