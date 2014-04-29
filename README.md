@@ -40,7 +40,7 @@ Unknown entities will fail in strict mode, and in loose mode, will pass
 through unmolested.
 
 ## Usage
-
+```Javascript
     var sax = require("./lib/sax"),
       strict = true, // set to false for html-mode
       parser = sax.parser(strict);
@@ -82,7 +82,7 @@ through unmolested.
     fs.createReadStream("file.xml")
       .pipe(saxStream)
       .pipe(fs.createWriteStream("file-copy.xml"))
-
+```
 
 
 ## Arguments
