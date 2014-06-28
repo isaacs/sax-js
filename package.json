@@ -15,7 +15,9 @@
     "type": "git",
     "url": "http://github.com/dscape/clarinet.git"
   },
-  "bugs": "http://github.com/dscape/clarinet/issues",
+  "bugs": {
+    "url": "http://github.com/dscape/clarinet/issues"
+  },
   "keywords": [
     "sax",
     "json",
@@ -41,5 +43,9 @@
     "node": ">=0.3.6",
     "firefox": ">=0.8.0",
     "chrome": ">=16.0.912"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "license": "BSD"
 }
