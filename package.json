@@ -8,7 +8,7 @@
     "Roly Fentanes (http://about.me/roly)",
     "John Lancaster (http://jlank.com)"
   ],
-  "version": "0.8.1",
+  "version": "0.9.0",
   "main": "./clarinet.js",
   "homepage": "https://github.com/dscape/clarinet",
   "repository": {
