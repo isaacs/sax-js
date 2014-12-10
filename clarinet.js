@@ -209,7 +209,7 @@ else env = window;
         this.string = this.temp_buffs[this.bytes_in_sequence].toString();
         this.bytes_in_sequence = this.bytes_remaining = 0;
 
-        // move iterator forward by number of byte read during sequencing (one less since for... will increment i)
+        // move iterator forward by number of byte read during sequencing
         i = i + j - 1;
 
         // pass data to parser and move forward to parse rest of data
