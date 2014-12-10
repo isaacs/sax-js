@@ -196,9 +196,10 @@ else env = window;
     { constructor: { value: CStream } });
 
   CStream.prototype.write = function (data) {
-    var data = new Buffer(data);
+    data = new Buffer(data);
     for (var i = 0; i < data.length; i++) {
       var n = data[i];
+
       // check for carry over of a multi byte char split between data chunks
       // & fill temp buffer it with start of this data chunk up to the boundary limit set in the last iteration
       if (this.bytes_remaining > 0) {
@@ -207,31 +208,51 @@ else env = window;
         }
         this.string = this.temp_buffs[this.bytes_in_sequence].toString();
         this.bytes_in_sequence = this.bytes_remaining = 0;
+
+        // move iterator forward by number of byte read during sequencing (one less since for... will increment i)
         i = i + j - 1;
 
+        // pass data to parser and move forward to parse rest of data
         this._parser.write(this.string);
         this.emit("data", this.string);
-        return true;
-      } else if (this.bytes_remaining === 0 && n >= 128) { // else if no remainder bytes carried over, parse multi byte (>=128) chars one at a time
+        continue;
+      }
+
+      // if no remainder bytes carried over, parse multi byte (>=128) chars one at a time
+      if (this.bytes_remaining === 0 && n >= 128) {
         if ((n >= 194) && (n <= 223)) this.bytes_in_sequence = 2;
         if ((n >= 224) && (n <= 239)) this.bytes_in_sequence = 3;
         if ((n >= 240) && (n <= 244)) this.bytes_in_sequence = 4;
         if ((this.bytes_in_sequence + i) > data.length) { // if bytes needed to complete char fall outside data length, we have a boundary split
+
           for (var k = 0; k <= (data.length - 1 - i); k++) {
             this.temp_buffs[this.bytes_in_sequence][k] = data[i + k]; // fill temp data of correct size with bytes available in this chunk
           }
           this.bytes_remaining = (i + this.bytes_in_sequence) - data.length;
-          i = data.length - 1;
-        } else {
-          this._parser.write(data.toString());
-          this.emit("data", data);
+
+          // immediately return as we need another chunk to sequence the character
           return true;
+        } else {
+          this.string = data.slice(i, (i + this.bytes_in_sequence)).toString();
+          i = i + this.bytes_in_sequence - 1;
+
+          this._parser.write(this.string);
+          this.emit("data", this.string);
+          continue;
         }
-      } else {
-        this._parser.write(data.toString());
-        this.emit("data", data);
-        return true;
       }
+
+      // is there a range of characters that are immediately parsable?
+      for (var p = i; p < data.length; p++) {
+        if (data[p] >= 128) break;
+      }
+      this.string = data.slice(i, p).toString();
+      this._parser.write(this.string);
+      this.emit("data", this.string);
+      i = p - 1;
+
+      // handle any remaining characters using multibyte logic
+      continue;
     }
   };
 
