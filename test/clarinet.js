@@ -65,10 +65,10 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , four_byte_utf8 :
-      { text          : '{ "U+10ABCD": "Ã­Â¯ÂªÃ­Â¿Â" }'
+      { text          : '{ "U+10ABCD": "í¯ªí¿" }'
       , events        :
         [ ["openobject"  , "U+10ABCD"]
-        , ["value"       , "Ã­Â¯ÂªÃ­Â¿Â"]
+        , ["value"       , "í¯ªí¿"]
         , ["closeobject" , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
