@@ -324,7 +324,7 @@ else env = window;
   function end(parser) {
     if (parser.state !== S.VALUE || parser.depth !== 0)
       error(parser, "Unexpected end");
-      
+     
     closeValue(parser);
     parser.c      = "";
     parser.closed = true;
