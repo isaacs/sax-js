@@ -1,4 +1,4 @@
-if (!clarinet) { // node
+if (!clarinet) { // node 
   var clarinet  = require('../clarinet.js')
     , _         = require('underscore')
     ;
@@ -65,10 +65,10 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , four_byte_utf8 :
-      { text          : '{ "U+10ABCD": "ÌØ™Ìøç" }'
+      { text          : '{ "U+10ABCD": "ÙäØç" }'
       , events        :
         [ ["openobject"  , "U+10ABCD"]
-        , ["value"       , "ÌØ™Ìøç"]
+        , ["value"       , "ÙäØç"]
         , ["closeobject" , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
@@ -127,7 +127,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
       }
     , array    :
       { text   : '["one", "two"]'
-      , events :
+      , events : 
         [ ['openarray'  , undefined]
         , ['value'      , 'one']
         , ['value'      , 'two']
@@ -139,7 +139,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
     , array_fu :
       { text   : '["foo", "bar", "baz",true,false,null,{"key":"value"},' +
                  '[null,null,null,[]]," \\\\ "]'
-      , events :
+      , events : 
         [ ['openarray'   , undefined]
         , ['value'       , 'foo']
         , ['value'       , 'bar']
@@ -165,7 +165,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
       }
     , simple_exp    :
       { text   : '[10e-01]'
-      , events :
+      , events : 
         [ ['openarray'  , undefined]
         , ['value'      , 10e-01]
         , ['closearray' , undefined]
@@ -240,7 +240,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , obj_strange_strings  :
-      { text               :
+      { text               : 
         '{"foo": "bar and all\\\"", "bar": "its \\\"nice\\\""}'
       , events             :
         [ ["openobject"    , "foo"]
@@ -251,9 +251,9 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['end'           , undefined]
         , ['ready'         , undefined]
         ]
-      }
+      } 
     , bad_foo_bar         :
-      { text              :
+      { text              : 
           '["foo", "bar"'
        , events           :
          [ ["openarray"   , undefined]
@@ -265,7 +265,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
          ]
        }
     , string_invalid_escape:
-      { text             :
+      { text             : 
           '["and you can\'t escape thi\s"]'
        , events          :
          [ ["openarray"   , undefined]
@@ -314,10 +314,10 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , non_utf8           :
-      { text   :
+      { text   : 
         '{"CoreletAPIVersion":2,"CoreletType":"standalone",' +
         '"documentation":"A corelet that provides the capability to upload' +
-        ' a folder‚Äôs contents into a user‚Äôs locker.","functions":[' +
+        ' a folder‚Äôs contents into a user‚Äôs locker.","functions":[' + 
         '{"documentation":"Displays a dialog box that allows user to ' +
         'select a folder on the local system.","name":' +
         '"ShowBrowseDialog","parameters":[{"documentation":"The ' +
@@ -343,7 +343,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
         '"callback","required":true,"type":"callback"}]}],' +
         '"name":"LockerUploader","version":{"major":0,' +
         '"micro":1,"minor":0},"versionString":"0.0.1"}'
-      , events :
+      , events : 
         [ [ "openobject"  , "CoreletAPIVersion"]
         , [ "value"       , 2 ]
         , [ "key"         , "CoreletType"]
@@ -475,7 +475,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
       }
     , array_of_arrays    :
       { text   : '[[[["foo"]]]]'
-      , events :
+      , events : 
         [ ['openarray'  , undefined]
         , ['openarray'  , undefined]
         , ['openarray'  , undefined]
@@ -504,7 +504,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
       }
     , high_overflow :
       { text       : '[9223372036854775808]'
-      , events     :
+      , events     : 
         [ ['openarray'  , undefined]
         , ["value"      , 9223372036854775808]
         , ['closearray' , undefined]
@@ -567,10 +567,10 @@ var seps   = [undefined, /\t|\n|\r/, '']
       }
     , johnsmith  :
       { text     : '{ "firstName": "John", "lastName" : "Smith", "age" : ' +
-                   '25, "address" : { "streetAddress": "21 2nd Street", ' +
+                   '25, "address" : { "streetAddress": "21 2nd Street", ' + 
                    '"city" : "New York", "state" : "NY", "postalCode" : ' +
-                   ' "10021" }, "phoneNumber": [ { "type" : "home", ' +
-                   '"number": "212 555-1234" }, { "type" : "fax", ' +
+                   ' "10021" }, "phoneNumber": [ { "type" : "home", ' + 
+                   '"number": "212 555-1234" }, { "type" : "fax", ' + 
                    '"number": "646 555-4567" } ] }'
       , events   :
         [ ["openobject"   , "firstName"]
@@ -644,8 +644,8 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ["value"       , 3]
         , ["closearray"  , undefined]
         , ["openarray"   , undefined]
-        , ["value"       , 4]
-        , ["error"       , undefined]
+        , ["value"       , 4]    
+        , ["error"       , undefined]    
         ]
       }
     , incomplete_json_terminates_ending_in_comma :
@@ -661,7 +661,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , json_org  :
-      { text    :
+      { text    : 
           ('{\r\n' +
           '          "glossary": {\n' +
           '              "title": "example glossary",\n\r' +
@@ -671,7 +671,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
           '                      "GlossEntry": {\r\n' +
           '                          "ID": "SGML",\r\n' +
           '      \t\t\t\t\t"SortAs": "SGML",\r\n' +
-          '      \t\t\t\t\t"GlossTerm": "Standard Generalized ' +
+          '      \t\t\t\t\t"GlossTerm": "Standard Generalized ' + 
           'Markup Language",\r\n' +
           '      \t\t\t\t\t"Acronym": "SGML",\r\n' +
           '      \t\t\t\t\t"Abbrev": "ISO 8879:1986",\r\n' +
@@ -756,8 +756,8 @@ function generic(key, prechunked, sep) {
       , record     = []
       ;
 
-    _.each(events, function(event_pair) {
-      l.push(event_pair);
+    _.each(events, function(event_pair) { 
+      l.push(event_pair); 
     });
     _.each(clarinet.EVENTS, function(event) {
       parser["on"+event] = function (value) {
@@ -768,15 +768,15 @@ function generic(key, prechunked, sep) {
           current = l.shift();
           ++i;
           if(!(current && current[0])) { return; }
-          assert(current[0] === event,
+          assert(current[0] === event, 
             '[ln' + i + '] event: [' + current[0] + '] got: [' + event +']');
           if(event!== 'error')
-            assert(current[1] === value,
+            assert(current[1] === value, 
               '[ln' + i + '] value: [' + current[1] + '] got: [' + value +']');
         }
       };
     });
-    _.each(doc_chunks, function(chunk) {
+    _.each(doc_chunks, function(chunk) { 
      parser.write(chunk);
     });
     parser.end();

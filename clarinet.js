@@ -324,7 +324,7 @@ else env = window;
   function end(parser) {
     if (parser.state !== S.VALUE || parser.depth !== 0)
       error(parser, "Unexpected end");
-
+      
     closeValue(parser);
     parser.c      = "";
     parser.closed = true;
@@ -375,9 +375,9 @@ else env = window;
           else {
             if(c === '}') {
               emit(parser, 'onopenobject');
-              this.depth++;
+              this.depth++;               
               emit(parser, 'oncloseobject');
-              this.depth--;
+              this.depth--;               
               parser.state = parser.stack.pop() || S.VALUE;
               continue;
             } else  parser.stack.push(S.CLOSE_OBJECT);
@@ -398,8 +398,8 @@ else env = window;
             } else closeValue(parser, 'onkey');
             parser.state  = S.VALUE;
           } else if (c==='}') {
-            emitNode(parser, 'oncloseobject');
-            this.depth--;
+            emitNode(parser, 'oncloseobject');             
+            this.depth--; 
             parser.state = parser.stack.pop() || S.VALUE;
           } else if(c===',') {
             if(parser.state === S.CLOSE_OBJECT)
@@ -418,7 +418,7 @@ else env = window;
             parser.state = S.VALUE;
             if(c === ']') {
               emit(parser, 'onclosearray');
-              this.depth--;
+              this.depth--;               
               parser.state = parser.stack.pop() || S.VALUE;
               continue;
             } else {
@@ -449,7 +449,7 @@ else env = window;
             parser.state  = S.VALUE;
           } else if (c===']') {
             emitNode(parser, 'onclosearray');
-            this.depth--;
+            this.depth--;             
             parser.state = parser.stack.pop() || S.VALUE;
           } else if (c === '\r' || c === '\n' || c === ' ' || c === '\t')
               continue;
