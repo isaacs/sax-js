@@ -68,7 +68,7 @@ var seps   = [undefined, /\t|\n|\r/, '']
       { text          : '{ "U+10ABCD": "í¯ªí¿" }'
       , events        :
         [ ["openobject"  , "U+10ABCD"]
-        , ["value"       , í¯ªí¿""]
+        , ["value"       , "í¯ªí¿"]
         , ["closeobject" , undefined]
         , ['end'         , undefined]
         , ['ready'       , undefined]
