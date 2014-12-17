@@ -37,7 +37,7 @@
     "underscore": "1.2.3"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha -r should -t 10000 -s 2000  test/clarinet.js test/npm.js"
+    "test": "./node_modules/mocha/bin/mocha -r should -t 10000 -s 2000  test/clarinet.js test/npm.js test/utf8-chunks.js"
   },
   "engines": {
     "node": ">=0.3.6",

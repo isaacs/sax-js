@@ -490,8 +490,11 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , low_overflow :
-      { text       : '[-9223372036854775808]'
-      , events     : 
+      { text       : '[-9223372036854775808]',
+        chunks: [
+          '[-92233720', '36854775808]'
+        ]
+      , events     :
         [ ['openarray'  , undefined]
         , ["value"      , -9223372036854775808]
         , ['closearray' , undefined]
@@ -603,7 +606,8 @@ var seps   = [undefined, /\t|\n|\r/, '']
         ]
       }
     , array_null :
-      { text     : '[null,false,true]'
+      { text     : '[null,false,true]',
+        chunks   : ['[nu', 'll,', 'fa', 'lse,', 'tr', 'ue]']
       , events   :
         [ ["openarray"   , undefined]
         , ["value"       , null]
@@ -721,14 +725,30 @@ var seps   = [undefined, /\t|\n|\r/, '']
         , ['ready'       , undefined]
         ]
       }
+    ,
+    string_chunk_span :
+      {
+        text: '["L\'OrÃ©al", "LÃ©\'Oral", "Ã©alL\'Or"]',
+        chunks: [
+          '["L\'OrÃ',
+          '©al", "LÃ©\'Oral", "Ã©alL\'Or"]'
+        ],
+        events: [
+          ['openarray', undefined],
+          ['value', 'L\'OrÃ©al'],
+          ['value', 'LÃ©\'Oral'],
+          ['value', 'Ã©alL\'Or'],
+          ['closearray', undefined]
+        ]
+      }
     };
 
-function generic(key,sep) {
+function generic(key, prechunked, sep) {
   return function () {
     var doc        = docs[key].text
       , events     = docs[key].events
       , l          = typeof FastList === 'function' ? new FastList() : []
-      , doc_chunks = doc.split(sep)
+      , doc_chunks = !prechunked ? doc.split(sep) : docs[key].chunks
       , parser     = clarinet.parser()
       , i          = 0
       , current
@@ -773,8 +793,18 @@ describe('clarinet', function(){
         for(var i in seps) {
           sep = seps[i];
           it('[' + key + '] should be able to parse -> ' + sep,
-            generic(key,sep));
+            generic(key, false, sep));
         }
+      }
+    }
+  });
+
+  describe('#pre-chunked', function() {
+    for (var key in docs) {
+      if (docs.hasOwnProperty(key)) {
+        if (!docs[key].chunks) continue;
+
+        it('[' + key + '] should be able to parse pre-chunked', generic(key, true));
       }
     }
   });
