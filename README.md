@@ -102,7 +102,7 @@ Settings supported:
   in loose mode, rather than uppercasing them.
 * `xmlns` - Boolean. If true, then namespaces are supported.
 * `position` - Boolean. If false, then don't track line/col/position.
-* `strictxml` - Boolean. If true, only parse XML entities (`&amp;`, `&apos;`, `&gt;`, `&lt;`, and `&quot;`)
+* `strictEntities` - Boolean. If true, only parse [predefined XML entities](http://www.w3.org/TR/REC-xml/#sec-predefined-ent) (`&amp;`, `&apos;`, `&gt;`, `&lt;`, and `&quot;`)
 
 ## Methods
 
