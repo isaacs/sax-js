@@ -25,8 +25,10 @@ saxStream2.on('text', function(text) {
   assert.equal(text, '�')
 });
 
+saxStream2.write(new Buffer('<root>'));
 saxStream2.write(new Buffer('<e>'));
 saxStream2.write(new Buffer([0xC0]));
 saxStream2.write(new Buffer('</e>'));
 saxStream2.write(Buffer.concat([new Buffer('<f>'), b.slice(0,1)]));
+saxStream2.write(new Buffer('</root>'));
 saxStream2.end();
