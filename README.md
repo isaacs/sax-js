@@ -9,7 +9,7 @@ the browser or other CommonJS implementations.
 
 * A very simple tool to parse through an XML string.
 * A stepping stone to a streaming HTML parser.
-* A handy way to deal with RSS and other mostly-ok-but-kinda-broken XML 
+* A handy way to deal with RSS and other mostly-ok-but-kinda-broken XML
   docs.
 
 ## What This Is (probably) Not
@@ -23,7 +23,7 @@ the browser or other CommonJS implementations.
   implementations are in Java and do a lot more than this does.
 * An XML Validator - It does a little validation when in strict mode, but
   not much.
-* A Schema-Aware XSD Thing - Schemas are an exercise in fetishistic 
+* A Schema-Aware XSD Thing - Schemas are an exercise in fetishistic
   masochism.
 * A DTD-aware Thing - Fetching DTDs is a much bigger job.
 
@@ -102,6 +102,7 @@ Settings supported:
   in loose mode, rather than uppercasing them.
 * `xmlns` - Boolean. If true, then namespaces are supported.
 * `position` - Boolean. If false, then don't track line/col/position.
+* `strictEntities` - Boolean. If true, only parse [predefined XML entities](http://www.w3.org/TR/REC-xml/#sec-predefined-ent) (`&amp;`, `&apos;`, `&gt;`, `&lt;`, and `&quot;`)
 
 ## Methods
 
