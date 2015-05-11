@@ -324,7 +324,7 @@ else env = window;
   function end(parser) {
     if (parser.state !== S.VALUE || parser.depth !== 0)
       error(parser, "Unexpected end");
-     
+
     closeValue(parser);
     parser.c      = "";
     parser.closed = true;
@@ -375,9 +375,9 @@ else env = window;
           else {
             if(c === '}') {
               emit(parser, 'onopenobject');
-              this.depth++;               
+              this.depth++;
               emit(parser, 'oncloseobject');
-              this.depth--;               
+              this.depth--;
               parser.state = parser.stack.pop() || S.VALUE;
               continue;
             } else  parser.stack.push(S.CLOSE_OBJECT);
@@ -398,8 +398,8 @@ else env = window;
             } else closeValue(parser, 'onkey');
             parser.state  = S.VALUE;
           } else if (c==='}') {
-            emitNode(parser, 'oncloseobject');             
-            this.depth--; 
+            emitNode(parser, 'oncloseobject');
+            this.depth--;
             parser.state = parser.stack.pop() || S.VALUE;
           } else if(c===',') {
             if(parser.state === S.CLOSE_OBJECT)
@@ -418,7 +418,7 @@ else env = window;
             parser.state = S.VALUE;
             if(c === ']') {
               emit(parser, 'onclosearray');
-              this.depth--;               
+              this.depth--;
               parser.state = parser.stack.pop() || S.VALUE;
               continue;
             } else {
@@ -449,7 +449,7 @@ else env = window;
             parser.state  = S.VALUE;
           } else if (c===']') {
             emitNode(parser, 'onclosearray');
-            this.depth--;             
+            this.depth--;
             parser.state = parser.stack.pop() || S.VALUE;
           } else if (c === '\r' || c === '\n' || c === ' ' || c === '\t')
               continue;
@@ -470,6 +470,7 @@ else env = window;
             while (unicodeI > 0) {
               parser.unicodeS += c;
               c = chunk.charAt(i++);
+              parser.position++;
               if (unicodeI === 4) {
                 // TODO this might be slow? well, probably not used too often anyway
                 parser.textNode += String.fromCharCode(parseInt(parser.unicodeS, 16));
@@ -484,6 +485,7 @@ else env = window;
             if (c === '"' && !slashed) {
               parser.state = parser.stack.pop() || S.VALUE;
               parser.textNode += chunk.substring(starti, i-1);
+              parser.position += i - 1 - starti;
               if(!parser.textNode) {
                  emit(parser, "onvalue", "");
               }
@@ -492,7 +494,9 @@ else env = window;
             if (c === '\\' && !slashed) {
               slashed = true;
               parser.textNode += chunk.substring(starti, i-1);
+              parser.position += i - 1 - starti;
               c = chunk.charAt(i++);
+              parser.position++;
               if (!c) break;
             }
             if (slashed) {
@@ -510,6 +514,7 @@ else env = window;
                 parser.textNode += c;
               }
               c = chunk.charAt(i++);
+              parser.position++;
               starti = i-1;
               if (!c) break;
               else continue;
@@ -520,12 +525,14 @@ else env = window;
             if (reResult === null) {
               i = chunk.length+1;
               parser.textNode += chunk.substring(starti, i-1);
+              parser.position += i - 1 - starti;
               break;
             }
             i = reResult.index+1;
             c = chunk.charAt(reResult.index);
             if (!c) {
               parser.textNode += chunk.substring(starti, i-1);
+              parser.position += i - 1 - starti;
               break;
             }
           }
