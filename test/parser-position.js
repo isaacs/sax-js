@@ -1,12 +1,12 @@
 var sax = require("../lib/sax"),
-    assert = require("assert")
+    tap = require("tap")
 
 function testPosition(chunks, expectedEvents) {
   var parser = sax.parser();
   expectedEvents.forEach(function(expectation) {
     parser['on' + expectation[0]] = function() {
       for (var prop in expectation[1]) {
-        assert.equal(parser[prop], expectation[1][prop]);
+        tap.equal(parser[prop], expectation[1][prop]);
       }
     }
   });

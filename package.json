@@ -6,7 +6,7 @@
   "main": "lib/sax.js",
   "license": "ISC",
   "scripts": {
-    "test": "tap test/index.js"
+    "test": "tap test/*.js"
   },
   "repository": "git://github.com/isaacs/sax-js.git",
   "files": [

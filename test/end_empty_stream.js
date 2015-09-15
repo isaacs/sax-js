@@ -1,5 +1,5 @@
-var assert = require('assert');
+var tap = require('tap');
 var saxStream = require('../lib/sax').createStream();
-assert.doesNotThrow(function() {
+tap.doesNotThrow(function() {
     saxStream.end();
 });
