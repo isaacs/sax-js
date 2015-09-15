@@ -8,5 +8,11 @@
   "scripts": {
     "test": "node test/index.js"
   },
-  "repository": "git://github.com/isaacs/sax-js.git"
+  "repository": "git://github.com/isaacs/sax-js.git",
+  "files": [
+    "lib/sax.js",
+    "LICENSE",
+    "LICENSE-W3C.html",
+    "README.md"
+  ]
 }
