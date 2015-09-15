@@ -61,7 +61,7 @@ if (module === require.main) {
     })
     var n = files.length
       , i = 0
-    console.log("0.." + n)
+    console.log("1.." + n)
     files.forEach(function (file) {
       // run this test.
       try {
