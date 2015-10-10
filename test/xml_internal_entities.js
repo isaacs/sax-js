@@ -30,7 +30,7 @@ for (entity in entities_to_test){
 	var attrib_name = "test"+ent_i, attrib_value = "Testing "+entity;
 	xml_start += attrib_name+'="'+'&';//add the first part to use in calculation below
 	if (typeof entities_to_test[entity] == "object"){
-		i_expect.push(['error', "Invalid character entity\nLine: 0\nColumn: "+(xml_start.length+entities_to_test[entity][0]+1)+"\nChar: "+entities_to_test[entity][1]]);
+		i_expect.push(['error', "Invalid character in entity name\nLine: 0\nColumn: "+(xml_start.length+entities_to_test[entity][0]+1)+"\nChar: "+entities_to_test[entity][1]]);
 		i_expect.push(['attribute', {name: attrib_name, value: '&'+entity+';'}]);
 		my_attributes[attrib_name] = '&'+entity+';';
 	} else {
