@@ -16,6 +16,6 @@
     "README.md"
   ],
   "devDependencies": {
-    "tap": "^1.4.1"
+    "tap": "^2.1.1"
   }
 }
