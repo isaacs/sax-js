@@ -6,9 +6,8 @@
   "main": "lib/sax.js",
   "license": "ISC",
   "scripts": {
-    "test": "tap test/*.js",
-    "posttest": "npm run lint",
-    "lint": "standard -F test/*.js lib/*.js"
+    "test": "tap test/*.js --cov",
+    "posttest": "standard -F test/*.js lib/*.js"
   },
   "repository": "git://github.com/isaacs/sax-js.git",
   "files": [
@@ -19,6 +18,6 @@
   ],
   "devDependencies": {
     "standard": "^5.3.1",
-    "tap": "^2.1.1"
+    "tap": "^5.2.0"
   }
 }
