@@ -168,6 +168,11 @@ would trigger this kind of event. This is a weird thing to support, so it
 might go away at some point. SAX isn't intended to be used to parse SGML,
 after all.
 
+`opentagstart` - Emitted immediately when the tag name is available,
+but before any attributes are encountered.  Argument: object with a
+`name` field and an empty `attributes` set.  Note that this is the
+same object that will later be emitted in the `opentag` event.
+
 `opentag` - An opening tag. Argument: object with `name` and `attributes`.
 In non-strict mode, tag names are uppercased, unless the `lowercase`
 option is set.  If the `xmlns` option is set, then it will contain
