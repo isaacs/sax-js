@@ -1,2 +1,5 @@
-node_modules
-.coverage
+.*.swp
+node_modules/*
+nyc_output/
+.nyc_output/
+coverage/
