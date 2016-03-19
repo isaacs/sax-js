@@ -23,6 +23,14 @@ var xmlStart = '<a test="&amp;" '
 var xmlEnd = '/>'
 
 iExpect.push([
+  'opentagstart',
+  {
+    name: 'a',
+    attributes: {}
+  }
+])
+
+iExpect.push([
   'attribute',
   {
     name: 'test',

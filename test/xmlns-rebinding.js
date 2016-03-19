@@ -7,6 +7,14 @@ require(__dirname).test({
     '</root>',
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'root',
+        attributes: {},
+        ns: {}
+      }
+    ],
+    [
       'opennamespace',
       {
         prefix: 'x',
@@ -105,6 +113,17 @@ require(__dirname).test({
       }
     ],
     [
+      'opentagstart',
+      {
+        name: 'rebind',
+        attributes: {},
+        ns: {
+          x: 'x1',
+          y: 'y1'
+        }
+      }
+    ],
+    [
       'opennamespace',
       {
         prefix: 'x',
@@ -141,6 +160,16 @@ require(__dirname).test({
           x: 'x2'
         },
         isSelfClosing: false
+      }
+    ],
+    [
+      'opentagstart',
+      {
+        name: 'check',
+        attributes: {},
+        ns: {
+          x: 'x2'
+        }
       }
     ],
     [
@@ -205,6 +234,17 @@ require(__dirname).test({
       {
         prefix: 'x',
         uri: 'x2'
+      }
+    ],
+    [
+      'opentagstart',
+      {
+        name: 'check',
+        attributes: {},
+        ns: {
+          x: 'x1',
+          y: 'y1'
+        }
       }
     ],
     [

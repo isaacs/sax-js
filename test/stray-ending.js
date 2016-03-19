@@ -4,11 +4,25 @@ require(__dirname).test({
   xml: '<a><b></c></b></a>',
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'A',
+        attributes: {}
+      }
+    ],
+    [
       'opentag',
       {
         name: 'A',
         attributes: {},
         isSelfClosing: false
+      }
+    ],
+    [
+      'opentagstart',
+      {
+        name: 'B',
+        attributes: {}
       }
     ],
     [

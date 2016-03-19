@@ -3,6 +3,14 @@ require(__dirname).test({
   opt: { xmlns: true },
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'unbound:root',
+        attributes: {},
+        ns: {}
+      }
+    ],
+    [
       'error',
       'Unbound namespace prefix: "unbound:root"\nLine: 0\nColumn: 15\nChar: >'
     ],
@@ -31,6 +39,14 @@ require(__dirname).test({
     xmlns: true
   },
   expect: [
+    [
+      'opentagstart',
+      {
+        name: 'unbound:root',
+        attributes: {},
+        ns: {}
+      }
+    ],
     [
       'opennamespace',
       {

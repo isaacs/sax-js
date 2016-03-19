@@ -9,6 +9,7 @@ xml += '</r>'
 require(__dirname).test({
   xml: xml,
   expect: [
+    ['opentagstart', {'name': 'R', attributes: {}}],
     ['opentag', {'name': 'R', attributes: {}, isSelfClosing: false}],
     ['text', text],
     ['closetag', 'R']

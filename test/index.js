@@ -28,6 +28,16 @@ exports.test = function test (options) {
         'expectation #' + e + ' ' + util.inspect(expect[e]) + '\n' +
         'Unexpected event: ' + ev + ' ' + (n ? util.inspect(n) : ''))
       var inspected = n instanceof Error ? '\n' + n.message : util.inspect(n)
+
+      if (!expect[e]) {
+        t.fail('did not expect this event', {
+          event: ev,
+          expect: expect,
+          data: n
+        })
+        return
+      }
+
       t.equal(ev, expect[e][0],
         'expectation #' + e + '\n' +
         "Didn't get expected event\n" +

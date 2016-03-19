@@ -2,6 +2,13 @@ require(__dirname).test({
   xml: '<root>abc</root>de<f',
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'ROOT',
+        attributes: {}
+      }
+    ],
+    [
       'opentag',
       {
         name: 'ROOT',
@@ -29,6 +36,13 @@ require(__dirname).test({
 require(__dirname).test({
   xml: '<root>abc</root>de<f',
   expect: [
+    [
+      'opentagstart',
+      {
+        name: 'root',
+        attributes: {}
+      }
+    ],
     [
       'opentag',
       {

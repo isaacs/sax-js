@@ -11,6 +11,14 @@ require(__dirname).test({
     '</root>',
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'root',
+        attributes: {},
+        ns: {}
+      }
+    ],
+    [
       'opentag',
       {
         name: 'root',
@@ -20,6 +28,14 @@ require(__dirname).test({
         attributes: {},
         ns: {},
         isSelfClosing: false
+      }
+    ],
+    [
+      'opentagstart',
+      {
+        name: 'plain',
+        attributes: {},
+        ns: {}
       }
     ],
     [
@@ -55,6 +71,14 @@ require(__dirname).test({
     [
       'closetag',
       'plain'
+    ],
+    [
+      'opentagstart',
+      {
+        name: 'ns1',
+        attributes: {},
+        ns: {}
+      }
     ],
     [
       'opennamespace',
@@ -93,6 +117,16 @@ require(__dirname).test({
           '': 'uri:default'
         },
         isSelfClosing: false
+      }
+    ],
+    [
+      'opentagstart',
+      {
+        name: 'plain',
+        ns: {
+          '': 'uri:default'
+        },
+        attributes: {}
       }
     ],
     [
@@ -143,6 +177,14 @@ require(__dirname).test({
       }
     ],
     [
+      'opentagstart',
+      {
+        name: 'ns2',
+        attributes: {},
+        ns: {}
+      }
+    ],
+    [
       'opennamespace',
       {
         prefix: 'a',
@@ -182,6 +224,16 @@ require(__dirname).test({
       }
     ],
     [
+      'opentagstart',
+      {
+        name: 'plain',
+        attributes: {},
+        ns: {
+          a: 'uri:nsa'
+        }
+      }
+    ],
+    [
       'attribute',
       {
         name: 'attr',
@@ -216,6 +268,14 @@ require(__dirname).test({
     [
       'closetag',
       'plain'
+    ],
+    [
+      'opentagstart',
+      {
+        name: 'a:ns',
+        attributes: {},
+        ns: { a: 'uri:nsa' }
+      }
     ],
     [
       'attribute',

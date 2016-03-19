@@ -4,6 +4,13 @@ require(__dirname).test({
   xml: '<span class=test hello=world></span>',
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'SPAN',
+        attributes: {}
+      }
+    ],
+    [
       'attribute',
       {
         name: 'CLASS',

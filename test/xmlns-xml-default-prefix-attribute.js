@@ -2,6 +2,14 @@ require(__dirname).test({
   xml: "<root xml:lang='en'/>",
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'root',
+        attributes: {},
+        ns: {}
+      }
+    ],
+    [
       'attribute',
       {
         name: 'xml:lang',

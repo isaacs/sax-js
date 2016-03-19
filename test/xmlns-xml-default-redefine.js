@@ -2,6 +2,14 @@ require(__dirname).test({
   xml: "<xml:root xmlns:xml='ERROR'/>",
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'xml:root',
+        attributes: {},
+        ns: {}
+      }
+    ],
+    [
       'error',
       'xml: prefix must be bound to http://www.w3.org/XML/1998/namespace\n' +
       'Actual: ERROR\n' +

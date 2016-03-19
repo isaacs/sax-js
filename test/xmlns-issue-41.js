@@ -7,6 +7,7 @@ var xmls = [
 ]
 
 var ex1 = [
+  [ 'opentagstart', { name: 'parent', attributes: {}, ns: {} } ],
   [
     'opennamespace',
     {
@@ -76,8 +77,8 @@ var ex1 = [
   ]
 ]
 
-// swap the order of elements 2 and 1
-var ex2 = [ex1[0], ex1[2], ex1[1]].concat(ex1.slice(3))
+// swap the order of elements 2 and 3
+var ex2 = [ex1[0], ex1[1], ex1[3], ex1[2]].concat(ex1.slice(4))
 var expected = [ex1, ex2]
 
 xmls.forEach(function (x, i) {

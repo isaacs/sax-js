@@ -2,6 +2,10 @@
 require(__dirname).test({
   xml: '<span class="test" hello="world"></span>',
   expect: [
+    [ 'opentagstart', {
+      name: 'SPAN',
+      attributes: {}
+    } ],
     [ 'attribute', { name: 'CLASS', value: 'test' } ],
     [ 'attribute', { name: 'HELLO', value: 'world' } ],
     [ 'opentag', {
@@ -19,6 +23,10 @@ require(__dirname).test({
 require(__dirname).test({
   xml: '<span class="test" hello="world"></span>',
   expect: [
+    [ 'opentagstart', {
+      name: 'span',
+      attributes: {}
+    } ],
     [ 'attribute', { name: 'class', value: 'test' } ],
     [ 'attribute', { name: 'hello', value: 'world' } ],
     [ 'opentag', {
@@ -36,6 +44,10 @@ require(__dirname).test({
 require(__dirname).test({
   xml: '<span class="test" hello="world"></span>',
   expect: [
+    [ 'opentagstart', {
+      name: 'span',
+      attributes: {}
+    } ],
     [ 'attribute', { name: 'class', value: 'test' } ],
     [ 'attribute', { name: 'hello', value: 'world' } ],
     [ 'opentag', {

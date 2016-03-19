@@ -18,6 +18,14 @@ require(__dirname).test({
   xml: "<elm xmlns='http://foo' attr='bar'/>",
   expect: [
     [
+      'opentagstart',
+      {
+        name: 'elm',
+        attributes: {},
+        ns: {}
+      }
+    ],
+    [
       'opennamespace',
       { prefix: '', uri: 'http://foo' }
     ],

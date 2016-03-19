@@ -2,6 +2,13 @@ require(__dirname).test({
   xml: "<html><head><script>if (1 < 0) { console.log('elo there'); }</script></head></html>",
   expect: [
     [
+      'opentagstart',
+      {
+        'name': 'HTML',
+        'attributes': {}
+      }
+    ],
+    [
       'opentag',
       {
         'name': 'HTML',
@@ -10,11 +17,25 @@ require(__dirname).test({
       }
     ],
     [
+      'opentagstart',
+      {
+        'name': 'HEAD',
+        'attributes': {}
+      }
+    ],
+    [
       'opentag',
       {
         'name': 'HEAD',
         'attributes': {},
         'isSelfClosing': false
+      }
+    ],
+    [
+      'opentagstart',
+      {
+        'name': 'SCRIPT',
+        'attributes': {}
       }
     ],
     [
