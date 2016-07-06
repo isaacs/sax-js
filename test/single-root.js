@@ -8,28 +8,22 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'root',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'root',
         attributes: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ],
-    [
-      'error',
-      'More than one document root\nLine: 0\nColumn: 9\nChar: b'
-    ]
+    ['closetag', 'root'],
+    ['error', 'More than one document root\nLine: 0\nColumn: 9\nChar: b'],
   ],
   strict: true,
-  opt: {}
+  opt: {},
 })
 
 require(__dirname).test({
@@ -39,28 +33,22 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'root',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'root',
         attributes: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ],
-    [
-      'comment',
-      ' ok '
-    ]
+    ['closetag', 'root'],
+    ['comment', ' ok '],
   ],
   strict: true,
-  opt: {}
+  opt: {},
 })
 
 require(__dirname).test({
@@ -70,31 +58,28 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'root',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'root',
         attributes: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ],
+    ['closetag', 'root'],
     [
       'processinginstruction',
       {
         name: 'ok',
-        body: 'foo'
-      }
-    ]
+        body: 'foo',
+      },
+    ],
   ],
   strict: true,
-  opt: {}
+  opt: {},
 })
 
 require(__dirname).test({
@@ -104,26 +89,20 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'root',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'root',
         attributes: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ],
-    [
-      'text',
-      '\n\n'
-    ]
+    ['closetag', 'root'],
+    ['text', '\n\n'],
   ],
   strict: true,
-  opt: {}
+  opt: {},
 })

@@ -53,14 +53,8 @@ require(__dirname).test({
       'error',
       'Text data outside of root node.\nLine: 0\nColumn: 18\nChar: e',
     ],
-    [
-      'text',
-      'e'
-    ],
-    [
-      'error',
-      'More than one document root\nLine: 0\nColumn: 20\nChar: f'
-    ]
+    ['text', 'e'],
+    ['error', 'More than one document root\nLine: 0\nColumn: 20\nChar: f'],
   ],
   strict: true,
   opt: {},
