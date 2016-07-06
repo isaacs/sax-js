@@ -77,7 +77,7 @@ require(__dirname).test({
     ],
     [
       'error',
-      'Unexpected end\nLine: 0\nColumn: 20\nChar: '
+      'More than one document root\nLine: 0\nColumn: 20\nChar: f'
     ]
   ],
   strict: true,
