@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "test": "tap test/*.js --cov",
-    "posttest": "standard -F test/*.js lib/*.js"
+    "posttest": "standard test/*.js lib/*.js"
   },
   "repository": "git://github.com/isaacs/sax-js.git",
   "files": [
@@ -17,7 +17,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "standard": "^5.3.1",
-    "tap": "^5.2.0"
+    "standard": "^7.1.2",
+    "tap": "^6.3.0"
   }
 }
