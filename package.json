@@ -13,7 +13,6 @@
   "files": [
     "lib/sax.js",
     "LICENSE",
-    "LICENSE-W3C.html",
     "README.md"
   ],
   "devDependencies": {
