@@ -11,6 +11,11 @@ exports.sax = sax
 exports.test = function test (options) {
   var xml = options.xml
   var parser = sax.parser(options.strict, options.opt)
+  if (options.entities) {
+    for (var key in options.entities) {
+      parser.ENTITIES[key] = options.entities[key]
+    }
+  }
   var expect = options.expect
   var e = 0
   sax.EVENTS.forEach(function (ev) {
