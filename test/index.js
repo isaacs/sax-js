@@ -1,4 +1,3 @@
-var util = require('util')
 var sax = require('../lib/sax')
 
 var t = require('tap')
@@ -24,10 +23,7 @@ exports.test = function test (options) {
       if (e >= expect.length && (ev === 'end' || ev === 'ready')) {
         return
       }
-      t.ok(e < expect.length,
-        'expectation #' + e + ' ' + util.inspect(expect[e]) + '\n' +
-        'Unexpected event: ' + ev + ' ' + (n ? util.inspect(n) : ''))
-      var inspected = n instanceof Error ? '\n' + n.message : util.inspect(n)
+      t.ok(e < expect.length, 'no unexpected events')
 
       if (!expect[e]) {
         t.fail('did not expect this event', {
@@ -38,19 +34,11 @@ exports.test = function test (options) {
         return
       }
 
-      t.equal(ev, expect[e][0],
-        'expectation #' + e + '\n' +
-        "Didn't get expected event\n" +
-        'expect: ' + expect[e][0] + ' ' + util.inspect(expect[e][1]) + '\n' +
-        'actual: ' + ev + ' ' + inspected + '\n')
+      t.equal(ev, expect[e][0])
       if (ev === 'error') {
         t.equal(n.message, expect[e][1])
       } else {
-        t.deepEqual(n, expect[e][1],
-          'expectation #' + e + '\n' +
-          "Didn't get expected argument\n" +
-          'expect: ' + expect[e][0] + ' ' + util.inspect(expect[e][1]) + '\n' +
-          'actual: ' + ev + ' ' + inspected + '\n')
+        t.deepEqual(n, expect[e][1])
       }
       e++
       if (ev === 'error') {
