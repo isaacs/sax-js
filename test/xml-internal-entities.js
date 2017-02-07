@@ -4,7 +4,7 @@ var ENTITIES = {}
 
 // generates xml like test0="&control;"
 var entitiesToTest = {
-  //	'ENTITY_NAME':	IS_VALID || [invalidCharPos, invalidChar],
+  // 'ENTITY_NAME': IS_VALID || [invalidCharPos, invalidChar],
   'control0': true, // This is a vanilla control.
   // entityStart
   '_uscore': true,
