@@ -103,7 +103,6 @@ require(__dirname).test({
   opt: {lowercase: true, looseCasing: 'upper'}
 })
 
-
 // make sure deprecated lowercasetags overrides the looseCasing upper option
 require(__dirname).test({
   xml: '<span className="test" hello="world"></span>',

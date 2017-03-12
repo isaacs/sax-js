@@ -99,8 +99,8 @@ Settings supported:
 * `trim` - Boolean. Whether or not to trim text and comment nodes.
 * `normalize` - Boolean. If true, then turn any whitespace into a single
   space.
-* `looseCasing` - String (`'lower'`/`'upper'`). In loose mode, the casing of tag names and
-  attributes will be lower/upper cased or left alone if `looseCasing` is falsy.
+* `looseCasing` - String (`'lower'`/`'upper'`/`null`). In loose mode, the casing of tag names and
+  attributes will be lower/upper cased or unchanged.
   The deprecated `lowercase` and `lowercasetags` overrides this property if set.
 * `xmlns` - Boolean. If true, then namespaces are supported.
 * `position` - Boolean. If false, then don't track line/col/position.
@@ -175,8 +175,9 @@ but before any attributes are encountered.  Argument: object with a
 same object that will later be emitted in the `opentag` event.
 
 `opentag` - An opening tag. Argument: object with `name` and `attributes`.
-In non-strict mode, tag names will be uppercased or lower cased if `looseCasing`
-option is set on `lower` or `upper`.  If the `xmlns` option is set, then it will contain
+In non-strict mode, tag names will be lower/upper cased or unchanged if `looseCasing`
+option is set to `lower`, `upper` or `null` (defaults to `upper`).
+If the `xmlns` option is set, then it will contain
 namespace binding information on the `ns` member, and will have a
 `local`, `prefix`, and `uri` member.
 
@@ -186,8 +187,9 @@ self-closing tags will have `closeTag` emitted immediately after `openTag`.
 Argument: tag name.
 
 `attribute` - An attribute node.  Argument: object with `name` and `value`.
-In non-strict mode, attribute names will be uppercased or lower cased if `looseCasing`
-option is set on `lower` or `upper`.  If the `xmlns` option is set, it will also contains namespace
+In non-strict mode, attribute names will be lower/upper cased or unchanged if `looseCasing`
+option is set to `lower`, `upper` or `null` (defaults to `upper`).
+If the `xmlns` option is set, it will also contains namespace
 information.
 
 `comment` - A comment node.  Argument: the string of the comment.
