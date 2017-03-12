@@ -92,7 +92,7 @@ Pass the following arguments to the parser function.  All are optional.
 
 `strict` - Boolean. Whether or not to be a jerk. Default: `false`.
 
-`opt` - Object bag of settings regarding string formatting.  All default to `false`.
+`opt` - Object bag of settings regarding string formatting.  All default to `false`, `looseCasing` default to `upper`.
 
 Settings supported:
 
@@ -101,8 +101,7 @@ Settings supported:
   space.
 * `looseCasing` - String (`'lower'`/`'upper'`). In loose mode, the casing of tag names and
   attributes will be lower/upper cased or left alone if `looseCasing` is falsy.
-  If this property is set (including `null`), the deprecated `lowercase` and `lowercasetags`
-  are overridden.
+  The deprecated `lowercase` and `lowercasetags` overrides this property if set.
 * `xmlns` - Boolean. If true, then namespaces are supported.
 * `position` - Boolean. If false, then don't track line/col/position.
 * `strictEntities` - Boolean. If true, only parse [predefined XML

@@ -61,7 +61,7 @@ require(__dirname).test({
   opt: {looseCasing: null}
 })
 
-// make sure looseCasing overrides the lowercase option
+// make sure deprecated lowercase overrides the looseCasing null option
 require(__dirname).test({
   xml: '<span className="test" hello="world"></span>',
   expect: [
@@ -69,15 +69,58 @@ require(__dirname).test({
       name: 'span',
       attributes: {}
     } ],
-    [ 'attribute', { name: 'className', value: 'test' } ],
+    [ 'attribute', { name: 'classname', value: 'test' } ],
     [ 'attribute', { name: 'hello', value: 'world' } ],
     [ 'opentag', {
       name: 'span',
-      attributes: { className: 'test', hello: 'world' },
+      attributes: { classname: 'test', hello: 'world' },
       isSelfClosing: false
     } ],
     [ 'closetag', 'span' ]
   ],
   strict: false,
   opt: {lowercase: true, looseCasing: null}
+})
+
+// make sure deprecated lowercase overrides the looseCasing upper option
+require(__dirname).test({
+  xml: '<span className="test" hello="world"></span>',
+  expect: [
+    [ 'opentagstart', {
+      name: 'span',
+      attributes: {}
+    } ],
+    [ 'attribute', { name: 'classname', value: 'test' } ],
+    [ 'attribute', { name: 'hello', value: 'world' } ],
+    [ 'opentag', {
+      name: 'span',
+      attributes: { classname: 'test', hello: 'world' },
+      isSelfClosing: false
+    } ],
+    [ 'closetag', 'span' ]
+  ],
+  strict: false,
+  opt: {lowercase: true, looseCasing: 'upper'}
+})
+
+
+// make sure deprecated lowercasetags overrides the looseCasing upper option
+require(__dirname).test({
+  xml: '<span className="test" hello="world"></span>',
+  expect: [
+    [ 'opentagstart', {
+      name: 'span',
+      attributes: {}
+    } ],
+    [ 'attribute', { name: 'classname', value: 'test' } ],
+    [ 'attribute', { name: 'hello', value: 'world' } ],
+    [ 'opentag', {
+      name: 'span',
+      attributes: { classname: 'test', hello: 'world' },
+      isSelfClosing: false
+    } ],
+    [ 'closetag', 'span' ]
+  ],
+  strict: false,
+  opt: {lowercasetags: true, looseCasing: 'upper'}
 })
