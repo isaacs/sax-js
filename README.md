@@ -99,8 +99,10 @@ Settings supported:
 * `trim` - Boolean. Whether or not to trim text and comment nodes.
 * `normalize` - Boolean. If true, then turn any whitespace into a single
   space.
-* `lowercase` - Boolean. If true, then lowercase tag names and attribute names
-  in loose mode, rather than uppercasing them.
+* `looseCasing` - String (`'lower'`/`'upper'`). In loose mode, the casing of tag names and
+  attributes will be lower/upper cased or left alone if `looseCasing` is falsy.
+  If this property is set (including `null`), the deprecated `lowercase` and `lowercasetags`
+  are overridden.
 * `xmlns` - Boolean. If true, then namespaces are supported.
 * `position` - Boolean. If false, then don't track line/col/position.
 * `strictEntities` - Boolean. If true, only parse [predefined XML
@@ -174,8 +176,8 @@ but before any attributes are encountered.  Argument: object with a
 same object that will later be emitted in the `opentag` event.
 
 `opentag` - An opening tag. Argument: object with `name` and `attributes`.
-In non-strict mode, tag names are uppercased, unless the `lowercase`
-option is set.  If the `xmlns` option is set, then it will contain
+In non-strict mode, tag names will be uppercased or lower cased if `looseCasing`
+option is set on `lower` or `upper`.  If the `xmlns` option is set, then it will contain
 namespace binding information on the `ns` member, and will have a
 `local`, `prefix`, and `uri` member.
 
@@ -185,8 +187,8 @@ self-closing tags will have `closeTag` emitted immediately after `openTag`.
 Argument: tag name.
 
 `attribute` - An attribute node.  Argument: object with `name` and `value`.
-In non-strict mode, attribute names are uppercased, unless the `lowercase`
-option is set.  If the `xmlns` option is set, it will also contains namespace
+In non-strict mode, attribute names will be uppercased or lower cased if `looseCasing`
+option is set on `lower` or `upper`.  If the `xmlns` option is set, it will also contains namespace
 information.
 
 `comment` - A comment node.  Argument: the string of the comment.
