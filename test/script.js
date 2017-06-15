@@ -64,3 +64,56 @@ require(__dirname).test({
     ]
   ]
 })
+
+require(__dirname).test({
+  xml: '<div><style><foo></foo></style></div>',
+  expect: [
+    [
+      'opentagstart',
+      {
+        'name': 'DIV',
+        'attributes': {}
+      }
+    ],
+    [
+      'opentag',
+      {
+        'name': 'DIV',
+        'attributes': {},
+        'isSelfClosing': false
+      }
+    ],
+    [
+      'opentagstart',
+      {
+        'name': 'STYLE',
+        'attributes': {}
+      }
+    ],
+    [
+      'opentag',
+      {
+        'name': 'STYLE',
+        'attributes': {},
+        'isSelfClosing': false
+      }
+    ],
+    [
+      'script',
+      '<foo></foo>'
+    ],
+    [
+      'closetag',
+      'STYLE'
+    ],
+    [
+      'closetag',
+      'DIV'
+    ]
+  ],
+  opt: {
+    scriptTags: [
+      'style'
+    ]
+  }
+})
