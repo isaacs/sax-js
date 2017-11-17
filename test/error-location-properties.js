@@ -13,5 +13,5 @@ parser.onerror = function (error) {
   parser.resume()
 }
 
-parser.write('<root>\n<p>Hello, world\n</root>').close();
+parser.write('<root>\n<p>Hello, world\n</root>').close()
 
