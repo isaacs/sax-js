@@ -1,6 +1,6 @@
 # sax js
 
-A sax-style parser for XML and HTML.
+A sax-style parser for XML.
 
 Designed with [node](http://nodejs.org/) in mind, but should work fine in
 the browser or other CommonJS implementations.
@@ -14,7 +14,7 @@ the browser or other CommonJS implementations.
 
 ## What This Is (probably) Not
 
-* An HTML Parser - That's a fine goal, but this isn't it.  It's just
+* An HTML Parser - That's a fine goal, but this isn't it. It's just
   XML.
 * A DOM Builder - You can use it to build an object model out of XML,
   but it doesn't do that out of the box.
