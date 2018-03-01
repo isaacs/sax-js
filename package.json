@@ -19,6 +19,7 @@
     "README.md"
   ],
   "devDependencies": {
+    "safe-buffer": "^5.1.1",
     "standard": "^11.0.0",
     "tap": "^10.5.1"
   }

@@ -1,5 +1,6 @@
 var tap = require('tap')
 var saxStream = require('../lib/sax').createStream()
+var Buffer = require('safe-buffer').Buffer
 
 var b = new Buffer('误')
 
