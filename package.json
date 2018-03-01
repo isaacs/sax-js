@@ -19,7 +19,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "standard": "^8.6.0",
+    "standard": "^11.0.0",
     "tap": "^10.5.1"
   }
 }
