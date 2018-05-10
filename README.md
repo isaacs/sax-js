@@ -106,6 +106,9 @@ Settings supported:
 * `strictEntities` - Boolean. If true, only parse [predefined XML
   entities](http://www.w3.org/TR/REC-xml/#sec-predefined-ent)
   (`&amp;`, `&apos;`, `&gt;`, `&lt;`, and `&quot;`)
+* `emitEmpty` - Boolean. If true, then SAX will emit `cdata` and `comment`
+  events even if the CDATA section or comment were empty. By default,
+  when these XML structures are empty, SAX does not emit an event.
 
 ## Methods
 
