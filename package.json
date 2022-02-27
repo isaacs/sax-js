@@ -7,7 +7,6 @@
   "license": "ISC",
   "scripts": {
     "test": "tap test/*.js --cov -j4",
-    "posttest": "standard -F test/*.js lib/*.js",
     "preversion": "npm test",
     "postversion": "npm publish",
     "postpublish": "git push origin --all; git push origin --tags"
@@ -19,7 +18,12 @@
     "README.md"
   ],
   "devDependencies": {
-    "standard": "^8.6.0",
     "tap": "^15.1.6"
+  },
+  "tap": {
+    "statements": 79,
+    "branches": 75,
+    "functions": 86,
+    "lines": 79
   }
 }
