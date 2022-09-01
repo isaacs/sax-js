@@ -20,6 +20,9 @@
   "devDependencies": {
     "tap": "^15.1.6"
   },
+  "dependencies": {
+    "readable-stream": "^3.3.0"
+  },
   "tap": {
     "statements": 79,
     "branches": 75,
