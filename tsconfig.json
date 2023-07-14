@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "module": "UMD",
+  "compilerOptions": {
+    "allowJs": true,
+    "noImplicitAny": false
+  },
+  "exclude": [
+    "examples",
+    "test"
+  ]
+}
