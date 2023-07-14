@@ -35,5 +35,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build
+        run: npm run build
+
       - name: Run Tests
         run: npm test -- -c -t0

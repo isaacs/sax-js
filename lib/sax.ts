@@ -1,5 +1,70 @@
 ;(function (sax) { // wrapper for non-node envs
-  sax.parser = function (strict, opt) { return new SAXParser(strict, opt) }
+  type Tag = {
+    local?: string;
+    uri?: string;
+    prefix?: string;
+    isSelfClosing?: boolean;
+    name: string;
+    attributes: { [key: string]: string };
+    ns?: { [key: string]: string };
+  }
+
+  type Parser = {
+    doctype: string;
+    comment: string;
+    procInstBody: string;
+    procInstName: string;
+    sgmlDecl: string;
+    startTagPosition: number;
+    entity: string;
+    attribValue: string;
+    attribName: string;
+    onerror: (er: any) => void;
+    onend: () => void;
+    tagName: string;
+    textNode: any;
+    bufferCheckPosition: any;
+    looseCase: string;
+    tags: Tag[];
+    closed: boolean;
+    closedRoot: boolean;
+    sawRoot: boolean;
+    tag: Tag | null | undefined;
+
+    noscript: boolean;
+    state: any;
+    strictEntities: any;
+    ENTITIES: any;
+    attribList: string[];
+    ns: any;
+    trackPosition: boolean;
+    c: string;
+    q: string;
+
+    line: number;
+    column: number;
+    error: Error | null;
+    position: number;
+    opt: Options;
+    strict: boolean;
+
+    cdata: string;
+    script: string;
+  }
+
+  type Options = {
+    trim?: boolean;
+    normalize?: boolean;
+    lowercase?: boolean;
+    xmlns?: boolean;
+    noscript?: boolean;
+    position?: boolean;
+    strictEntities?: any;
+    lowercasetags?: boolean;
+  }
+
+
+  sax.parser = function (strict?: boolean, opt?: Options) { return new SAXParser(strict, opt) }
   sax.SAXParser = SAXParser
   sax.SAXStream = SAXStream
   sax.createStream = createStream
@@ -42,7 +107,7 @@
     'closenamespace'
   ]
 
-  function SAXParser (strict, opt) {
+  function SAXParser (this: Parser, strict?: boolean, opt?: Options): void {
     if (!(this instanceof SAXParser)) {
       return new SAXParser(strict, opt)
     }
@@ -80,7 +145,7 @@
   }
 
   if (!Object.create) {
-    Object.create = function (o) {
+    Object.create = function (o: any) {
       function F () {}
       F.prototype = o
       var newf = new F()
@@ -89,14 +154,14 @@
   }
 
   if (!Object.keys) {
-    Object.keys = function (o) {
-      var a = []
+    Object.keys = function (o: { hasOwnProperty: (arg0: string) => any }) {
+      var a: string[] = []
       for (var i in o) if (o.hasOwnProperty(i)) a.push(i)
       return a
     }
   }
 
-  function checkBufferLength (parser) {
+  function checkBufferLength (parser: Parser) {
     var maxAllowed = Math.max(sax.MAX_BUFFER_LENGTH, 10)
     var maxActual = 0
     for (var i = 0, l = buffers.length; i < l; i++) {
@@ -132,13 +197,13 @@
     parser.bufferCheckPosition = m + parser.position
   }
 
-  function clearBuffers (parser) {
+  function clearBuffers (parser: Parser) {
     for (var i = 0, l = buffers.length; i < l; i++) {
       parser[buffers[i]] = ''
     }
   }
 
-  function flushBuffers (parser) {
+  function flushBuffers (parser: Parser) {
     closeText(parser)
     if (parser.cdata !== '') {
       emitNode(parser, 'oncdata', parser.cdata)
@@ -165,15 +230,25 @@
     Stream = function () {}
   }
 
-  var streamWraps = sax.EVENTS.filter(function (ev) {
+  var streamWraps = sax.EVENTS.filter(function (ev: string) {
     return ev !== 'error' && ev !== 'end'
   })
 
-  function createStream (strict, opt) {
+  type Stream = {
+    _parser: Parser;
+    writable: boolean;
+    readable: boolean;
+    emit(event: string, ...args: any): Stream;
+    _decoder: null;
+    removeAllListeners(ev: string): unknown;
+    on(ev: string, h: any): Stream
+  }
+
+  function createStream (strict?: boolean, opt?:Options): Stream {
     return new SAXStream(strict, opt)
   }
 
-  function SAXStream (strict, opt) {
+  function SAXStream (this: Stream, strict?: boolean, opt?:Options): void {
     if (!(this instanceof SAXStream)) {
       return new SAXStream(strict, opt)
     }
@@ -190,7 +265,7 @@
       me.emit('end')
     }
 
-    this._parser.onerror = function (er) {
+    this._parser.onerror = function (er: Error) {
       me.emit('error', er)
 
       // if didn't throw, then means error was handled.
@@ -200,7 +275,7 @@
 
     this._decoder = null
 
-    streamWraps.forEach(function (ev) {
+    streamWraps.forEach(function (ev: string) {
       Object.defineProperty(me, 'on' + ev, {
         get: function () {
           return me._parser['on' + ev]
@@ -225,7 +300,7 @@
     }
   })
 
-  SAXStream.prototype.write = function (data) {
+  SAXStream.prototype.write = function (data: { toString: () => string }) {
     if (typeof Buffer === 'function' &&
       typeof Buffer.isBuffer === 'function' &&
       Buffer.isBuffer(data)) {
@@ -241,7 +316,7 @@
     return true
   }
 
-  SAXStream.prototype.end = function (chunk) {
+  SAXStream.prototype.end = function (chunk: string | { toString: () => string }[]) {
     if (chunk && chunk.length) {
       this.write(chunk)
     }
@@ -249,11 +324,11 @@
     return true
   }
 
-  SAXStream.prototype.on = function (ev, handler) {
+  SAXStream.prototype.on = function (ev: string, handler: any) {
     var me = this
     if (!me._parser['on' + ev] && streamWraps.indexOf(ev) !== -1) {
       me._parser['on' + ev] = function () {
-        var args = arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
+        var args = arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments as any)
         args.splice(0, 0, ev)
         me.emit.apply(me, args)
       }
@@ -283,27 +358,27 @@
   var entityStart = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/
   var entityBody = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/
 
-  function isWhitespace (c) {
+  function isWhitespace (c: string) {
     return c === ' ' || c === '\n' || c === '\r' || c === '\t'
   }
 
-  function isQuote (c) {
+  function isQuote (c: string) {
     return c === '"' || c === '\''
   }
 
-  function isAttribEnd (c) {
+  function isAttribEnd (c: string) {
     return c === '>' || isWhitespace(c)
   }
 
-  function isMatch (regex, c) {
+  function isMatch (regex: RegExp, c: string) {
     return regex.test(c)
   }
 
-  function notMatch (regex, c) {
+  function notMatch (regex: RegExp, c: string) {
     return !isMatch(regex, c)
   }
 
-  var S = 0
+  var S: any = 0
   sax.STATE = {
     BEGIN: S++, // leading byte order mark or whitespace
     BEGIN_WHITESPACE: S++, // leading whitespace
@@ -620,41 +695,41 @@
   // shorthand
   S = sax.STATE
 
-  function emit (parser, event, data) {
+  function emit (parser: Parser, event: string, data?: any) {
     parser[event] && parser[event](data)
   }
 
-  function emitNode (parser, nodeType, data) {
+  function emitNode (parser: Parser, nodeType: string, data?: any) {
     if (parser.textNode) closeText(parser)
     emit(parser, nodeType, data)
   }
 
-  function closeText (parser) {
+  function closeText (parser: Parser) {
     parser.textNode = textopts(parser.opt, parser.textNode)
     if (parser.textNode) emit(parser, 'ontext', parser.textNode)
     parser.textNode = ''
   }
 
-  function textopts (opt, text) {
+  function textopts (opt: Options, text: string) {
     if (opt.trim) text = text.trim()
     if (opt.normalize) text = text.replace(/\s+/g, ' ')
     return text
   }
 
-  function error (parser, er) {
+  function error (parser: Parser, er: string | Error | undefined) {
     closeText(parser)
     if (parser.trackPosition) {
       er += '\nLine: ' + parser.line +
         '\nColumn: ' + parser.column +
         '\nChar: ' + parser.c
     }
-    er = new Error(er)
+    er = new Error(er as any)
     parser.error = er
     emit(parser, 'onerror', er)
     return parser
   }
 
-  function end (parser) {
+  function end (parser: Parser) {
     if (parser.sawRoot && !parser.closedRoot) strictFail(parser, 'Unclosed root tag')
     if ((parser.state !== S.BEGIN) &&
       (parser.state !== S.BEGIN_WHITESPACE) &&
@@ -669,7 +744,7 @@
     return parser
   }
 
-  function strictFail (parser, message) {
+  function strictFail (parser: Parser, message: string) {
     if (typeof parser !== 'object' || !(parser instanceof SAXParser)) {
       throw new Error('bad call to strictFail')
     }
@@ -678,10 +753,10 @@
     }
   }
 
-  function newTag (parser) {
+  function newTag (parser: Parser) {
     if (!parser.strict) parser.tagName = parser.tagName[parser.looseCase]()
     var parent = parser.tags[parser.tags.length - 1] || parser
-    var tag = parser.tag = { name: parser.tagName, attributes: {} }
+    var tag = parser.tag = { name: parser.tagName, attributes: {} } as Tag
 
     // will be overridden if tag contails an xmlns="foo" or xmlns:foo="bar"
     if (parser.opt.xmlns) {
@@ -691,7 +766,7 @@
     emitNode(parser, 'onopentagstart', tag)
   }
 
-  function qname (name, attribute) {
+  function qname (name: string, attribute?: boolean) {
     var i = name.indexOf(':')
     var qualName = i < 0 ? [ '', name ] : name.split(':')
     var prefix = qualName[0]
@@ -706,13 +781,13 @@
     return { prefix: prefix, local: local }
   }
 
-  function attrib (parser) {
+  function attrib (parser: Parser) {
     if (!parser.strict) {
       parser.attribName = parser.attribName[parser.looseCase]()
     }
 
     if (parser.attribList.indexOf(parser.attribName) !== -1 ||
-      parser.tag.attributes.hasOwnProperty(parser.attribName)) {
+      parser.tag?.attributes.hasOwnProperty(parser.attribName)) {
       parser.attribName = parser.attribValue = ''
       return
     }
@@ -733,22 +808,22 @@
             'xmlns: prefix must be bound to ' + XMLNS_NAMESPACE + '\n' +
             'Actual: ' + parser.attribValue)
         } else {
-          var tag = parser.tag
-          var parent = parser.tags[parser.tags.length - 1] || parser
+          var tag: Tag = parser.tag!
+          var parent: Tag = parser.tags[parser.tags.length - 1] || parser
           if (tag.ns === parent.ns) {
-            tag.ns = Object.create(parent.ns)
+            tag.ns = Object.create(parent.ns as object)
           }
-          tag.ns[local] = parser.attribValue
+          tag.ns![local] = parser.attribValue
         }
       }
 
       // defer onattribute events until all attributes have been seen
       // so any new bindings can take effect. preserve attribute order
       // so deferred events can be emitted in document order
-      parser.attribList.push([parser.attribName, parser.attribValue])
+      parser.attribList.push([parser.attribName, parser.attribValue] as any)
     } else {
       // in non-xmlns mode, we can emit the event right away
-      parser.tag.attributes[parser.attribName] = parser.attribValue
+      parser.tag!.attributes[parser.attribName] = parser.attribValue
       emitNode(parser, 'onattribute', {
         name: parser.attribName,
         value: parser.attribValue
@@ -758,16 +833,16 @@
     parser.attribName = parser.attribValue = ''
   }
 
-  function openTag (parser, selfClosing) {
+  function openTag (parser: Parser, selfClosing?: boolean) {
     if (parser.opt.xmlns) {
       // emit namespace binding events
-      var tag = parser.tag
+      var tag = parser.tag!
 
       // add namespace info to tag
       var qn = qname(parser.tagName)
       tag.prefix = qn.prefix
       tag.local = qn.local
-      tag.uri = tag.ns[qn.prefix] || ''
+      tag.uri = tag.ns![qn.prefix] || ''
 
       if (tag.prefix && !tag.uri) {
         strictFail(parser, 'Unbound namespace prefix: ' +
@@ -780,7 +855,7 @@
         Object.keys(tag.ns).forEach(function (p) {
           emitNode(parser, 'onopennamespace', {
             prefix: p,
-            uri: tag.ns[p]
+            uri: tag.ns![p]
           })
         })
       }
@@ -795,8 +870,8 @@
         var qualName = qname(name, true)
         var prefix = qualName.prefix
         var local = qualName.local
-        var uri = prefix === '' ? '' : (tag.ns[prefix] || '')
-        var a = {
+        var uri = prefix === '' ? '' : (tag.ns![prefix] || '')
+        var a: any = {
           name: name,
           value: value,
           prefix: prefix,
@@ -811,17 +886,17 @@
             JSON.stringify(prefix))
           a.uri = prefix
         }
-        parser.tag.attributes[name] = a
+        parser.tag!.attributes[name] = a
         emitNode(parser, 'onattribute', a)
       }
       parser.attribList.length = 0
     }
 
-    parser.tag.isSelfClosing = !!selfClosing
+    parser.tag!.isSelfClosing = !!selfClosing
 
     // process the tag
     parser.sawRoot = true
-    parser.tags.push(parser.tag)
+    parser.tags.push(parser.tag!)
     emitNode(parser, 'onopentag', parser.tag)
     if (!selfClosing) {
       // special case for <script> in non-strict mode.
@@ -837,7 +912,7 @@
     parser.attribList.length = 0
   }
 
-  function closeTag (parser) {
+  function closeTag (parser: Parser) {
     if (!parser.tagName) {
       strictFail(parser, 'Weird empty close tag.')
       parser.textNode += '</>'
@@ -885,19 +960,19 @@
     var s = parser.tags.length
     while (s-- > t) {
       var tag = parser.tag = parser.tags.pop()
-      parser.tagName = parser.tag.name
+      parser.tagName = parser.tag!.name
       emitNode(parser, 'onclosetag', parser.tagName)
 
       var x = {}
-      for (var i in tag.ns) {
-        x[i] = tag.ns[i]
+      for (var i in tag!.ns) {
+        x[i] = tag!.ns[i]
       }
 
       var parent = parser.tags[parser.tags.length - 1] || parser
-      if (parser.opt.xmlns && tag.ns !== parent.ns) {
+      if (parser.opt.xmlns && tag!.ns !== parent.ns) {
         // remove namespace bindings introduced by tag
-        Object.keys(tag.ns).forEach(function (p) {
-          var n = tag.ns[p]
+        Object.keys(tag!.ns as object).forEach(function (p) {
+          var n = tag!.ns![p]
           emitNode(parser, 'onclosenamespace', { prefix: p, uri: n })
         })
       }
@@ -908,10 +983,10 @@
     parser.state = S.TEXT
   }
 
-  function parseEntity (parser) {
+  function parseEntity (parser: Parser) {
     var entity = parser.entity
     var entityLC = entity.toLowerCase()
-    var num
+    var num: number
     var numStr = ''
 
     if (parser.ENTITIES[entity]) {
@@ -933,15 +1008,15 @@
       }
     }
     entity = entity.replace(/^0+/, '')
-    if (isNaN(num) || numStr.toLowerCase() !== entity) {
+    if (isNaN(num!) || numStr.toLowerCase() !== entity) {
       strictFail(parser, 'Invalid character entity')
       return '&' + parser.entity + ';'
     }
 
-    return String.fromCodePoint(num)
+    return String.fromCodePoint(num!)
   }
 
-  function beginWhiteSpace (parser, c) {
+  function beginWhiteSpace (parser: Parser, c: string) {
     if (c === '<') {
       parser.state = S.OPEN_WAKA
       parser.startTagPosition = parser.position
@@ -954,7 +1029,7 @@
     }
   }
 
-  function charAt (chunk, i) {
+  function charAt (chunk: string, i: number) {
     var result = ''
     if (i < chunk.length) {
       result = chunk.charAt(i)
@@ -962,7 +1037,7 @@
     return result
   }
 
-  function write (chunk) {
+  function write (this: Parser, chunk) {
     var parser = this
     if (this.error) {
       throw this.error
@@ -1130,7 +1205,7 @@
           if (c === '>') {
             parser.state = S.TEXT
             emitNode(parser, 'ondoctype', parser.doctype)
-            parser.doctype = true // just remember that we saw it.
+            parser.doctype = true as any // just remember that we saw it.
           } else {
             parser.doctype += c
             if (c === '[') {
@@ -1338,7 +1413,7 @@
             continue
           } else {
             strictFail(parser, 'Attribute without value')
-            parser.tag.attributes[parser.attribName] = ''
+            parser.tag!.attributes[parser.attribName] = ''
             parser.attribValue = ''
             emitNode(parser, 'onattribute', {
               name: parser.attribName,
@@ -1462,8 +1537,8 @@
         case S.TEXT_ENTITY:
         case S.ATTRIB_VALUE_ENTITY_Q:
         case S.ATTRIB_VALUE_ENTITY_U:
-          var returnState
-          var buffer
+          var returnState: any
+          var buffer: any
           switch (parser.state) {
             case S.TEXT_ENTITY:
               returnState = S.TEXT
@@ -1497,7 +1572,7 @@
           continue
 
         default: /* istanbul ignore next */ {
-          throw new Error(parser, 'Unknown state: ' + parser.state)
+          throw new Error('Unknown state: ' + parser.state)
         }
       }
     } // while
@@ -1516,9 +1591,9 @@
       var floor = Math.floor
       var fromCodePoint = function () {
         var MAX_SIZE = 0x4000
-        var codeUnits = []
-        var highSurrogate
-        var lowSurrogate
+        var codeUnits: number[] = []
+        var highSurrogate: number
+        var lowSurrogate: number
         var index = -1
         var length = arguments.length
         if (!length) {
@@ -1563,4 +1638,4 @@
       }
     }())
   }
-})(typeof exports === 'undefined' ? this.sax = {} : exports)
+})(typeof exports === 'undefined' ? (this as any).sax = {} : exports)
