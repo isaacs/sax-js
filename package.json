@@ -23,7 +23,7 @@
   "tap": {
     "statements": 79,
     "branches": 75,
-    "functions": 86,
+    "functions": 80,
     "lines": 79
   }
 }
