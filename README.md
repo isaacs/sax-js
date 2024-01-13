@@ -106,6 +106,9 @@ Settings supported:
 * `strictEntities` - Boolean. If true, only parse [predefined XML
   entities](http://www.w3.org/TR/REC-xml/#sec-predefined-ent)
   (`&amp;`, `&apos;`, `&gt;`, `&lt;`, and `&quot;`)
+* `unquotedAttributeValues` - Boolean. If true, then unquoted
+  attribute values are allowed. Defaults to `false` when `strict`
+  is true, `true` otherwise.
 
 ## Methods
 
