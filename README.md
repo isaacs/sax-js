@@ -157,6 +157,9 @@ this happens *much* more in strict mode. Argument: instance of `Error`.
 
 `text` - Text node. Argument: string of text.
 
+`partialtext` - Intermediate text node, emitted when the parser hasn't completed
+a full `text` node but is still receiving text. Argument: string of text.
+
 `doctype` - The `<!DOCTYPE` declaration. Argument: doctype string.
 
 `processinginstruction` - Stuff like `<?xml foo="blerg" ?>`. Argument:
