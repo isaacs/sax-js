@@ -1,3 +1,4 @@
+.idea
 .*.swp
 node_modules/*
 nyc_output/
