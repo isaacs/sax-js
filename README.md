@@ -189,7 +189,7 @@ Argument: tag name.
 
 `attribute` - An attribute node.  Argument: object with `name` and `value`.
 In non-strict mode, attribute names are uppercased, unless the `lowercase`
-option is set.  If the `xmlns` option is set, it will also contains namespace
+option is set.  If the `xmlns` option is set, it will also contain namespace
 information.
 
 `comment` - A comment node.  Argument: the string of the comment.
