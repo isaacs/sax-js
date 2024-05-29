@@ -17,6 +17,7 @@ require(__dirname).test({
       'attributes': {},
       'isSelfClosing': false
     }],
+    ['partialtext', 'yo'],
     ['text', 'yo'],
     ['closetag', 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ']
   ]
