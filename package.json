@@ -4,7 +4,7 @@
   "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
   "version": "1.4.1",
   "main": "lib/sax.js",
-  "license": "ISC",
+  "license": "BlueOak-1.0.0",
   "scripts": {
     "test": "tap test/*.js --cov -j4",
     "preversion": "npm test",
