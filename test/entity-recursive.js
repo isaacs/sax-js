@@ -7,6 +7,7 @@ require(__dirname).test({
   expect: [
     ["opentagstart", {name: "A", attributes: {}}],
     ["opentag", {name: "A", attributes: {}, isSelfClosing: false}],
+    ["partialtext", "2.1"],
     ["text", "2.1"],
     ["closetag", "A"]
   ]

@@ -9,6 +9,7 @@ require(__dirname).test({
     ["opentagstart", {name: "A", attributes: {}}],
     ["attribute", {name: 'ATTR', value: "1.2"}],
     ["opentag", {name: "A", attributes: {ATTR: "1.2"}, isSelfClosing: false}],
+    ["partialtext", "2.1"],
     ["text", "2.1"],
     ["opentagstart", {name: "B", attributes: {}}],
     ["attribute", {name: 'ATTR', value: "1.3"}],
