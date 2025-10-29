@@ -6,7 +6,7 @@
   "main": "lib/sax.js",
   "license": "BlueOak-1.0.0",
   "scripts": {
-    "test": "tap test/*.js --cov -j4",
+    "test": "tap test/*.js --cov -j4 --jobs 1",
     "preversion": "npm test",
     "postversion": "npm publish",
     "postpublish": "git push origin --all; git push origin --tags"
