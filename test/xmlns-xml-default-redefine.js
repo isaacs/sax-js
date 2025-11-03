@@ -6,14 +6,14 @@ require(__dirname).test({
       {
         name: 'xml:root',
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
       'error',
       'xml: prefix must be bound to http://www.w3.org/XML/1998/namespace\n' +
-      'Actual: ERROR\n' +
-      "Line: 0\nColumn: 27\nChar: '"
+        'Actual: ERROR\n' +
+        "Line: 0\nColumn: 27\nChar: '",
     ],
     [
       'attribute',
@@ -22,8 +22,8 @@ require(__dirname).test({
         local: 'xml',
         prefix: 'xmlns',
         uri: 'http://www.w3.org/2000/xmlns/',
-        value: 'ERROR'
-      }
+        value: 'ERROR',
+      },
     ],
     [
       'opentag',
@@ -38,18 +38,15 @@ require(__dirname).test({
             local: 'xml',
             prefix: 'xmlns',
             uri: 'http://www.w3.org/2000/xmlns/',
-            value: 'ERROR'
-          }
+            value: 'ERROR',
+          },
         },
         ns: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'xml:root'
-    ]
+    ['closetag', 'xml:root'],
   ],
   strict: true,
-  opt: { xmlns: true }
+  opt: { xmlns: true },
 })

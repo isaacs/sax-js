@@ -1,8 +1,8 @@
 var sax = require('../lib/sax'),
-  printer = sax.createStream(false, {lowercasetags: true, trim: true}),
+  printer = sax.createStream(false, { lowercasetags: true, trim: true }),
   fs = require('fs')
 
-function entity (str) {
+function entity(str) {
   return str.replace('"', '&quot;')
 }
 
@@ -28,7 +28,7 @@ printer.on('opentag', function (tag) {
 
 printer.on('text', ontext)
 printer.on('doctype', ontext)
-function ontext (text) {
+function ontext(text) {
   this.indent()
   print(text)
 }
@@ -55,13 +55,15 @@ printer.on('error', function (error) {
 })
 
 if (!process.argv[2]) {
-  throw new Error('Please provide an xml file to prettify\n' +
-    'TODO: read from stdin or take a file')
+  throw new Error(
+    'Please provide an xml file to prettify\n' +
+      'TODO: read from stdin or take a file',
+  )
 }
 var xmlfile = require('path').join(process.cwd(), process.argv[2])
 var fstr = fs.createReadStream(xmlfile, { encoding: 'utf8' })
 
-function print (c) {
+function print(c) {
   if (!process.stdout.write(c)) {
     fstr.pause()
   }

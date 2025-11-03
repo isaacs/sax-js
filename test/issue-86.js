@@ -5,32 +5,23 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'ROOT',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'ROOT',
         attributes: {},
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
-    [
-      'text',
-      'abc'
-    ],
-    [
-      'closetag',
-      'ROOT'
-    ],
-    [
-      'text',
-      'de<f'
-    ]
+    ['text', 'abc'],
+    ['closetag', 'ROOT'],
+    ['text', 'de<f'],
   ],
   strict: false,
-  opt: {}
+  opt: {},
 })
 
 require(__dirname).test({
@@ -40,36 +31,27 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'root',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'root',
         attributes: {},
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
-    [
-      'text',
-      'abc'
-    ],
-    [
-      'closetag',
-      'root'
-    ],
+    ['text', 'abc'],
+    ['closetag', 'root'],
     [
       'error',
-      'Text data outside of root node.\nLine: 0\nColumn: 17\nChar: d'
+      'Text data outside of root node.\nLine: 0\nColumn: 17\nChar: d',
     ],
-    [
-      'text',
-      'd'
-    ],
+    ['text', 'd'],
     [
       'error',
-      'Text data outside of root node.\nLine: 0\nColumn: 18\nChar: e'
+      'Text data outside of root node.\nLine: 0\nColumn: 18\nChar: e',
     ],
     [
       'text',
@@ -81,5 +63,5 @@ require(__dirname).test({
     ]
   ],
   strict: true,
-  opt: {}
+  opt: {},
 })

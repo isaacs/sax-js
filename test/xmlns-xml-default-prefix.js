@@ -6,8 +6,8 @@ require(__dirname).test({
       {
         name: 'xml:root',
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
       'opentag',
@@ -18,14 +18,11 @@ require(__dirname).test({
         local: 'root',
         attributes: {},
         ns: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'xml:root'
-    ]
+    ['closetag', 'xml:root'],
   ],
   strict: true,
-  opt: { xmlns: true }
+  opt: { xmlns: true },
 })

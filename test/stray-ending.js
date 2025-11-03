@@ -7,45 +7,36 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'A',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'A',
         attributes: {},
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
     [
       'opentagstart',
       {
         name: 'B',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'B',
         attributes: {},
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
-    [
-      'text',
-      '</c>'
-    ],
-    [
-      'closetag',
-      'B'
-    ],
-    [
-      'closetag',
-      'A'
-    ]
+    ['text', '</c>'],
+    ['closetag', 'B'],
+    ['closetag', 'A'],
   ],
   strict: false,
-  opt: {}
+  opt: {},
 })

@@ -1,5 +1,6 @@
 require(__dirname).test({
-  xml: '<root>' +
+  xml:
+    '<root>' +
     '<plain attr="normal" />' +
     '<ns1 xmlns="uri:default">' +
     '<plain attr="normal"/>' +
@@ -15,8 +16,8 @@ require(__dirname).test({
       {
         name: 'root',
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
       'opentag',
@@ -27,16 +28,16 @@ require(__dirname).test({
         uri: '',
         attributes: {},
         ns: {},
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
     [
       'opentagstart',
       {
         name: 'plain',
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
       'attribute',
@@ -45,8 +46,8 @@ require(__dirname).test({
         value: 'normal',
         prefix: '',
         local: 'attr',
-        uri: ''
-      }
+        uri: '',
+      },
     ],
     [
       'opentag',
@@ -56,36 +57,33 @@ require(__dirname).test({
         local: 'plain',
         uri: '',
         attributes: {
-          'attr': {
+          attr: {
             name: 'attr',
             value: 'normal',
             prefix: '',
             local: 'attr',
-            uri: ''
-          }
+            uri: '',
+          },
         },
         ns: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'plain'
-    ],
+    ['closetag', 'plain'],
     [
       'opentagstart',
       {
         name: 'ns1',
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
       'opennamespace',
       {
         prefix: '',
-        uri: 'uri:default'
-      }
+        uri: 'uri:default',
+      },
     ],
     [
       'attribute',
@@ -94,8 +92,8 @@ require(__dirname).test({
         value: 'uri:default',
         prefix: 'xmlns',
         local: '',
-        uri: 'http://www.w3.org/2000/xmlns/'
-      }
+        uri: 'http://www.w3.org/2000/xmlns/',
+      },
     ],
     [
       'opentag',
@@ -105,29 +103,29 @@ require(__dirname).test({
         local: 'ns1',
         uri: 'uri:default',
         attributes: {
-          'xmlns': {
+          xmlns: {
             name: 'xmlns',
             value: 'uri:default',
             prefix: 'xmlns',
             local: '',
-            uri: 'http://www.w3.org/2000/xmlns/'
-          }
+            uri: 'http://www.w3.org/2000/xmlns/',
+          },
         },
         ns: {
-          '': 'uri:default'
+          '': 'uri:default',
         },
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
     [
       'opentagstart',
       {
         name: 'plain',
         ns: {
-          '': 'uri:default'
+          '': 'uri:default',
         },
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'attribute',
@@ -136,8 +134,8 @@ require(__dirname).test({
         value: 'normal',
         prefix: '',
         local: 'attr',
-        uri: ''
-      }
+        uri: '',
+      },
     ],
     [
       'opentag',
@@ -147,49 +145,43 @@ require(__dirname).test({
         local: 'plain',
         uri: 'uri:default',
         ns: {
-          '': 'uri:default'
+          '': 'uri:default',
         },
         attributes: {
-          'attr': {
+          attr: {
             name: 'attr',
             value: 'normal',
             prefix: '',
             local: 'attr',
-            uri: ''
-          }
+            uri: '',
+          },
         },
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'plain'
-    ],
-    [
-      'closetag',
-      'ns1'
-    ],
+    ['closetag', 'plain'],
+    ['closetag', 'ns1'],
     [
       'closenamespace',
       {
         prefix: '',
-        uri: 'uri:default'
-      }
+        uri: 'uri:default',
+      },
     ],
     [
       'opentagstart',
       {
         name: 'ns2',
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
       'opennamespace',
       {
         prefix: 'a',
-        uri: 'uri:nsa'
-      }
+        uri: 'uri:nsa',
+      },
     ],
     [
       'attribute',
@@ -198,8 +190,8 @@ require(__dirname).test({
         value: 'uri:nsa',
         prefix: 'xmlns',
         local: 'a',
-        uri: 'http://www.w3.org/2000/xmlns/'
-      }
+        uri: 'http://www.w3.org/2000/xmlns/',
+      },
     ],
     [
       'opentag',
@@ -214,14 +206,14 @@ require(__dirname).test({
             value: 'uri:nsa',
             prefix: 'xmlns',
             local: 'a',
-            uri: 'http://www.w3.org/2000/xmlns/'
-          }
+            uri: 'http://www.w3.org/2000/xmlns/',
+          },
         },
         ns: {
-          a: 'uri:nsa'
+          a: 'uri:nsa',
         },
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
     [
       'opentagstart',
@@ -229,9 +221,9 @@ require(__dirname).test({
         name: 'plain',
         attributes: {},
         ns: {
-          a: 'uri:nsa'
-        }
-      }
+          a: 'uri:nsa',
+        },
+      },
     ],
     [
       'attribute',
@@ -240,8 +232,8 @@ require(__dirname).test({
         value: 'normal',
         prefix: '',
         local: 'attr',
-        uri: ''
-      }
+        uri: '',
+      },
     ],
     [
       'opentag',
@@ -251,31 +243,28 @@ require(__dirname).test({
         local: 'plain',
         uri: '',
         attributes: {
-          'attr': {
+          attr: {
             name: 'attr',
             value: 'normal',
             prefix: '',
             local: 'attr',
-            uri: ''
-          }
+            uri: '',
+          },
         },
         ns: {
-          a: 'uri:nsa'
+          a: 'uri:nsa',
         },
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'plain'
-    ],
+    ['closetag', 'plain'],
     [
       'opentagstart',
       {
         name: 'a:ns',
         attributes: {},
-        ns: { a: 'uri:nsa' }
-      }
+        ns: { a: 'uri:nsa' },
+      },
     ],
     [
       'attribute',
@@ -284,8 +273,8 @@ require(__dirname).test({
         value: 'namespaced',
         prefix: 'a',
         local: 'attr',
-        uri: 'uri:nsa'
-      }
+        uri: 'uri:nsa',
+      },
     ],
     [
       'opentag',
@@ -300,35 +289,26 @@ require(__dirname).test({
             value: 'namespaced',
             prefix: 'a',
             local: 'attr',
-            uri: 'uri:nsa'
-          }
+            uri: 'uri:nsa',
+          },
         },
         ns: { a: 'uri:nsa' },
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'a:ns'
-    ],
-    [
-      'closetag',
-      'ns2'
-    ],
+    ['closetag', 'a:ns'],
+    ['closetag', 'ns2'],
     [
       'closenamespace',
       {
         prefix: 'a',
-        uri: 'uri:nsa'
-      }
+        uri: 'uri:nsa',
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ]
+    ['closetag', 'root'],
   ],
   strict: true,
   opt: {
-    xmlns: true
-  }
+    xmlns: true,
+  },
 })
