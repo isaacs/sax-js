@@ -5,22 +5,19 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'root',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
         name: 'root',
         attributes: {},
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
-    [
-      'error',
-      'Unclosed root tag\nLine: 0\nColumn: 6\nChar: '
-    ]
+    ['error', 'Unclosed root tag\nLine: 0\nColumn: 6\nChar: '],
   ],
   strict: true,
-  opt: {}
+  opt: {},
 })

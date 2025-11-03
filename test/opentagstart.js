@@ -6,8 +6,8 @@ require(__dirname).test({
       {
         name: 'root',
         ns: {},
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'attribute',
@@ -16,8 +16,8 @@ require(__dirname).test({
         value: '12345',
         prefix: '',
         local: 'length',
-        uri: ''
-      }
+        uri: '',
+      },
     ],
     [
       'opentag',
@@ -32,22 +32,19 @@ require(__dirname).test({
             value: '12345',
             prefix: '',
             local: 'length',
-            uri: ''
-          }
+            uri: '',
+          },
         },
         ns: {},
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ]
+    ['closetag', 'root'],
   ],
   strict: true,
   opt: {
-    xmlns: true
-  }
+    xmlns: true,
+  },
 })
 
 require(__dirname).test({
@@ -57,30 +54,27 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'root',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'attribute',
       {
         name: 'length',
-        value: '12345'
-      }
+        value: '12345',
+      },
     ],
     [
       'opentag',
       {
         name: 'root',
         attributes: {
-          length: '12345'
+          length: '12345',
         },
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ]
+    ['closetag', 'root'],
   ],
-  strict: true
+  strict: true,
 })

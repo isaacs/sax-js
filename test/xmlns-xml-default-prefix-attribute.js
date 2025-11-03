@@ -6,8 +6,8 @@ require(__dirname).test({
       {
         name: 'root',
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
       'attribute',
@@ -16,8 +16,8 @@ require(__dirname).test({
         local: 'lang',
         prefix: 'xml',
         uri: 'http://www.w3.org/XML/1998/namespace',
-        value: 'en'
-      }
+        value: 'en',
+      },
     ],
     [
       'opentag',
@@ -32,18 +32,15 @@ require(__dirname).test({
             local: 'lang',
             prefix: 'xml',
             uri: 'http://www.w3.org/XML/1998/namespace',
-            value: 'en'
-          }
+            value: 'en',
+          },
         },
         ns: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
-    [
-      'closetag',
-      'root'
-    ]
+    ['closetag', 'root'],
   ],
   strict: true,
-  opt: { xmlns: true }
+  opt: { xmlns: true },
 })

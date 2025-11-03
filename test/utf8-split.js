@@ -27,7 +27,7 @@ saxStream2.on('text', function (text) {
 
 saxStream2.write(Buffer.from('<root>'))
 saxStream2.write(Buffer.from('<e>'))
-saxStream2.write(Buffer.from([0xC0]))
+saxStream2.write(Buffer.from([0xc0]))
 saxStream2.write(Buffer.from('</e>'))
 saxStream2.write(Buffer.concat([Buffer.from('<f>'), b.slice(0, 1)]))
 saxStream2.write(Buffer.from('</root>'))

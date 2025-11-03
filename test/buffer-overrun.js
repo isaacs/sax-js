@@ -3,24 +3,41 @@ var sax = require('../lib/sax')
 var bl = sax.MAX_BUFFER_LENGTH
 sax.MAX_BUFFER_LENGTH = 5
 
-require(__dirname).test({
-  expect: [
-    ['error', 'Max buffer length exceeded: tagName\nLine: 0\nColumn: 15\nChar: '],
-    ['error', 'Max buffer length exceeded: tagName\nLine: 0\nColumn: 30\nChar: '],
-    ['error', 'Max buffer length exceeded: tagName\nLine: 0\nColumn: 45\nChar: '],
-    ['opentagstart', {
-      'name': 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      'attributes': {}
-    }],
-    ['opentag', {
-      'name': 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      'attributes': {},
-      'isSelfClosing': false
-    }],
-    ['text', 'yo'],
-    ['closetag', 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ']
-  ]
-}).write('<abcdefghijklmn')
+require(__dirname)
+  .test({
+    expect: [
+      [
+        'error',
+        'Max buffer length exceeded: tagName\nLine: 0\nColumn: 15\nChar: ',
+      ],
+      [
+        'error',
+        'Max buffer length exceeded: tagName\nLine: 0\nColumn: 30\nChar: ',
+      ],
+      [
+        'error',
+        'Max buffer length exceeded: tagName\nLine: 0\nColumn: 45\nChar: ',
+      ],
+      [
+        'opentagstart',
+        {
+          name: 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
+          attributes: {},
+        },
+      ],
+      [
+        'opentag',
+        {
+          name: 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
+          attributes: {},
+          isSelfClosing: false,
+        },
+      ],
+      ['text', 'yo'],
+      ['closetag', 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ'],
+    ],
+  })
+  .write('<abcdefghijklmn')
   .write('opqrstuvwxyzABC')
   .write('DEFGHIJKLMNOPQR')
   .write('STUVWXYZ>')

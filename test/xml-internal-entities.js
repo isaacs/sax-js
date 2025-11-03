@@ -5,18 +5,18 @@ var ENTITIES = {}
 // generates xml like test0="&control;"
 var entitiesToTest = {
   // 'ENTITY_NAME': IS_VALID || [invalidCharPos, invalidChar],
-  'control0': true, // This is a vanilla control.
+  control0: true, // This is a vanilla control.
   // entityStart
-  '_uscore': true,
+  _uscore: true,
   '#hash': true,
   ':colon': true,
   '-bad': [0, '-'],
   '.bad': [0, '.'],
   // general entity
-  'u_score': true,
+  u_score: true,
   'd-ash': true,
   'd.ot': true,
-  'all:_#-.': true
+  'all:_#-.': true,
 }
 
 var xmlStart = '<a test="&amp;" '
@@ -26,16 +26,16 @@ iExpect.push([
   'opentagstart',
   {
     name: 'a',
-    attributes: {}
-  }
+    attributes: {},
+  },
 ])
 
 iExpect.push([
   'attribute',
   {
     name: 'test',
-    value: '&'
-  }
+    value: '&',
+  },
 ])
 myAttributes['test'] = '&'
 
@@ -52,12 +52,13 @@ for (var entity in entitiesToTest) {
     iExpect.push([
       'error',
       'Invalid character in entity name\nLine: 0\nColumn: ' +
-      (xmlStart.length + entitiesToTest[entity][0] + 1) +
-      '\nChar: ' + entitiesToTest[entity][1]
+        (xmlStart.length + entitiesToTest[entity][0] + 1) +
+        '\nChar: ' +
+        entitiesToTest[entity][1],
     ])
     iExpect.push([
       'attribute',
-      { name: attribName, value: '&' + entity + ';' }
+      { name: attribName, value: '&' + entity + ';' },
     ])
     myAttributes[attribName] = '&' + entity + ';'
   } else {
@@ -75,14 +76,14 @@ iExpect.push([
   {
     name: 'a',
     attributes: myAttributes,
-    isSelfClosing: true
-  }
+    isSelfClosing: true,
+  },
 ])
-iExpect.push([ 'closetag', 'a' ])
+iExpect.push(['closetag', 'a'])
 
 var parser = require(__dirname).test({
   strict: true,
-  expect: iExpect
+  expect: iExpect,
 })
 
 for (entity in entitiesToTest) {

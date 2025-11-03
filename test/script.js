@@ -4,63 +4,51 @@ require(__dirname).test({
     [
       'opentagstart',
       {
-        'name': 'HTML',
-        'attributes': {}
-      }
+        name: 'HTML',
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
-        'name': 'HTML',
-        'attributes': {},
-        'isSelfClosing': false
-      }
+        name: 'HTML',
+        attributes: {},
+        isSelfClosing: false,
+      },
     ],
     [
       'opentagstart',
       {
-        'name': 'HEAD',
-        'attributes': {}
-      }
+        name: 'HEAD',
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
-        'name': 'HEAD',
-        'attributes': {},
-        'isSelfClosing': false
-      }
+        name: 'HEAD',
+        attributes: {},
+        isSelfClosing: false,
+      },
     ],
     [
       'opentagstart',
       {
-        'name': 'SCRIPT',
-        'attributes': {}
-      }
+        name: 'SCRIPT',
+        attributes: {},
+      },
     ],
     [
       'opentag',
       {
-        'name': 'SCRIPT',
-        'attributes': {},
-        'isSelfClosing': false
-      }
+        name: 'SCRIPT',
+        attributes: {},
+        isSelfClosing: false,
+      },
     ],
-    [
-      'script',
-      "if (1 < 0) { console.log('elo there'); }"
-    ],
-    [
-      'closetag',
-      'SCRIPT'
-    ],
-    [
-      'closetag',
-      'HEAD'
-    ],
-    [
-      'closetag',
-      'HTML'
-    ]
-  ]
+    ['script', "if (1 < 0) { console.log('elo there'); }"],
+    ['closetag', 'SCRIPT'],
+    ['closetag', 'HEAD'],
+    ['closetag', 'HTML'],
+  ],
 })

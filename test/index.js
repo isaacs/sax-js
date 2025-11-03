@@ -7,7 +7,7 @@ exports.sax = sax
 // handy way to do simple unit tests
 // if the options contains an xml string, it'll be written and the parser closed.
 // otherwise, it's assumed that the test will write and close.
-exports.test = function test (options) {
+exports.test = function test(options) {
   var xml = options.xml
   var parser = sax.parser(options.strict, options.opt)
   var expect = options.expect
@@ -17,7 +17,7 @@ exports.test = function test (options) {
       if (process.env.DEBUG) {
         console.error({
           expect: expect[e],
-          actual: [ev, n]
+          actual: [ev, n],
         })
       }
       if (e >= expect.length && (ev === 'end' || ev === 'ready')) {
@@ -29,7 +29,7 @@ exports.test = function test (options) {
         t.fail('did not expect this event', {
           event: ev,
           expect: expect,
-          data: n
+          data: n,
         })
         return
       }

@@ -8,7 +8,7 @@
 
 # EVERY PULL REQUEST MUST HAVE A TEST.
 
-Seriously.  This is a very strict rule, and I will not bend it for any
+Seriously. This is a very strict rule, and I will not bend it for any
 patch, no matter how minor.
 
 Write a test.

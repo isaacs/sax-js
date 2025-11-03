@@ -7,22 +7,22 @@ require(__dirname).test({
       'opentagstart',
       {
         name: 'SPAN',
-        attributes: {}
-      }
+        attributes: {},
+      },
     ],
     [
       'attribute',
       {
         name: 'CLASS',
-        value: 'test'
-      }
+        value: 'test',
+      },
     ],
     [
       'attribute',
       {
         name: 'HELLO',
-        value: 'world'
-      }
+        value: 'world',
+      },
     ],
     [
       'opentag',
@@ -30,16 +30,13 @@ require(__dirname).test({
         name: 'SPAN',
         attributes: {
           CLASS: 'test',
-          HELLO: 'world'
+          HELLO: 'world',
         },
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
-    [
-      'closetag',
-      'SPAN'
-    ]
+    ['closetag', 'SPAN'],
   ],
   strict: false,
-  opt: {}
+  opt: {},
 })
