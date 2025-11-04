@@ -22,7 +22,7 @@ testPosition(
     ['opentag', { position: 5, startTagPosition: 1 }],
     ['text', { position: 19, startTagPosition: 14 }],
     ['closetag', { position: 19, startTagPosition: 14 }],
-  ],
+  ]
 )
 
 testPosition(
@@ -32,5 +32,5 @@ testPosition(
     ['opentag', { position: 5, startTagPosition: 1 }],
     ['text', { position: 19, startTagPosition: 14 }],
     ['closetag', { position: 19, startTagPosition: 14 }],
-  ],
+  ]
 )

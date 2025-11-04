@@ -57,7 +57,7 @@ printer.on('error', function (error) {
 if (!process.argv[2]) {
   throw new Error(
     'Please provide an xml file to prettify\n' +
-      'TODO: read from stdin or take a file',
+      'TODO: read from stdin or take a file'
   )
 }
 var xmlfile = require('path').join(process.cwd(), process.argv[2])

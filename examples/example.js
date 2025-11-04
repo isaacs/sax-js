@@ -26,5 +26,5 @@ loose.onend = (function () {
       xml = xml.substr(c)
       process.nextTick(arguments.callee)
     } else loose.close()
-  },
+  }
 )()

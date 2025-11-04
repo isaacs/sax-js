@@ -25,7 +25,7 @@ t.test('cdata-mega', t => {
     'Expected at most ' +
       expectedUpperBound / bytesInMiB +
       ' MiB to be allocated, was ' +
-      memoryUsageDiff / bytesInMiB,
+      memoryUsageDiff / bytesInMiB
   )
   t.end()
 })
