@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/isaacs/sax-js.git"
+    "url": "git+https://github.com/isaacs/sax-js.git"
   },
   "files": [
     "lib/sax.js",
