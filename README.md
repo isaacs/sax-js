@@ -39,6 +39,12 @@ be my guest.
 Unknown entities will fail in strict mode, and in loose mode, will pass
 through unmolested.
 
+## Installation
+
+```
+npm install --save sax
+```
+
 ## Usage
 
 ```javascript
