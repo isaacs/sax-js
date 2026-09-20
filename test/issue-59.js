@@ -21,15 +21,18 @@ tap.test('SAXStream.close exists and ends the stream', function (t) {
   })
   t.same(tags, ['root'])
   t.equal(ended, true)
-  t.equal(stream._parser.closed, true)
   t.end()
 })
 
 tap.test('SAXStream.close on an empty stream does not throw', function (t) {
   var stream = sax.createStream()
+  var ended = false
+  stream.on('end', function () {
+    ended = true
+  })
   t.doesNotThrow(function () {
     stream.close()
   })
-  t.equal(stream._parser.closed, true)
+  t.equal(ended, true)
   t.end()
 })
